@@ -20,7 +20,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveForumQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveForumQuestion");
                 command.Parameters.AddWithValue("@UserName",qustion.UserName);
                 command.Parameters.AddWithValue("@Email",qustion.Email);
                 command.Parameters.AddWithValue("@Country",qustion.Country);
@@ -47,7 +47,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllForumQuestions");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllForumQuestions");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -69,7 +69,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllPublishQuestions");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllPublishQuestions");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -91,7 +91,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllUnPublishQuestions");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllUnPublishQuestions");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -112,7 +112,7 @@ namespace Nexam.DataAccess
         {
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.DeleteQuestions");
+                SqlCommand command = new DBConnection().DbSqlConnection("DeleteQuestions");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = QuestionID;
                 return new DBConnection().ExecuteNonQuery(command);
             }
@@ -131,7 +131,7 @@ namespace Nexam.DataAccess
         {
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.PublishQuestionByAdmin");
+                SqlCommand command = new DBConnection().DbSqlConnection("PublishQuestionByAdmin");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = QuestionID;
                 return new DBConnection().ExecuteNonQuery(command);
             }
@@ -151,7 +151,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetSingleQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetSingleQuestion");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = QuestionID;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();

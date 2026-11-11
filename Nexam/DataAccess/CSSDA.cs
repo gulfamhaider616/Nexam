@@ -14,7 +14,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveCSSPaper");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveCSSPaper");
                 command.Parameters.AddWithValue("@PaperName", paper.PaperName);
                 command.Parameters.AddWithValue("@PaperDetail", paper.PaperDetail);
                 command.Parameters.AddWithValue("@QuestionsText", paper.QuestionsText);
@@ -35,7 +35,7 @@ namespace Nexam.DataAccess
         //    DataSet set = new DataSet();
         //    try
         //    {
-        //        SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveCSSQuestion");
+        //        SqlCommand command = new DBConnection().DbSqlConnection("SaveCSSQuestion");
         //        command.Parameters.AddWithValue("@PaperID", question.PaperID);
         //        command.Parameters.AddWithValue("@QuestionStatement", question.QuestionStatement);
         //        SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -55,7 +55,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllCSSPaper");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllCSSPaper");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -72,7 +72,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetCompleteCSSPaperByID");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetCompleteCSSPaperByID");
                 command.Parameters.Add("@PaperID", SqlDbType.Int).Value = paperid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -91,7 +91,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetCSSQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetCSSQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -109,7 +109,7 @@ namespace Nexam.DataAccess
             int result = 0;
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.DeleteCSSQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("DeleteCSSQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 command.Connection.Close();
                 result = new DBConnection().ExecuteNonQuery(command);

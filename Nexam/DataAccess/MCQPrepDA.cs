@@ -17,7 +17,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.VerifyAdmin");
+                SqlCommand command = new DBConnection().DbSqlConnection("VerifyAdmin");
                 command.Parameters.Add("@AdminEmail", SqlDbType.VarChar).Value = adminemail;
                 command.Parameters.Add("@AdminPassword", SqlDbType.VarChar).Value = adminpassword;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -38,7 +38,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveQuestion");
                 command.Parameters.AddWithValue("@SubjectID",question.SubjectID);
                 command.Parameters.AddWithValue("@QuestionStatement",question.QuestionStatement);
                 command.Parameters.AddWithValue("@NumberOfChoices", question.NumberOfChoices);
@@ -62,7 +62,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveSubject");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveSubject");
                 command.Parameters.AddWithValue("@SubjectName",subject.SubjectName);
                 command.Parameters.AddWithValue("@SubjectDetail",subject.SubjectDetail);
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -83,7 +83,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetContacts");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetContacts");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -100,7 +100,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -119,7 +119,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveEditQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveEditQuestion");
                 command.Parameters.AddWithValue("@QuestionID",question.QuestionID);
                 command.Parameters.AddWithValue("@SubjectID",question.SubjectID);
                 command.Parameters.AddWithValue("@QuestionStatement",question.QuestionStatement);
@@ -143,7 +143,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveEditPPSCQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveEditPPSCQuestion");
                 command.Parameters.AddWithValue("@QuestionID", question.QuestionID);
                 command.Parameters.AddWithValue("@SubjectID", question.SubjectID);
                 command.Parameters.AddWithValue("@QuestionStatement", question.QuestionStatement);
@@ -167,7 +167,7 @@ namespace Nexam
             int result = 0;
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.DeleteQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("DeleteQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 
                 result = new DBConnection().ExecuteNonQuery(command);
@@ -189,7 +189,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllQuestionsBySubjectID");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllQuestionsBySubjectID");
                 command.Parameters.Add("@SubjectID", SqlDbType.Int).Value = subjectid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -214,7 +214,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllSubjects");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllSubjects");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -237,7 +237,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetSubCategoryBySubjectID");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetSubCategoryBySubjectID");
                 command.Parameters.Add("@SubjectID", SqlDbType.Int).Value = subjectid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -255,7 +255,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveContactUs");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveContactUs");
                 command.Parameters.Add("@Name", SqlDbType.VarChar).Value = contact.Name;
                 command.Parameters.Add("@Email", SqlDbType.VarChar).Value = contact.Email;
                 command.Parameters.Add("@Subject", SqlDbType.VarChar).Value = contact.Subject;
@@ -276,7 +276,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SearchResult");
+                SqlCommand command = new DBConnection().DbSqlConnection("SearchResult");
                 command.Parameters.Add("@Search", SqlDbType.VarChar).Value = search;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -294,7 +294,7 @@ namespace Nexam
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllSubjects");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllSubjects");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);

@@ -14,7 +14,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveUser");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveUser");
                 command.Parameters.AddWithValue("@FName", user.FName);
                 command.Parameters.AddWithValue("@LName", user.LName);
                 command.Parameters.AddWithValue("@Email", user.Email);
@@ -39,7 +39,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.VerifyUser");
+                SqlCommand command = new DBConnection().DbSqlConnection("VerifyUser");
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Password", password);
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -63,7 +63,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetUserProfile");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetUserProfile");
                 command.Parameters.AddWithValue("@Id", Id);
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -82,7 +82,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllUsers");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllUsers");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);

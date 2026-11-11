@@ -14,7 +14,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveFPSCPaper");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveFPSCPaper");
                 command.Parameters.AddWithValue("@PaperName", paper.PaperName);
                 command.Parameters.AddWithValue("@PaperDetail", paper.PaperDetail);
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -33,7 +33,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.SaveFPSCQuestion");
+                SqlCommand command = new DBConnection().DbSqlConnection("SaveFPSCQuestion");
                 command.Parameters.AddWithValue("@PaperID", question.PaperID);
                 command.Parameters.AddWithValue("@QuestionStatement", question.QuestionStatement);
                 command.Parameters.AddWithValue("@Choices", question.Choices);
@@ -55,7 +55,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllFPSCPaper");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllFPSCPaper");
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
                 adapter.Fill(set);
@@ -72,7 +72,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetAllFPSCQuestionsByPaperID");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetAllFPSCQuestionsByPaperID");
                 command.Parameters.Add("@PaperID", SqlDbType.Int).Value = paperid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -91,7 +91,7 @@ namespace Nexam.DataAccess
             DataSet set = new DataSet();
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.GetFPSCQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("GetFPSCQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 SqlDataAdapter adapter = new SqlDataAdapter(command);
                 command.Connection.Close();
@@ -109,7 +109,7 @@ namespace Nexam.DataAccess
             int result = 0;
             try
             {
-                SqlCommand command = new DBConnection().DbSqlConnection("ahmedshair.DeleteFPSCQuestionById");
+                SqlCommand command = new DBConnection().DbSqlConnection("DeleteFPSCQuestionById");
                 command.Parameters.Add("@QuestionID", SqlDbType.Int).Value = questionid;
                 command.Connection.Close();
                 result = new DBConnection().ExecuteNonQuery(command);
