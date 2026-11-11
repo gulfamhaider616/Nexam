@@ -1,0 +1,57 @@
+﻿@model QuestionDO
+@{
+	ViewBag.Title = "Nexam | NTS Paper Questions";
+	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+	ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+	<!-- start main_btm -->
+	<div class="container">
+		<div class="main row">
+			<div class="col-md-8">
+				<div class="contact-form">
+					<h2>Edit Question</h2>
+					<form action="/Admin/SaveEditQuestion" method="post" style="font-size:18px;line-height:2em;">
+						<input type="hidden" name="questionid" value="@Model.QuestionID">
+						<div>
+							<span>Subject</span>
+							<span>
+								<select class="form-control" name="subjectid" id="userName">
+									<option value="@Model.PaperID">@Model.PaperName</option>
+								</select>
+							</span>
+						</div>
+
+						<div>
+							<span>Question Statement</span>
+							<span><input type="text" value="@Model.QuestionStatement" name="questionstatement" class="form-control" id="inputEmail3"></span>
+						</div>
+						<div>
+							<span>Total Choices</span>
+							<span>
+								<input type="text" value="@Model.NumberOfChoices" name="numberofchoices" class="form-control" id="inputEmail3">
+							</span>
+						</div>
+						<div>
+							<span>Choices</span>
+							<span><input type="text" value="@Model.Choices" name="choices" class="form-control" id="inputEmail3"></span>
+						</div>
+						<div>
+							<span>Correct Answer</span>
+							<span><input type="text" value="@Model.CorrectAnswer" name="correctanswer" class="form-control" id="inputEmail3"></span>
+						</div>
+						<div>
+							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+
+
+

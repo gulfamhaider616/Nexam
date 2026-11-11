@@ -1,0 +1,213 @@
+﻿@model QuizQuestionContract
+@{
+    ViewBag.Title = "StartQuiz";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--<html lang="en" class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths">
+
+<head>-->
+
+    @*<base href="https://www.examtopics.com/exams/amazon/ans-c00/view/">*@
+    <!--<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" defhref="/assets/css/owl.carousel.css" href="/assets/css/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/rsmenu-main.css">
+    <link rel="stylesheet" type="text/css" defhref="/assets/css/rsmenu-transitions.css" href="/assets/css/rsmenu-transitions.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css?ver=1">
+    <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css">
+    <style>
+        .exam-question-card {
+            break-inside: avoid;
+        }
+    </style>
+</head>
+<body class="home2" data-new-gr-c-s-check-loaded="14.1121.0" data-gr-ext-installed="">-->
+    <div class="container">
+        <div class="exam-view-header">
+
+            <div class="row">
+                <div class="col-12 col-sm-8 offset-sm-2 d-print-none">
+                </div>
+            </div>
+            <div class="row d-print-none" style="padding-bottom: 10px;padding-top: 10px;">
+                <div class="col-lg-6 offset-lg-3">
+
+                    <div class="card">
+                        <div class="card-header alert alert-info text-center">
+                            <h2 id="exam-box-title">
+                               PPSC Exam Practice Quiz
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                SUBJECT: @Model.QuestionsDOs[0].SubjectName
+                            </h5>
+                            <div class="card-text">
+                                <ul>
+
+                                    <li>
+                                        Total Questions: @Model.QuestionsDOs.Count
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="disclaimer-box mt-2">
+                            <span><u>Disclaimers:</u></span>
+                            <ul class="disclaimer-list mt-1">
+                                <li>- ExamTopics website is <strong>not</strong> related to, affiliated with, endorsed or authorized by Amazon.</li>
+                                <li>- Trademarks, certification &amp; product names are used for reference only and belong to Amazon.</li>
+                            </ul>
+                        </div>*@
+
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="row">
+                <div class="col-12 text-right mb-3">
+                    3  <a href="/exams/amazon/ans-c00/custom-view/" class="btn btn-primary">
+                        <i class="fa fa-gear"></i> Custom View Settings
+                    </a>
+                </div>
+            </div>*@
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="questions-container" data-id="@Model.QuizID">
+                @{ int counter = 1;
+                    foreach (var Item in Model.QuestionsDOs)
+                    {
+                        <div class="card exam-question-card" style="margin: 5px 0 5px 0; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                            <div class="card-header text-white" style="background-color: #21a7d0;">
+                                Question No.@counter
+                            </div>
+                            <div class="card-body question-body" data-id="@Item.QuestionID">
+                                <p class="card-text">
+                                    @Item.QuestionStatement<br>
+                                </p>
+                                <div class="question-choices-container">
+                                    <div class="voted-answers-tally d-none">
+
+                                        <script id="730349" type="application/json">[{"voted_answers": "A", "vote_count": 2, "is_most_voted": false}]</script>
+
+                                    </div>
+                                    <ul>
+                                        @{
+                                            if (Item.Choices != null)
+                                            {
+                                                var choices = Item.Choices.Split(',');
+                                                foreach (var choice in choices)
+                                                {
+                                                <li class="multi-choice-item">
+                                                    <input type="radio" value='@choice' name="@Item.QuestionID">
+                                                    <label>@choice</label>
+                                                </li>
+                                                    }
+                                                }
+else
+                {
+                    <input type="text" />
+                }
+                                            }
+                                        
+                                    </ul>
+                                </div>
+
+                                @*exam-view410
+                                <a href="#" class="btn btn-primary reveal-solution d-print-none">Reveal Solution</a>
+                                <a href="#" class="btn btn-primary hide-solution d-none d-print-none">Hide Solution</a>
+                                <a href="#" class="btn btn-secondary question-discussion-button d-print-none">
+                                    <i class="fa fa-comment"></i>
+                                    &nbsp; Discussion &nbsp;
+
+                                    <span class="badge badge-pill badge-light">24</span>
+                                </a>*@
+                                <p class="card-text question-answer bg-light white-text" hidden>
+                                    <span class="correct-answer-box">
+                                        <strong>Correct Answer:</strong>
+                                        <span class="correct-answer">@Item.CorrectAnswer</span>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        counter++;
+                    }
+                }
+            </div>
+            <div class="page-navigation-bar">
+                <div class="col-12" style="text-align: end;">
+                    <br />
+                    <button id='btnSave' class="btn btn-primary">Submit Quiz</button>
+                    <br /><br />
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    </div>
+
+   
+
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>*@
+
+    @*<script type="text/javascript">
+
+        $(".container").on("click", "#btnSave", function () {
+            //Loop through the Table rows and build a JSON array.
+            var questions = new Array();
+            var quizquestioncontract = {};
+            $(".questions-container .exam-question-card").each(function () {
+                var row = $(this);
+                var question = {};
+                question.QuestionID = row.find(".question-body").attr("data-id");
+                if (row.find("li input:checked").val().trim() != null) {
+                    question.UserAnswer = row.find("li input:checked").val().trim();
+                }
+                else {
+                    question.UserAnswer = "null";
+                }
+                question.CorrectAnswer = row.find(".correct-answer").html();
+                if (question.UserAnswer == question.CorrectAnswer) {
+                    question.IsCorrect = true;
+                }
+                else {
+                    question.IsCorrect = false;
+                }
+                //alert(question.QuestionText);
+                //alert(question.UserAnswer);
+                //alert(question.CorrectAnswer);
+                //alert(question.IsCorrect);
+                questions.push(question);
+            });
+            quizquestioncontract.QuizQuestions = questions;
+            quizquestioncontract.QuizID = $(".questions-container").attr("data-id");
+            //Send the JSON array to Controller using AJAX.
+            $.ajax({
+                type: "POST",
+                url: "/Quiz/InsertQuizQuestion",
+                data: JSON.stringify(quizquestioncontract),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $(".modal-title").html(result.Remarks + ", "+result.Name+"!");
+                    $(".modal-body").html("Score:  " + result.Score);
+                    $("#bsModal3").modal('show');
+                },
+                error: function () {
+                    alert("Error");
+                }
+            });
+        });
+    </script>*@
+@*</body>
+</html>*@
+

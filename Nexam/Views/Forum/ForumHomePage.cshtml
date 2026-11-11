@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Nexam.Contract.AskQuestionDO>
+@{
+    ViewBag.Title = "Forum | Nexam";
+    ViewBag.Description = "NEXAM FORUM,GENERAL KNOWLEDGE MCQS FOR, NTS TEST, PPSC TEST, FPSC TEST, BPSC TEST, SPSC TEST, KPKPSC TEST, AJKPSC TEST, SOLVED MCQS ABOUT WORLD COUNTRY CAPITALS, WORLD ORGANIZATIONS, GENERAL KNOWLEDGE HELPING MATERIAL FOR JOB TEST";
+    ViewBag.KeyWords = "GENERAL KNOWLEDGE MCQS FOR, NTS TEST, PPSC TEST, FPSC TEST, BPSC TEST, SPSC TEST, KPKPSC TEST, AJKPSC TEST, SOLVED MCQS ABOUT WORLD COUNTRY CAPITALS, WORLD ORGANIZATIONS, GENERAL KNOWLEDGE HELPING MATERIAL FOR JOB TEST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="rs-inner-blog orange-color pt-40 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 pr-10" style="text-align: right;margin-bottom: 15px;">
+                <a href="~/Nexam-Forum-Question"> <input type="button" value="Ask Question" style="color:white;font-size: inherit;padding: 2px;height: 40px;border-radius: 10px;background: #208dd0;border-color: #208dd0;" /></a>
+            </div>
+            <div class="col-lg-12 pr-10">
+                <div class="row">
+                        @foreach (var Item in Model)
+                        {
+                            <div class="col-lg-12 mb-10">
+                                <div class="blog-item">
+                                    <div class="blog-content">
+                                        <h3 class="blog-title"><a href="~/Nexam-Forum-Question-Discussion/@Item.AskQuestionID" style="text-decoration: none;font-size: 150%;color: #28a7d0;"> @Item.Subject</a></h3>
+                                        <div class="blog-meta">
+                                            <ul class="btm-cate">
+                                                <li>
+                                                    <div class="blog-date">
+
+                                                   <i class="fa fa-calendar-check-o"></i> <span>@Item.UserName</span>
+
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+ 
+                </div>
+            </div>
+            @*<div class="col-lg-4 col-md-12 order-last">
+                    <div class="widget-area">
+                        <div class="search-widget mb-50">
+                            <div class="search-wrap">
+                                <form action="/Home/SearchResult" method="post">
+                                    <input type="search" placeholder="Searching..." name="search" class="search-input" value="">
+                                    <button type="submit" value="Search"><i class="flaticon-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="recent-posts mb-50">
+                            <h3 class="widget-title">All Subjects</h3>
+                            <ul>
+                                @foreach (var item in Model.SubjectList)
+                                {
+                                    <li><a href="/Questions/@item.SubjectID">@item.SubjectName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "NewPPSCPost";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+    <!-- start main_btm -->
+    <div class="container">
+        <div class="main row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <h2>ADD New PPSC Paper Post</h2>
+                    <form action="/PPSC/SavePPSCPost" method="post" style="font-size:18px;line-height:2em;">
+                        <div>
+                            <span>Post Name</span>
+                            <span><input type="text" name="postname" class="form-control" id="userName" placeholder="Enter post name"></span>
+                        </div>
+                        <div>
+                            <span>Post Detail</span>
+                            <span><input type="text" name="postdetail" class="form-control" id="inputEmail3" placeholder="enter one line post detail"></span>
+                        </div>
+                        <div>
+                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+

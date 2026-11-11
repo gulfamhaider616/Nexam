@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Nexam.Contract.AskQuestionDO>
+@{
+    ViewBag.Title = "UnPublish";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="banner-wrapper">
+    <div id="banner" class="box container" style="width:100%;">
+        <div class="row">
+            <div class="col-md-12" style="width:100%;margin:0 auto;overflow-x:auto;padding:1%;">
+                @*<h5 style="float:right;">Total Records:  <label style="color:red;padding-left: 5px;">  @Model.TotalRecords</label></h5>*@
+                <table class="rest" border="0" style="width: 100%;text-align: center;color: black;border: 1px solid black;font-size: 88%;">
+                    <thead style="font-weight: 600;background: darksalmon !important;">
+                        <tr style="color:white;">
+                            <td>Serial</td>
+                            <td>Title</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int count = 1; }
+                        @foreach (var Item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td><a href="/Admin/AdminQuestionPreview?QuestionID=@Item.AskQuestionID" style="text-decoration:none"> @Item.Subject </a></td>
+                                <td><a href="#" onclick='PublishQuestion("@Item.AskQuestionID")' style="text-decoration:none;">Publish</a> | <a href="#" onclick='DeleteQuestions("@Item.AskQuestionID")' style="text-decoration:none;">Delete</a></td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/Scripts/Forum.js"></script>*@

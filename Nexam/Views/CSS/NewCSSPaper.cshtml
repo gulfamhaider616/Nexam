@@ -1,0 +1,52 @@
+﻿
+@{
+	ViewBag.Title = "NewCSSPaper";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+<div class="main_btm">
+	<!-- start main_btm -->
+	<div class="container">
+		<div class="main row">
+			<div class="col-md-8">
+				<div class="contact-form">
+					<h2>ADD New CSS Paper</h2>
+					<form action="/CSS/SaveCSSNewPaper" method="post" style="font-size:18px;line-height:2em;">
+						<div>
+							<span>Paper Name</span>
+							<span><input type="text" name="name" class="form-control" id="userName" placeholder="Enter subject name"></span>
+						</div>
+						<div>
+							<span>Paper Detail</span>
+							<span><input type="text" name="detail" class="form-control" id="inputEmail3" placeholder="enter one line subject detail"></span>
+						</div>
+						<div>
+							<span>Question Paper</span>
+							<span>
+								<span>
+									<textarea name="questionstatement" id="questionstatement"></textarea>
+									<script>
+									ClassicEditor
+										.create(document.querySelector('#questionstatement'))
+										.then( editor => {
+											console.log( editor );
+										} )
+										.catch( error => {
+											console.error( error );
+										} );
+									</script>
+								</span>
+
+							</span>
+						</div>
+						<div>
+							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Nexam | Add Subject";
+    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "Add Subjects,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+    <!-- start main_btm -->
+    <div class="container">
+        <div class="main row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <h2>ADD New Subject</h2>
+                    <form action="/Admin/SaveSubject" method="post" style="font-size:18px;line-height:2em;">
+                        <div>
+                            <span>Subject Name</span>
+                            <span><input type="text" name="subjectname" class="form-control" id="userName" placeholder="Enter subject name"></span>
+                        </div>
+                        <div>
+                            <span>Subject Detail</span>
+                            <span><input type="text" name="subjectdetail" class="form-control" id="inputEmail3" placeholder="enter one line subject detail"></span>
+                        </div>
+                        <div>
+                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+

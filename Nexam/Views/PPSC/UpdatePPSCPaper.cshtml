@@ -1,0 +1,73 @@
+﻿@model NewPPSCPaperContract
+@{
+    ViewBag.Title = "NewPaper";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+    <!-- start main_btm -->
+    <div class="container">
+        <div class="main row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <h2>Update PPSC Paper</h2>
+                    <form action="/PPSC/SaveUpdatedPPSCPaper" method="post" style="font-size:18px;line-height:2em;">
+                        <div>
+                            <input type="text" name="paperid" class="form-control" value="@Model.Paper.PaperID" hidden>
+                        </div>
+                        <div>
+                            <span>Select Year</span>
+                            <span>
+                                <select class="form-control" name="paperyear" id="userName">
+                                    @foreach (var Item in Model.PaperYear)
+                                    {
+                                        if (Model.Paper.PaperYear == Item.Year)
+                                        {
+                                            <option value="@Item.YearID" selected>@Item.Year</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Item.YearID">@Item.Year</option>
+                                        }
+                                    }
+                                </select>
+                            </span>
+                        </div>
+                        <div>
+                            <span>Select Post</span>
+                            <span>
+                                <select class="form-control" name="paperpost" id="userName">
+                                    @foreach (var Item in Model.PaperPost)
+                                    {
+                                        if (Model.Paper.PaperPost == Item.Post)
+                                        {
+                                            <option value="@Item.PostID" selected>@Item.Post</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Item.PostID">@Item.Post</option>
+                                        }
+
+                                    }
+                                </select>
+                            </span>
+                        </div>
+                        <div>
+                            <span>Paper Name</span>
+                            <span><input type="text" name="name" class="form-control" value="@Model.Paper.PaperName" id="userName" placeholder="Enter subject name"></span>
+                        </div>
+                        <div>
+                            <span>Paper Detail</span>
+                            <span><input type="text" name="detail" class="form-control"  value="@Model.Paper.PaperDetail" placeholder="enter one line subject detail"></span>
+                        </div>
+                        <div>
+                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Update"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+

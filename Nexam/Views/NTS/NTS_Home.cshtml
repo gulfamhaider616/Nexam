@@ -1,0 +1,28 @@
+﻿@{
+	ViewBag.Title = "NTS_Home";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="main_bg">
+	<!-- start main -->
+	<div class="container">
+		<div class="main row" style="text-align:center;margin: auto;width: 70%;">
+			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+				<h4><a href="/NTS/NewNTSPaper">ADD New NTS Paper</a></h4>
+				@*<p class="para">@Item.SubjectDetail</p>*@
+				<a href="/NTS/NewNTSPaper" class="fa-btn btn-1 btn-1e">Get Started</a>
+			</div>
+			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+				<h4><a href="/NTS/NewNTSQuestion">ADD New NTS Question</a></h4>
+				@*<p class="para">@Item.SubjectDetail</p>*@
+				<a href="/NTS/NewNTSQuestion" class="fa-btn btn-1 btn-1e">Get Started</a>
+			</div>
+			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+				<h4><a href="/NTS/GetAllNTSPapers">Get All NTS Papers</a></h4>
+				@*<p class="para">@Item.SubjectDetail</p>*@
+				<a href="/NTS/GetAllNTSPapersByAdmin" class="fa-btn btn-1 btn-1e">Get Started</a>
+			</div>
+		</div>
+	</div>
+</div><!-- end main -->

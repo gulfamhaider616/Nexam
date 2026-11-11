@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PaperDO>
+@{
+	ViewBag.Title = "Nexam | FPSC Past Papers";
+	ViewBag.Description = "FPSC Past Papers are available here. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+	ViewBag.KeyWords = "FPSC Past Paper,All Past Papers, FPSC Past Papers,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,FPSC,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main_bg">
+	<!-- start main -->
+	<div class="container">
+		<div class="main row">
+			@foreach (var Item in Model)
+            {
+				<div class="col-md-3 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+					<h4><a href="~/FPSC-Past-Paper-Question/@Item.PaperID">@Item.PaperName</a></h4>
+					<p class="para">@Item.PaperDetail</p>
+					<a href="~/FPSC-Past-Paper-Question/@Item.PaperID" class="fa-btn btn-1 btn-1e">Get Started</a>
+				</div>
+            }
+		</div>
+	</div>
+</div><!-- end main -->

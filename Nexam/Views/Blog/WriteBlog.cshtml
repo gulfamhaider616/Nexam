@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "WriteBlog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="register-section pt-100 pb-100 loaded">
+    <div class="container">
+        <div class="register-box">
+
+            <div class="sec-title text-center mb-30">
+                <h2 class="title mb-10">Welcome, Please Write Here</h2>
+            </div>
+
+            <!-- Login Form -->
+            <div class="styled-form">
+                <div id="form-messages"></div>
+                <form method="post" action="#">
+                    <div class="row clearfix">
+                        <!-- Form Group -->
+   
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="country" name="bcountry" value="" placeholder="Country" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="title" name="btitle" value="" placeholder="Title" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <textarea id="desp" name="desp" placeholder="Please Write Here"></textarea>
+
+                            <script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
+
+                            <script>
+                                    $(function () {
+
+                                        $('#desp').ckeditor();
+                                    });
+                            </script>
+
+                            <script>
+                                    ClassicEditor
+                                        .create(document.querySelector('#desp'))
+                                        .catch(error => {
+                                            console.error(error);
+                                        });
+                            </script>
+                            <script>
+                                    window.onload = function ();
+                                    { CKEDITOR.replace('desp'); };
+                            </script>
+                            @*<textarea name="qexplanation" style="border-radius:0px;" value="" placeholder="Please Write Here" required=""></textarea>*@
+                        </div>
+                     
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
+                            <button type="submit" class="readon submit-btn"><span class="txt">Submit</span></button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>

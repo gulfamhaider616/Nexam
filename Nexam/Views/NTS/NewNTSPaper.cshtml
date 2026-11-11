@@ -1,0 +1,33 @@
+﻿
+@{
+	ViewBag.Title = "NewNTSPaper";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+	<!-- start main_btm -->
+	<div class="container">
+		<div class="main row">
+			<div class="col-md-8">
+				<div class="contact-form">
+					<h2>ADD New NTS Paper</h2>
+					<form action="/NTS/SaveNTSNewPaper" method="post" style="font-size:18px;line-height:2em;">
+						<div>
+							<span>Paper Name</span>
+							<span><input type="text" name="name" class="form-control" id="userName" placeholder="Enter subject name"></span>
+						</div>
+						<div>
+							<span>Paper Detail</span>
+							<span><input type="text" name="detail" class="form-control" id="inputEmail3" placeholder="enter one line subject detail"></span>
+						</div>
+						<div>
+							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+

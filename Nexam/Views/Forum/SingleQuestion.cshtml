@@ -1,0 +1,81 @@
+﻿
+@model Nexam.Contract.AskQuestionDO
+@{
+    ViewBag.Title = Model.Subject + " | Nexam Forum";
+    ViewBag.Description = Model.Explanation;
+    ViewBag.KeyWords = "NEXAM FORUM,ASK QUESTION ABOUT MCQS,GENERAL KNOWLEDGE MCQS FOR, NTS TEST, PPSC TEST, FPSC TEST, BPSC TEST, SPSC TEST, KPKPSC TEST, AJKPSC TEST, SOLVED MCQS ABOUT WORLD COUNTRY CAPITALS, WORLD ORGANIZATIONS, GENERAL KNOWLEDGE HELPING MATERIAL FOR JOB TEST";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="rs-inner-blog orange-color pt-100 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 pr-10">
+                <div class="row">
+                    <div class="col-lg-12 mb-10">
+                        <div class="blog-item">
+                            <div class="blog-content">
+                                <h3 class="blog-title"> <a href="#">@Model.Subject</a></h3>
+                                <div class="blog-meta">
+                                    <ul class="btm-cate">
+                                        <li>
+                                            <div class="blog-date">
+                                                <i class="fa fa-calendar-check-o"></i> <span>@Model.UserName | @Model.Country</span>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="blog-desc">
+                                    @Model.Explanation
+                                </div>
+                        </div>
+                            <hr />
+                        <div id="disqus_thread" style="padding: 30px;"></div>
+                        <script>
+
+			/**
+			*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+			*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+			/*
+			var disqus_config = function () {
+			this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+			this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+			};
+			*/
+			(function() { // DON'T EDIT BELOW THIS LINE
+			var d = document, s = d.createElement('script');
+			s.src = 'https://mcqsprep.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+			})();
+                        </script>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-lg-4 col-md-12 order-last">
+                    <div class="widget-area">
+                        <div class="search-widget mb-50">
+                            <div class="search-wrap">
+                                <form action="/Home/SearchResult" method="post">
+                                    <input type="search" placeholder="Searching..." name="search" class="search-input" value="">
+                                    <button type="submit" value="Search"><i class="flaticon-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="recent-posts mb-50">
+                            <h3 class="widget-title">All PPSC Papers</h3>
+                            <ul>
+                                @foreach (var item in Model.PaperList)
+                                {
+                                    <li><a href="~/PPSC-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>

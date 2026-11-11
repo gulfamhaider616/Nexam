@@ -1,0 +1,271 @@
+﻿@model HomeContract
+@{
+    ViewBag.Title = "Exams Preperation,CSS,NTS,PPSC,GAT MCQ | Nexam";
+    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+}
+
+<!-- Main content Start -->
+<div class="main-content">
+    <!-- Banner Section Start -->
+    <div id="rs-banner" class="rs-banner style1">
+        <div class="container">
+            <div class="banner-content text-center">
+                <h1 class="banner-title capitalize wow fadeInLeft" data-wow-delay="300ms" data-wow-duration="3000ms">PPSC Past Papers - Moving Towards E-Learning</h1>
+                <div class="desc wow wow fadeInRight" data-wow-delay="900ms" data-wow-duration="3000ms">Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance.</div>
+                @*<div class="banner-btn wow fadeInUp" data-wow-delay="1500ms" data-wow-duration="2000ms">
+                    <a class="readon banner-style" href="#">Get Started Now</a>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    <!-- Banner Section End -->
+    <!-- About Section Start -->
+    <div id="rs-about" class="rs-about style1 pb-100 md-pb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 order-last">
+                    <div class="notice-bord style1">
+                        <h4 class="title">Recent PPSC Papers</h4>
+                        <ul>
+                            <li class="wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+                                <div class="date"><span>2020</span></div>
+                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=3">Search all PPSC Past Papers in 2020</a></div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="400ms" data-wow-duration="2000ms">
+                                <div class="date"><span>2019</span></div>
+                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=4">Search all PPSC Past Papers in 2019</a></div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="500ms" data-wow-duration="2000ms">
+                                <div class="date"><span>2018</span></div>
+                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=5">Search all PPSC Past Papers in 2018</a></div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="600ms" data-wow-duration="2000ms">
+                                <div class="date"><span>2017</span></div>
+                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=6">Search all PPSC Past Papers in 2017</a></div>
+                            </li>
+                            <li class="wow fadeInUp" data-wow-delay="700ms" data-wow-duration="2000ms">
+                                <div class="date"><span>2016</span></div>
+                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=7">Search all PPSC Past Papers in 2016</a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-8 pr-50 md-pr-15">
+                    <div class="about-part">
+                        <div class="sec-title mb-40">
+                            <div class="sub-title primary wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">About Us</div>
+                            <h2 class="title wow fadeInUp" data-wow-delay="400ms" data-wow-duration="2000ms">Nexam  provides best preparation.</h2>
+                            <div class="desc wow fadeInUp" data-wow-delay="500ms" data-wow-duration="2000ms">This platform is suitable for students with limited study time who wish to rely more on self for exam preparation. It provides preperation meterial, discussion groups and demonstrations covering more than 8 subjects. The topics  are based on MCQ Examination format. Our plans are tailored to meet your unique needs. Our System will tell you what is important and what you should focus on, you will practice with our system from your place or from overseas.</div>
+                        </div>
+                        <div class="sign-part wow fadeInUp" data-wow-delay="600ms" data-wow-duration="2000ms">
+                            @*<div class="img-part">
+                                <img src="~/images/faisal.jpg" alt="CEO Image" style="height: 110px;width: 110px;border-radius: 60px;">
+                            </div>*@
+                            @*<div class="author-part">
+                                <span class="sign mb-10" style="font-size: 20px;color: black;">Faisal Azhar</span>
+                                <span class="post">CEO & Founder of Nexam</span>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About Section End -->
+    <!-- Categories Section Start -->
+    <div id="rs-categories" class="rs-categories gray-bg style1 pb-70 md-pt-64 md-pb-40">
+        <div class="container">
+            <div class="row y-middle mb-50 md-mb-30">
+                <div class="col-md-6 sm-mb-30">
+                    <div class="sec-title">
+                        <div class="sub-title primary">Subject Categories</div>
+                        <h2 class="title mb-0">Our Top Categories </h2>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn-part text-right sm-text-left">
+                        <a href="/nexam/all-subjects" class="readon">View All Subjects</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+@foreach (var Item in Model.SubjectList)
+{
+                <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+                    <a class="categories-item" href="/Questions/@Item.SubjectID" style="box-shadow: 0px 0px 16px lightgrey;">
+                        <div class="icon-part">
+                            <img src="/assets/images/categories/icons/1.png" alt="">
+                        </div>
+                        <div class="content-part">
+                            <h4 class="title">@Item.SubjectName</h4>
+                            <span class="courses">@Item.SubjectDetail</span>
+                        </div>
+                    </a>
+                </div>
+}
+            </div>
+        </div>
+    </div>
+    <!-- Categories Section End -->
+    <!-- Popular Courses Section Start -->
+    <div id="rs-popular-courses" class="rs-popular-courses bg6 style1 pt-94 pb-70 md-pt-64 md-pb-40">
+        <div class="container">
+            <div class="row y-middle mb-50 md-mb-30">
+                <div class="col-md-6 sm-mb-30">
+                    <div class="sec-title">
+                        @*<div class="sub-title primary">Top </div>*@
+                        <h2 class="title mb-0">Latest PPSC Past Papers</h2>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="btn-part text-right sm-text-left">
+                        <a href="~/PPSC-Past-Papers" class="readon">View All Papers</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+@foreach (var Item in Model.PPSCList.Take(6))
+{
+    <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+        <div class="courses-item" style="box-shadow: 0px 0px 16px lightgrey;">
+            <div class="content-part">
+                <ul class="meta-part">
+                    @if (Item.PaperYear != null)
+                    {
+                        <li><span class="price">@Item.PaperYear</span></li>
+                    }
+                    else
+                    {
+                        <li><span class="price">Recent</span></li>
+                    }
+                    <li><a class="categorie" href="~/PPSC-Past-Paper-Question/@Item.PaperID" style="color: #21a7d0;font-size: 21px;">@Item.PaperName</a></li>
+                </ul>
+                <h3 class="title"><a href="~/PPSC-Past-Paper-Question/@Item.PaperID">@Item.PaperDetail</a></h3>
+                <div class="bottom-part">
+                    <div class="info-meta">
+                        <ul>
+                            @if (Item.PaperPost != null)
+                            {
+                                <li class="user">Post: @Item.PaperPost</li>
+                            }
+                            else
+                            {
+                                <li class="user">Post: Generic</li>
+                            }
+
+                        </ul>
+                    </div>
+                    <div class="btn-part">
+                        <a href="~/PPSC-Past-Paper-Question/@Item.PaperID"><i class="flaticon-right-arrow"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+            </div>
+        </div>
+    </div>
+    <!-- Popular Courses Section End -->
+
+    <!-- Testimonial Section Start -->
+    <div class="rs-testimonial home-style1 pt-100 pb-100 md-pt-70 md-pb-70">
+        <div class="container">
+            <div class="sec-title mb-50 md-mb-30 text-center">
+                <div class="sub-title primary">Testimonial</div>
+                <h2 class="title mb-0">What People Saying</h2>
+            </div>
+            <div class="rs-carousel owl-carousel"
+                 data-loop="true"
+                 data-items="2"
+                 data-margin="30"
+                 data-autoplay="true"
+                 data-hoverpause="true"
+                 data-autoplay-timeout="5000"
+                 data-smart-speed="800"
+                 data-dots="true"
+                 data-nav="false"
+                 data-nav-speed="false"
+                 data-md-device="2"
+                 data-md-device-nav="false"
+                 data-md-device-dots="true"
+                 data-center-mode="false"
+                 data-ipad-device2="1"
+                 data-ipad-device-nav2="false"
+                 data-ipad-device-dots2="true"
+                 data-ipad-device="2"
+                 data-ipad-device-nav="false"
+                 data-ipad-device-dots="true"
+                 data-mobile-device="1"
+                 data-mobile-device-nav="false"
+                 data-mobile-device-dots="false">
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Very helpful in terms of knowledge and test preparation. It contains a lot of knowledge for learner's.</div>
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Hafsa Amjad</a>
+                        <span class="designation">Student</span>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">I peronally use this app. its very good one. anyone who wants to get prepared for One Paper MCQ, will find this app much usefull . thanks</div>
+
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Abid Manzoor</a>
+                        <span class="designation">Student</span>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc">
+                            <img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">It's a good application for preparing ppsc exams Give good approach to learn. Very useful app. Recomended!!!
+                        </div>
+    
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Sana Zubair</a>
+                        <span class="designation">English Teacher</span>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Damn good and informative. It is too much useful and also the explanation includes for further guide to know more about.</div>
+
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Kulsoom Baloch</a>
+                        <span class="designation">Student</span>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Excellent app,but it should work offline .The subject of journalism should also be include.</div>
+
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Umar Farooq</a>
+                        <span class="designation">Teacher</span>
+                    </div>
+                </div>
+                <div class="testi-item">
+                    <div class="author-desc">
+                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Very good experience Very helpful for knowledge and test preparation Content is divided categories and in parts.</div>
+                    </div>
+                    <div class="author-part">
+                        <a class="name" href="#">Somana Ashiq</a>
+                        <span class="designation">Math Teacher</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial Section End -->
+    <!-- Section bg Wrap 2 start -->
+
+    <!-- Section bg Wrap 2 End -->
+</div>
+<!-- Main content End -->

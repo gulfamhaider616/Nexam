@@ -1,0 +1,146 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.Description">
+    <meta name="keywords" content="@ViewBag.KeyWords">
+    <link href="~/trans-favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <!-- Bootstrap -->
+    <link href="~/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+    <link href="~/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- start plugins -->
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+    <script type="text/javascript" src="~/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
+    <!-- start slider -->
+    <link href="~/css/slider.css" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" src="~/js/modernizr.custom.28468.js"></script>
+    <script type="text/javascript" src="~/js/jquery.cslider.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $('#da-slider').cslider({
+                autoplay: true,
+                bgincrement: 450
+            });
+
+        });
+    </script>
+    <!-- Owl Carousel Assets -->
+    <link href="~/css/owl.carousel.css" rel="stylesheet">
+    <script src="~/js/owl.carousel.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#owl-demo").owlCarousel({
+                items: 4,
+                lazyLoad: true,
+                autoPlay: true,
+                navigation: true,
+                navigationText: ["", ""],
+                rewindNav: false,
+                scrollPerPage: false,
+                pagination: false,
+                paginationNumbers: false,
+            });
+            function setNavigation() {
+                var path = window.location.pathname;
+                path = path.replace(/\/$/, "");
+                path = decodeURIComponent(path);
+                //debugger;
+                $("ul.nav li").each(function () {
+                    var href = $(this).children().attr('href');
+                    $(this).removeClass('active');
+                    if (path.substring(0, href.length) === href) {
+                        $(this).closest('li').addClass('active');
+                    }
+                });
+            }
+            setNavigation();
+
+        });
+    </script>
+    <!-- //Owl Carousel Assets -->
+    <!----font-Awesome----->
+    <link rel="stylesheet" href="/fonts/css/font-awesome.min.css">
+    <!----font-Awesome----->
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106794809-1"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+
+          gtag('config', 'UA-106794809-1');
+    </script>
+</head>
+<body>
+    <div class="header_bg header_bg1">
+        <div class="container">
+            <div class="row header">
+                <div class="logo navbar-left">
+                    <a href="/"><img src="/images/trans-mcqsLogo.png" style="height: 75px;" /></a>
+                </div>
+                <div class="h_search navbar-right">
+                    <form action="/Admin/AdminSearchResult" method="post">
+                        <input type="text" name="search" class="text" value="Enter text here" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter text here';}">
+                        <input type="submit" value="search">
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row h_menu">
+            <nav class="navbar navbar-default navbar-left" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/Admin/GetAllSubjects">All Subjects</a></li>
+                        <li><a href="/Admin/AddNewSubject">Add Subject</a></li>
+                        <li><a href="/Admin/AddNewQuestion">Add Question</a></li>
+						<li><a href="/PPSC/PPSC_Home">PPSC</a></li>
+						<li><a href="/NTS/NTS_Home">NTS</a></li>
+						<li><a href="/FPSC/FPSC_Home">FPSC</a></li>
+						<li><a href="/CSS/CSS_Home">CSS</a></li>
+						<li><a href="/Forum/ForumMainPage">Forum</a></li>
+                        <li><a href="/Admin/GetContacts">Contact</a></li>
+                        <li><a href="/Admin/Logout">Logout</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+                <!-- start soc_icons -->
+            </nav>
+            @*<div class="soc_icons navbar-right">
+                <ul class="list-unstyled text-center">
+                    <li><a href="/Admin/Logout" style="font-size: 18px;color: white;">Logout</a></li>
+                </ul>
+            </div>*@
+        </div>
+    </div>
+
+    @RenderBody()
+    <div class="footer_bg">
+        <!-- start footer -->
+        <div class="container">
+            <div class="row  footer">
+                <div class="copy text-center">
+                    <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> Nexam.</a></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

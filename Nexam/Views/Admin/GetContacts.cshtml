@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ContactDO>
+@{
+    ViewBag.Title = "Nexam | Contact";
+    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 style="text-align: center;">User Contacts</h2>
+
+<div class="main_bg">
+    <!-- start main -->
+    <div class="container">
+        <div class="main row">
+            @foreach (var Item in Model)
+            {
+                <div style="border: 1px solid #ff5454;border-radius: 10px;">
+                    <div style="padding:10px;">
+                        <h4>@Item.Name | @Item.Email</h4>
+                        <p class="para">@Item.Subject</p>
+                        <span>@Item.ContactDate</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div><!-- end main -->
+

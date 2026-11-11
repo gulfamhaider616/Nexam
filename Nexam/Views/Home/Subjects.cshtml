@@ -1,0 +1,35 @@
+﻿@model IEnumerable<SubjectDO>
+@{
+    ViewBag.Title = "Nexam | All Subjects";
+    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "All Sbjects,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+}
+
+<div id="rs-categories" class="rs-categories gray-bg style1 pt-94 pb-70 md-pt-64 md-pb-40" style="background-color: #f9f7f8;">
+    <div class="container">
+        <div class="row y-middle mb-50 md-mb-30">
+            <div class="col-md-6 sm-mb-30">
+                <div class="sec-title">
+                    <h2 class="title mb-0">All Subjects </h2>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            @foreach (var Item in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+                    <a class="categories-item" href="/Questions/@Item.SubjectID" style="box-shadow: 0px 0px 16px lightgrey;">
+                        <div class="icon-part">
+                            <img src="/assets/images/categories/icons/1.png" alt="">
+                        </div>
+                        <div class="content-part">
+                            <h4 class="title">@Item.SubjectName</h4>
+                            <span class="courses">@Item.SubjectDetail</span>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

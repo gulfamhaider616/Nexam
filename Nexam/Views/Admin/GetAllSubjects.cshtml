@@ -1,0 +1,23 @@
+﻿@model IEnumerable<SubjectDO>
+@{
+    ViewBag.Title = "Nexam | Subject";
+    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_bg">
+    <!-- start main -->
+    <div class="container">
+        <div class="main row">
+            @foreach (var Item in Model)
+            {
+                <div class="col-md-3 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+                    <h4><a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID">@Item.SubjectName</a></h4>
+                    <p class="para">@Item.SubjectDetail</p>
+                    <a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID" class="fa-btn btn-1 btn-1e">Get Started</a>
+                </div>
+            }
+        </div>
+    </div>
+</div><!-- end main -->

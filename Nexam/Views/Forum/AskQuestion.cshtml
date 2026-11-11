@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Learn Free Quran | Ask Question";
+    ViewBag.Description = "Learn Free Quran is also providing a questions and answers platform when anyone can ask Islamic question. People from whole world are allowed to answer the question. Our qualified team will also answer you in the similar manners.";
+    ViewBag.KeyWords = "Forum,LFQ Forum, LFQ question and answers,Ask Question, online Namaz,LFQ Students,LFQ, Learn Free Quran,Quran Tutor,Online Quran";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="register-section pt-100 pb-100 loaded">
+    <div class="container">
+        <div class="register-box">
+
+            <div class="sec-title text-center mb-30">
+                <h2 class="title mb-10">Please enter, what you want to ask.</h2>
+            </div>
+
+            <!-- Login Form -->
+            <div class="styled-form">
+                <div id="form-messages"></div>
+                <form method="post" action="/Forum/SaveQuestion">
+                    <div class="row clearfix">
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12 mb-25">
+                            <input type="text" id="fname" name="uname" value="" placeholder="User Name" required="">
+                        </div>
+
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="email" id="email" name="qemail" value="" placeholder="Email address " required="">
+                        </div>
+                        <!-- Form Group -->
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="Username" name="qcountry" value="" placeholder="Country" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="Username" name="qsubject" value="" placeholder="Subject" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <textarea name="qexplanation" style="border-radius:0px;" value="" placeholder="Question Detail" required=""></textarea>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <input type="checkbox" style="width: 30px;height: 16px !important;" name="CHKBOX1" id="CHKBOX1" value="1" required>
+                            <label style="font-size: 17px;font-weight: normal !important;"> You must agree with our <a href="~/nexam/terms-conditions" target="_blank"> Terms and Conditions</a>.</label>
+                        </div>
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
+                            <button type="submit" class="readon register-btn"><span class="txt">Submit</span></button>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>

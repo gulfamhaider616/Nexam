@@ -1,0 +1,49 @@
+﻿@model IEnumerable<QuizDO>
+@{
+    ViewBag.Title = "GetUserQuiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <table class="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.QuizID</td>
+            </tr>
+
+            <tr>
+                <td>@item.SubjectID</td>
+            </tr>
+            <tr>
+                <td>@item.Title</td>
+            </tr>
+            <tr>
+                <td>@item.UserID</td>
+            </tr>
+            <tr>
+                <td>@item.Score</td>
+            </tr>
+            <tr>
+                <td>@item.TotalQuestions</td>
+            </tr>
+            <tr>
+                <td>@item.InsertDate</td>
+            </tr>
+            <tr>
+                <td>@item.UpdateDate</td>
+            </tr>
+            <tr>
+                <td>@item.TotalAttempts</td>
+            </tr>
+            <tr>
+                <td>@item.AllowedAttempts</td>
+            </tr>
+            <tr>
+                <td>@item.TimeLimit</td>
+            </tr>
+        }
+
+    </table>
+</div>
+

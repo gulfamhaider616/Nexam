@@ -1,0 +1,7 @@
+*.pdb
+*.dll
+.vs/
+packages/
+Nexam/bin/
+Nexam/obj/
+Nexam/images/PDFFiles/*

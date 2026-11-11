@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "PPSC_Home";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="main_bg">
+	<!-- start main -->
+	<div class="container">
+		<div class="main row" style="text-align:center;margin: auto;width: 70%;">
+				<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+					<h4><a href="/PPSC/NewPaper">ADD New PPSC Paper</a></h4>
+					@*<p class="para">@Item.SubjectDetail</p>*@
+					<a href="/PPSC/NewPaper" class="fa-btn btn-1 btn-1e">Get Started</a>
+				</div>
+            <div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+                <h4><a href="/PPSC/NewPPSCPost">ADD New Post</a></h4>
+                @*<p class="para">@Item.SubjectDetail</p>*@
+                <a href="/PPSC/NewPPSCPost" class="fa-btn btn-1 btn-1e">Get Started</a>
+            </div>
+				<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+					<h4><a href="/PPSC/NewPPSCQuestion">ADD New PPSC Question</a></h4>
+					@*<p class="para">@Item.SubjectDetail</p>*@
+					<a href="/PPSC/NewPPSCQuestion" class="fa-btn btn-1 btn-1e">Get Started</a>
+				</div>
+			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
+				<h4><a href="/PPSC/GetAllPPSCPapers">Get All PPSC Papers</a></h4>
+				@*<p class="para">@Item.SubjectDetail</p>*@
+				<a href="/PPSC/GetAllPPSCPapersByAdmin" class="fa-btn btn-1 btn-1e">Get Started</a>
+			</div>
+            
+		</div>
+	</div>
+</div><!-- end main -->
+

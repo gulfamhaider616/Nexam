@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "User_Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="register-section pt-100 pb-100 loaded">
+    <div class="container">
+        <div class="register-box">
+
+            <div class="sec-title text-center mb-30">
+                <h2 class="title mb-10">Create New Account</h2>
+            </div>
+
+            <!-- Login Form -->
+            <div class="styled-form">
+                @*<div id="form-messages">Thanks, you have registered successfully.</div>*@
+                <form method="post" action="/User/SaveUser">
+                    <div class="row clearfix">
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12 mb-25">
+                            <input type="text" id="fname" name="fname" value="" placeholder="First Name" required="">
+                        </div>
+
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="lname" name="lname" value="" placeholder="Last Name" required="">
+                        </div>
+
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="email" id="email" name="email" value="" placeholder="Email address " required="">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <input type="password" id="email" name="password" value="" placeholder="Enter password " required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="Username" name="pnumber" value="" placeholder="Phone Number" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="Username" name="country" value="" placeholder="Country" required="">
+                        </div>
+                        <!-- Form Group -->
+                        <div class="form-group col-lg-12">
+                            <input type="text" id="Username" name="city" value="" placeholder="City" required="">
+                        </div>
+
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
+                            <button type="submit" class="readon register-btn"><span class="txt">Sign Up</span></button>
+                        </div>
+
+                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                            <div class="users">Already have an account? <a href="/User/UserLogin">Sign In</a></div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<QuizDO>
+@{
+    ViewBag.Title = "UserDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div style="background-color: #21a7d0; padding: 20px; color: white; font-size: x-large;text-align:center;">
+        @Session["name"].ToString(), You have attempted total @Model.Count() Quizzes and got average score
+
+        @{
+            int res = 0;
+            int totalitems = Model.Count();
+            int totalsum = Model.Select(x => x.Score).Sum();
+            if(totalitems > 0)
+            {
+                res = totalsum / totalitems;
+            }
+            <span>@res%</span>
+        }
+
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped" style="text-align: center;padding: 25px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; ">
+            <thead style="background-color: #21a7d0; padding: 20px; color: white;">
+                <tr>
+                    <th>Quiz Title</th>
+                    <th>Subject</th>
+                    <th>Total Questions</th>
+                    <th>Score</th>
+                    <th>Total Attempts</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @*<tr>
+                        <td>@item.QuizID</td>
+                    </tr>*@
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.SubjectName</td>
+                        <td>@item.TotalQuestions</td>
+                        <td>@item.Score%</td>
+                        <td>@item.TotalAttempts</td>
+                        <td>@item.InsertDate.Split(' ')[0]</td>
+                        <td><a href="/Quiz/GeTQuizById?quizID=@item.QuizID">View</a></td>
+                    </tr>
+                    @*<tr>
+                        <td>@item.UpdateDate</td>
+                    </tr>*@
+
+                    @*<tr>
+                        <td>@item.AllowedAttempts</td>
+                    </tr>
+                    <tr>
+                        <td>@item.TimeLimit</td>
+                    </tr>*@
+                }
+            </tbody>
+        </table>
+        </div>
+    </div>
+

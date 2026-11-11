@@ -1,0 +1,64 @@
+﻿@model QuestionsListSubjectDO
+@{
+	ViewBag.Title = Model.PaperDetail.PaperName +" | Nexam";
+	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+	ViewBag.KeyWords = "CSS,PPSC Past Papers,All Past Papers, CSS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,CSS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main_bg">
+	<!-- start main -->
+	<div class="container">
+		<div class="main row" style="">
+			<div style="">
+				<div class="col-md-3">
+					<br /><br />
+					<ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
+						@foreach (var item in Model.PaperList)
+						{
+							<li class="list-group-item"><a href="~/CSS-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
+						}
+					</ul>
+				</div>
+				<div class="col-md-8">
+					<h2 style="text-align:center;text-decoration: underline;">@Model.PaperDetail.PaperName</h2>
+					<div style="text-align:center;">@Model.PaperDetail.PaperDetail</div>
+					<table class="table_data">
+								<tr>
+									<td>
+										<br />
+										<div style="border-bottom: 1px solid;font-size: 14px;line-height: 2.8;">
+											<strong>
+												<span>@Html.Raw(Model.PaperDetail.QuestionsText)</span>
+											</strong>
+											
+											<br />
+										</div>
+									</td>
+								</tr>
+					</table>
+					<div id="disqus_thread"></div>
+					<script>
+
+									/**
+									*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+									*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+									/*
+									var disqus_config = function () {
+									this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+									this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+									};
+									*/
+									(function() { // DON'T EDIT BELOW THIS LINE
+									var d = document, s = d.createElement('script');
+									s.src = 'https://mcqsprep.disqus.com/embed.js';
+									s.setAttribute('data-timestamp', +new Date());
+									(d.head || d.body).appendChild(s);
+									})();
+					</script>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

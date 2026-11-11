@@ -1,0 +1,102 @@
+﻿@model QuestionsListSubjectDO
+@{
+    ViewBag.Title = "Nexam | Question";
+    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_bg">
+    <!-- start main -->
+    <div class="container">
+        <div class="main row" style="">
+            <div style="">
+                <div class="col-md-3">
+                    <br /><br />
+                    <ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
+                        @foreach (var item in Model.SubjectList)
+                        {
+                            <li class="list-group-item"><a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@item.SubjectID">@item.SubjectName</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-md-8">
+                    <h2 style="text-align:center;text-decoration: underline;">@Model.Subject</h2>
+                    <table class="table_data">
+                        @{ int counter = 1;
+                            foreach (var item in Model.questions)
+                            {
+                                <tr>
+                                    <td>
+                                        <br />
+                                        <div style="border-bottom: 1px solid;font-size: 16px;line-height: 1.8;">
+                                            <strong>
+                                                <span>@counter.  </span>
+
+                                                <span style="display: inline;"><a href="/Question-Detail/@item.QuestionID"> @item.QuestionStatement </a></span>
+                                            </strong>
+                                            @if (item.Options != null)
+                                            {
+                                                <ol style="list-style-type:upper-alpha">
+                                                    @foreach (var option in item.Options)
+                                                    {
+                                                        <li>@option.Choice</li>
+                                                    }
+                                                </ol>
+                                                if (!String.IsNullOrEmpty(item.CorrectAnswer))
+                                                {
+                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <br /><br />
+                                                if (!String.IsNullOrEmpty(item.CorrectAnswer))
+                                                {
+                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
+                                                }
+                                            }
+                                            <div style="float:right;">
+                                                <span><a href="/Admin/GetQuestionById?questionID=@item.QuestionID">Edit</a></span> <span><a href="/Admin/DeleteQuestion?questionID=@item.QuestionID"> | Delete</a></span>
+                                            </div>
+                                            <br />
+                                        </div>
+                                    </td>
+                                </tr>
+                                counter++;
+                            }
+                        }
+                    </table>  
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('table.table_data').each(function () {
+        var currentPage = 0;
+        var numPerPage = 10;
+        var $table = $(this);
+        $table.bind('repaginate', function () {
+            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+        });
+        $table.trigger('repaginate');
+        var numRows = $table.find('tbody tr').length;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var $pager = $('<div class="pager"></div>');
+        for (var page = 0; page < numPages; page++) {
+            $('<span class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                currentPage = event.data['newPage'];
+                $table.trigger('repaginate');
+                $(this).addClass('active').siblings().removeClass('active');
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
+    });
+</script>
+

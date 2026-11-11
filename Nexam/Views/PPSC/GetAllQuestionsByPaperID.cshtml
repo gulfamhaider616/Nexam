@@ -1,0 +1,116 @@
+﻿@model QuestionsListSubjectDO
+@{
+    ViewBag.Title = "Nexam | PPSC Past Paper Questions";
+    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="rs-inner-blog orange-color pt-40 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-lg-8 pr-10">
+                <div class="col-lg-12 pr-50">
+                    <h3 style="text-align:center;">@Model.Paper</h3>
+                </div>
+                <div class="row" id="easyPaginate">
+                    
+                @{ int counter = 1;
+                    foreach (var item in Model.questions)
+                    {
+                    <div class="col-lg-12 mb-10 items">
+                        <div class="blog-item">
+                            <div class="blog-content">
+                                <h3 class="blog-title"> @counter. <a href="~/PPSC-Past-Paper-Question-Discussion/@item.QuestionID"> @item.QuestionStatement </a></h3>
+                                <div class="blog-meta">
+                                    <ul class="btm-cate">
+                                        <li>
+                                            <div class="blog-date">
+                                                @if (item.SubjectName != null)
+                                                {
+                                                    <i class="fa fa-calendar-check-o"></i> <span>Subject:&nbsp; @item.SubjectName</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-calendar-check-o"></i><span>Subject: &nbsp;Generic</span>
+                                                }
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="blog-desc">
+                                    @if (item.Options != null)
+                                    {
+                                        <ol style="list-style-type:upper-alpha">
+                                            @foreach (var option in item.Options)
+                                            {
+                                                <li>@option.Choice</li>
+                                            }
+                                        </ol>if (!String.IsNullOrEmpty(item.CorrectAnswer))
+                                        {
+                                            <strong>Correct Answer: @item.CorrectAnswer</strong>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <br /><br />if (!String.IsNullOrEmpty(item.CorrectAnswer))
+                                        {
+                                            <strong>Correct Answer: @item.CorrectAnswer</strong>
+                                        }
+                                    }    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        counter++;
+                    }
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12 order-last">
+                <div class="widget-area">
+                    <div class="search-widget mb-50">
+                        <div class="search-wrap">
+                            <form action="/Home/SearchResult" method="post">
+                                <input type="search" placeholder="Searching..." name="search" class="search-input" value="">
+                                <button type="submit" value="Search"><i class="flaticon-search"></i></button>
+                              </form>
+                    </div>
+                    </div>
+                    <div class="recent-posts mb-50">
+                        <h3 class="widget-title">All PPSC Papers</h3>
+                        <ul>
+                            @foreach (var item in Model.PaperList)
+                            {
+                                <li><a href="~/PPSC-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/jquery-latest.js"></script>
+<script src="/assets/js/jquery.easyPaginate.js"></script>
+<script>
+    $('#easyPaginate').easyPaginate({
+        paginateElement: 'div.items',
+        elementsPerPage:10,
+        effect: 'climb',
+        slideOffset: '50'
+    });
+</script>
+
+<style>
+    .easyPaginateNav a {
+        padding: 5px;
+    }
+
+        .easyPaginateNav a.current {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+</style>

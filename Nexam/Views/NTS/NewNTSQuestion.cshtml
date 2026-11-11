@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PaperDO>
+@{
+	ViewBag.Title = "NewNTSQuestion";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main_btm">
+	<!-- start main_btm -->
+	<div class="container">
+		<div class="main row">
+			<div class="col-md-8">
+				<div class="contact-form">
+					<h2>ADD New NTS Question</h2>
+					<form action="/NTS/SaveNewNTSQuestion" method="post" style="font-size:18px;line-height:2em;">
+						<div>
+							<span>Select Paper Name</span>
+							<span>
+								<select class="form-control" name="paperid" id="userName">
+									@foreach (var Item in Model)
+									{
+										<option value="@Item.PaperID">@Item.PaperName</option>
+									}
+								</select>
+							</span>
+						</div>
+						<div>
+							<span>Question Statement</span>
+							<span><input type="text" name="questionstatement" class="form-control" id="inputEmail3" placeholder="For inline only add question statement"></span>
+						</div>
+						<div>
+							<span>Choices</span>
+							<span><input type="text" name="choices" class="form-control" id="inputEmail3" placeholder="enter , separated choices"></span>
+						</div>
+						<div>
+							<span>Correct Answer</span>
+							<span><input type="text" name="correctanswer" class="form-control" id="inputEmail3" placeholder="enter correct answer"></span>
+						</div>
+						<div>
+							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+

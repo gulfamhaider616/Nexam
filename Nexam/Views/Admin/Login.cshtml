@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main_btm">
+    <!-- start main_btm -->
+    <div class="container">
+        <div class="main row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <h2>Admin Pannel</h2>
+                    <form action="/Admin/VerifyAdmin" method="post" style="font-size:18px;line-height:2em;">
+                        <div>
+                            <span>Email</span>
+                            <span><input type="email" name="adminname" class="form-control" id="userName" placeholder="Admin Email"></span>
+                        </div>
+                        <div>
+                            <span>Password</span>
+                            <span><input type="password" name="adminpassword" class="form-control" id="inputEmail3" placeholder="Admin Password"></span>
+                        </div>
+                        <div>
+                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+@*<div id="banner-wrapper">
+    <div id="banner" class="box container" style="width:60%;">
+        <div>
+            <div class="col-md-12" style="width:65%;margin:0 auto;">
+                <h3 style="text-align:center">Please Login As Administrator.</h3>
+                <form action="/Admin/VerifyAdmin" method="post" style="font-size:18px;line-height:2em;">
+                    <table border="0" style="">
+                        <tr>
+                            <td><label>Email<label style="color:red">*</label> :</label></td>
+                            <td><input type="text" name="adminname" placeholder="enter admin email" required /><br /></td>
+                        </tr>
+                        <tr>
+                            <td><label>Password<label style="color:red">*</label> :</label></td>
+                            <td><input type="password" name="adminpassword" placeholder="enter admin password" required /><br /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" id="adminlogin" name="adminlogin" class="btn-success" style="padding: 1px;" value="Submit" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+

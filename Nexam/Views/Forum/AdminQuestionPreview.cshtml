@@ -1,0 +1,23 @@
+﻿
+@model Nexam.Contract.AskQuestionDO
+@{
+    ViewBag.Title = "Learn Free Quran | Preview";
+    ViewBag.Description = "Learn Free Quran is also providing a questions and answers platform when anyone can ask Islamic question. People from whole world are allowed to answer the question. Our qualified team will also answer you in the similar manners.";
+    ViewBag.KeyWords = "Forum,LFQ Forum, LFQ question and answers,Ask Question, online Namaz,LFQ Students,LFQ, Learn Free Quran,Quran Tutor,Online Quran";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="banner-wrapper">
+    <div id="banner" class="box container" style="width:70%;padding-top: 20px;padding-bottom: 20px;">
+        <div class="row">
+            <div class="col-md-12" style="width:100%;margin:0 auto;overflow-x:auto;">
+                <div style="font-size: 159%;color: crimson;">@Model.Subject</div><br />
+                <div>@Model.Explanation</div>
+                <div style="float:right;">@Model.UserName | @Model.Country</div>
+            </div>
+        </div>
+        <hr style="border-top:solid 1px #c60;width: 657px;">
+        <a href="#" onclick='PublishQuestion("@Model.AskQuestionID")' style="text-decoration:none;">Publish</a> | <a href="#" onclick='DeleteQuestions("@Model.AskQuestionID")' style="text-decoration:none;">Delete</a>
+    </div>
+</div>
+<script src="~/js/Forum.js"></script>
