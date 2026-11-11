@@ -14,6 +14,8 @@ public static class ServiceCollectionExtensions
         services.Configure<PdfSettings>(configuration.GetSection("Pdf"));
         services.Configure<TwilioSettings>(configuration.GetSection("Twilio"));
 
+        services.AddMemoryCache();
+
         // Infrastructure
         services.AddSingleton<IPdfGenerator, IronPdfGenerator>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();

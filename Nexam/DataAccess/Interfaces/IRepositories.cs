@@ -12,6 +12,10 @@ public interface IAdminRepository
 public interface ISubjectRepository
 {
     Task<List<Subject>> GetAllAsync();
+    /// <summary>Only the original (non-country) subjects.</summary>
+    Task<List<Subject>> GetGeneralAsync();
+    Task<List<CountryCount>> GetCountriesAsync();
+    Task<(List<Subject> Items, int Total)> PageAsync(string country, string text, int page, int pageSize);
     Task<bool> SaveAsync(Subject subject);
 }
 
@@ -20,7 +24,7 @@ public interface IQuestionRepository
     Task<Question> GetByIdAsync(int questionId);
     Task<List<Question>> GetBySubjectAsync(int subjectId);
     /// <summary>Searches the question bank and the PPSC questions; returns at most <paramref name="limit"/> rows plus the total match count.</summary>
-    Task<(List<Question> Items, int Total)> SearchAsync(string search, int? subjectId, int limit);
+    Task<(List<Question> Items, int Total)> SearchAsync(string search, int? subjectId, string country, int limit);
     Task<bool> SaveAsync(Question question);
     Task<bool> UpdateAsync(Question question);
     Task<bool> DeleteAsync(int questionId);

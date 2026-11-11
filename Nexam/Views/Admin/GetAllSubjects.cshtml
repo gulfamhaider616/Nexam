@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Subject>
+﻿@model SubjectsPageViewModel
 @{
     ViewBag.Title = "Nexam | Subject";
     ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
@@ -18,23 +18,39 @@
     </div>
 </div>
 
+@{
+    string PageUrl(int page)
+    {
+        var parts = new List<string> { "country=" + Uri.EscapeDataString(Model.Country ?? "") };
+        if (!string.IsNullOrWhiteSpace(Model.Text)) parts.Add("q=" + Uri.EscapeDataString(Model.Text));
+        if (page > 1) parts.Add("page=" + page);
+        return "/Admin/GetAllSubjects?" + string.Join("&", parts);
+    }
+}
 <div class="stat-grid mt-3">
-    <div class="stat"><strong>@Model.Count()</strong><span>Subjects</span></div>
+    <div class="stat"><strong>@Model.TotalSubjects</strong><span>Subjects in total</span></div>
+    <div class="stat"><strong>@Model.Total</strong><span>Matching this filter</span></div>
 </div>
 
-<section data-filter-scope aria-label="Subjects">
-    <div class="table-tools">
-        <div class="search-field">
-            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
-            <input class="input" type="search" placeholder="Filter subjects" aria-label="Filter subjects" data-filter-input>
-        </div>
-        <span class="count" data-filter-count></span>
+<form class="table-tools" action="/Admin/GetAllSubjects" method="get" role="search" data-live-search>
+    <div class="search-field">
+        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input class="input" type="search" name="q" value="@Model.Text" placeholder="Search subjects" aria-label="Search subjects" autocomplete="off">
     </div>
-
-    <div class="admin-tiles">
-        @foreach (var Item in Model)
+    <select class="select" name="country" aria-label="Country" style="max-width:260px">
+        <option value="" selected="@string.IsNullOrEmpty(Model.Country)">All countries</option>
+        @foreach (var c in Model.Countries)
         {
-            <a class="admin-tile" href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID" data-filter-item>
+            <option value="@c.Country" selected="@(string.Equals(Model.Country, c.Country, StringComparison.OrdinalIgnoreCase))">@SubjectGroups.Label(c.Country) (@c.Count)</option>
+        }
+    </select>
+</form>
+
+<div data-live-results aria-live="polite">
+    <div class="admin-tiles">
+        @foreach (var Item in Model.Items)
+        {
+            <a class="admin-tile" href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID">
                 <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span>
                 <div>
                     <h3>@Item.SubjectName</h3>
@@ -43,24 +59,19 @@
             </a>
         }
     </div>
-    <div class="empty hidden" data-filter-empty>
-        <svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>
-        <p class="mb-0">No subject matches your filter.</p>
-    </div>
-</section>
-
-<h2 class="mt-4" style="font-size:1.2rem">Other areas</h2>
-<div class="admin-tiles">
-    <a class="admin-tile" href="/Forum/UnPublish">
-        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-message"/></svg></span>
-        <div><h3>Forum moderation</h3><p>Review questions waiting to be published.</p></div>
-    </a>
-    <a class="admin-tile" href="/Admin/GetContacts">
-        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-inbox"/></svg></span>
-        <div><h3>Contact messages</h3><p>Messages sent from the contact form.</p></div>
-    </a>
-    <a class="admin-tile" href="/CSS/CSS_Home">
-        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></span>
-        <div><h3>CSS papers</h3><p>Add and review CSS past papers.</p></div>
-    </a>
+    @if (Model.Total == 0)
+    {
+        <div class="empty">
+            <svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>
+            <p class="mb-0">No subject matches your filter.</p>
+        </div>
+    }
+    @if (Model.Pages > 1)
+    {
+        <nav class="pager" aria-label="Pages">
+            @if (Model.Page > 1) { <a class="btn btn-secondary btn-sm" href="@PageUrl(Model.Page - 1)">&larr; Previous</a> }
+            <span class="muted">Page @Model.Page of @Model.Pages</span>
+            @if (Model.Page < Model.Pages) { <a class="btn btn-secondary btn-sm" href="@PageUrl(Model.Page + 1)">Next &rarr;</a> }
+        </nav>
+    }
 </div>

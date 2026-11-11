@@ -10,12 +10,17 @@ public class QuizController(IQuizService quizzes, ISubjectService subjects) : Co
 {
     public IActionResult QuizHome() => View();
 
+    /// <summary>The subjects of one country, for the quiz setup picker.</summary>
+    public async Task<IActionResult> SubjectsByCountry(string country) =>
+        Json((await subjects.ByCountryAsync(country)).Select(s => new { id = s.SubjectID, name = s.SubjectName }));
+
     public async Task<IActionResult> NewQuiz()
     {
         if (!User.IsInRole(AppRoles.User))
             return RedirectToAction("Login", "Account");
 
-        return View(await subjects.GetAllAsync());
+        ViewBag.Countries = await subjects.GetCountriesAsync();
+        return View(await subjects.GetGeneralAsync());
     }
 
     public async Task<IActionResult> SaveQuiz(string title, int subjectid, int totalquestions)

@@ -24,9 +24,21 @@
             </div>
             <div class="form-grid cols-2">
                 <div class="field">
+                    <label for="country">Country</label>
+                    <select class="select" id="country">
+                        @foreach (var c in (List<CountryCount>)ViewBag.Countries)
+                        {
+                            <option value="@c.Country" selected="@(c.Country == "General")">@SubjectGroups.Label(c.Country) (@c.Count)</option>
+                        }
+                    </select>
+                </div>
+                <div class="field">
                     <label for="subjectid">Subject</label>
                     <select class="select" id="subjectid" name="subjectid" required>
-                        @await Html.PartialAsync("_SubjectOptions", Model)
+                        @foreach (var s in Model)
+                        {
+                            <option value="@s.SubjectID">@s.SubjectName</option>
+                        }
                     </select>
                 </div>
                 <div class="field">
@@ -49,3 +61,29 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Picking a country loads that country's subjects into the Subject list.
+        (function () {
+            var country = document.getElementById('country');
+            var subject = document.getElementById('subjectid');
+            if (!country || !subject) return;
+            country.addEventListener('change', function () {
+                subject.disabled = true;
+                fetch('/Quiz/SubjectsByCountry?country=' + encodeURIComponent(country.value), { credentials: 'same-origin' })
+                    .then(function (r) { return r.json(); })
+                    .then(function (list) {
+                        subject.textContent = '';
+                        list.forEach(function (s) {
+                            var o = document.createElement('option');
+                            o.value = s.id;
+                            o.textContent = s.name;
+                            subject.appendChild(o);
+                        });
+                    })
+                    .finally(function () { subject.disabled = false; });
+            });
+        })();
+    </script>
+}

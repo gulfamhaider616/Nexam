@@ -55,7 +55,7 @@ public class PPSCController(IPpscService ppsc, ISubjectService subjects) : Contr
     public async Task<IActionResult> NewPPSCQuestion()
     {
         var papers = ppsc.GetPapersAsync();
-        var subjectList = subjects.GetAllAsync();
+        var subjectList = subjects.GetGeneralAsync();
         await Task.WhenAll(papers, subjectList);
         return View(new HomeViewModel { PPSCList = papers.Result, SubjectList = subjectList.Result });
     }

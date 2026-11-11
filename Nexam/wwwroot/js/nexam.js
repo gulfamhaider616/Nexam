@@ -82,6 +82,11 @@
             if (empty) empty.classList.toggle('hidden', shown !== 0);
         }
 
+        // A <select data-filter-select> picks the group the same way the chips do (value '' = all)
+        scope.querySelectorAll('select[data-filter-select]').forEach(function (sel) {
+            sel.addEventListener('change', function () { group = sel.value || ''; run(); });
+        });
+
         // Rows were added/removed by other scripts: re-read them and recount.
         scope.addEventListener('nx:refresh', function () {
             items = Array.prototype.slice.call(scope.querySelectorAll('[data-filter-item]'));

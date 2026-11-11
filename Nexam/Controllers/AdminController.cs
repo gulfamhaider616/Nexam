@@ -21,13 +21,14 @@ public class AdminController(ISubjectService subjects, IQuestionService question
     }
 
     [Authorize(Roles = AppRoles.Admin)]
-    public async Task<IActionResult> GetAllSubjects() => View(await subjects.GetAllAsync());
+    public async Task<IActionResult> GetAllSubjects(string country, string q, int page = 1) =>
+        View(await subjects.PageAsync(Request.Query.ContainsKey("country") ? country : "General", q, page));
 
     [Authorize(Roles = AppRoles.Admin)]
     public IActionResult AddNewSubject() => View();
 
     [Authorize(Roles = AppRoles.Admin)]
-    public async Task<IActionResult> AddNewQuestion() => View(await subjects.GetAllAsync());
+    public async Task<IActionResult> AddNewQuestion() => View(await subjects.GetGeneralAsync());
 
     [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> GetContacts() => View(await contacts.GetAllAsync());

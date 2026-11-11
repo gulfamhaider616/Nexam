@@ -21,11 +21,14 @@
                 <input class="input" type="search" name="search" value="@Model.Search" placeholder="Search any question, e.g. largest ocean" aria-label="Search questions" data-search-input autofocus>
             </div>
             <div class="cluster">
-                <select class="select" name="subject" aria-label="Subject" style="max-width:260px">
-                    <option value="">All subjects</option>
-                    @{ ViewData["selected"] = Model.SelectedSubjectId; }
-                    @await Html.PartialAsync("_SubjectOptions", Model.SubjectList)
+                <select class="select" name="country" aria-label="Country" style="max-width:260px">
+                    <option value="">All countries</option>
+                    @foreach (var c in Model.Countries)
+                    {
+                        <option value="@c.Country" selected="@(string.Equals(Model.SelectedCountry, c.Country, StringComparison.OrdinalIgnoreCase))">@SubjectGroups.Label(c.Country)</option>
+                    }
                 </select>
+                @if (Model.SelectedSubjectId != null) { <input type="hidden" name="subject" value="@Model.SelectedSubjectId"> }
                 <noscript><button class="btn btn-primary" type="submit">Search</button></noscript>
                 <label class="switch"><input type="checkbox" data-answers-toggle><span>Show answers</span></label>
             </div>
@@ -49,7 +52,7 @@
         else
         {
             <p class="muted">
-                @Model.TotalCount @(Model.TotalCount == 1 ? "question" : "questions") found for <strong>@Model.Search</strong>@(Model.TotalCount > Model.questions.Count ? $" (showing the first {Model.questions.Count}; refine your search to narrow it down)" : "").
+                @(Model.TotalCount > 1000 ? "1000+" : Model.TotalCount.ToString()) @(Model.TotalCount == 1 ? "question" : "questions") found for <strong>@Model.Search</strong>@(Model.TotalCount > Model.questions.Count ? $" (showing the first {Model.questions.Count}; pick a country or add words to narrow it down)" : "").
             </p>
             <div class="q-list">
                 @foreach (var question in Model.questions)

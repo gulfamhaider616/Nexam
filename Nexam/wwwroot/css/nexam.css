@@ -446,3 +446,7 @@ ul, ol { margin: 0; padding: 0; }
 /* Many subjects (country imports): skip rendering cards that are off-screen. */
 .subject-card { content-visibility: auto; contain-intrinsic-size: auto 96px; }
 .admin-tile { content-visibility: auto; contain-intrinsic-size: auto 90px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.filter-row .search-field { flex: 1 1 260px; }
+.filter-row .select { flex: 0 1 280px; }
+.pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 24px; }

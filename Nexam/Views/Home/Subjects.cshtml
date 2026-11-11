@@ -1,47 +1,70 @@
-﻿@model IEnumerable<Subject>
+﻿@model SubjectsPageViewModel
 @{
     ViewBag.Title = "Nexam | All Subjects";
-    ViewBag.Description = "Practice MCQs by subject: General Knowledge, English, Pakistan Studies, Islamiat, Mathematics, Current Affairs and more.";
-    ViewBag.KeyWords = "MCQs by subject, General Knowledge, English, Pak Studies, Islamiat, Mathematics, Current Affairs, Urdu";
+    ViewBag.Description = "Practice MCQs by subject and by country: General Knowledge, English, Pakistan Studies, Islamiat, Mathematics, Current Affairs, and exam practice sets from countries around the world.";
+    ViewBag.KeyWords = "MCQs by subject, MCQs by country, General Knowledge, English, Pak Studies, Islamiat, Mathematics, Current Affairs, licensing exams, civil service exams";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    // "General" first, then the countries A-Z (subjects named "COUNTRY - BODY - PROFESSION").
-    var groups = Model.GroupBy(s => SubjectGroups.Of(s.SubjectName))
-        .OrderBy(g => g.Key == SubjectGroups.General ? 0 : 1).ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
-        .ToList();
+    string PageUrl(int page)
+    {
+        var parts = new List<string>();
+        if (!string.IsNullOrWhiteSpace(Model.Country)) parts.Add("country=" + Uri.EscapeDataString(Model.Country));
+        if (!string.IsNullOrWhiteSpace(Model.Text)) parts.Add("q=" + Uri.EscapeDataString(Model.Text));
+        if (page > 1) parts.Add("page=" + page);
+        return "/nexam/all-subjects" + (parts.Count > 0 ? "?" + string.Join("&", parts) : "");
+    }
+    var first = Model.Total == 0 ? 0 : (Model.Page - 1) * Model.PageSize + 1;
+    var last = Math.Min(Model.Page * Model.PageSize, Model.Total);
 }
 
 <div class="container">
     <div class="page-head">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Subjects</span></nav>
         <h1>All subjects</h1>
-        <p>Choose a subject to practise its questions. The newest past-paper questions come first.</p>
+        <p>Choose a subject, or pick a country to see its exams.</p>
     </div>
 
-    <div class="section" style="padding-top:20px" data-filter-scope>
-        <div class="filters">
-            <div class="search-field">
-                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
-                <input class="input" type="search" placeholder="Filter subjects" aria-label="Filter subjects" data-filter-input>
-            </div>
-            @if (groups.Count > 1)
-            {
-                <div class="chips" role="group" aria-label="Filter by country">
-                    <button type="button" class="chip" data-filter-chip="" aria-pressed="true">All <span class="muted">@Model.Count()</span></button>
-                    @foreach (var g in groups)
+    <div class="section" style="padding-top:20px">
+        <form class="filters" action="/nexam/all-subjects" method="get" role="search" data-live-search>
+            <div class="filter-row">
+                <div class="search-field">
+                    <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                    <input class="input" type="search" name="q" value="@Model.Text" placeholder="Search subjects and exams" aria-label="Search subjects" autocomplete="off">
+                </div>
+                <select class="select" name="country" aria-label="Country">
+                    <option value="">All countries (@Model.TotalSubjects)</option>
+                    @foreach (var c in Model.Countries)
                     {
-                        <button type="button" class="chip" data-filter-chip="@g.Key" aria-pressed="false">@SubjectGroups.Label(g.Key) <span class="muted">@g.Count()</span></button>
+                        <option value="@c.Country" selected="@(string.Equals(Model.Country, c.Country, StringComparison.OrdinalIgnoreCase))">@SubjectGroups.Label(c.Country) (@c.Count)</option>
+                    }
+                </select>
+            </div>
+            <noscript><button class="btn btn-primary" type="submit">Show</button></noscript>
+        </form>
+
+        <div data-live-results aria-live="polite">
+            @if (Model.Total == 0)
+            {
+                <div class="empty"><p class="mb-0">No subject matches your search.</p></div>
+            }
+            else
+            {
+                <p class="muted">Showing @first&ndash;@last of @Model.Total</p>
+                <div class="grid-cards">
+                    @foreach (var subject in Model.Items)
+                    {
+                        @await Html.PartialAsync("_SubjectCard", subject)
                     }
                 </div>
+                @if (Model.Pages > 1)
+                {
+                    <nav class="pager" aria-label="Pages">
+                        @if (Model.Page > 1) { <a class="btn btn-secondary btn-sm" href="@PageUrl(Model.Page - 1)">&larr; Previous</a> }
+                        <span class="muted">Page @Model.Page of @Model.Pages</span>
+                        @if (Model.Page < Model.Pages) { <a class="btn btn-secondary btn-sm" href="@PageUrl(Model.Page + 1)">Next &rarr;</a> }
+                    </nav>
+                }
             }
-            <div class="filter-meta"><span data-filter-count></span></div>
         </div>
-        <div class="grid-cards">
-            @foreach (var subject in Model)
-            {
-                @await Html.PartialAsync("_SubjectCard", subject)
-            }
-        </div>
-        <div class="empty hidden" data-filter-empty><p class="mb-0">No subject matches your filter.</p></div>
     </div>
 </div>

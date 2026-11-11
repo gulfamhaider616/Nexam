@@ -12,6 +12,13 @@ public interface IAdminService
 public interface ISubjectService
 {
     Task<List<Subject>> GetAllAsync();
+    /// <summary>The original subjects (not the per-country exam subjects): small enough for dropdowns and sidebars.</summary>
+    Task<List<Subject>> GetGeneralAsync();
+    /// <summary>Country groups with their subject counts (cached for a few minutes).</summary>
+    Task<List<CountryCount>> GetCountriesAsync();
+    Task<SubjectsPageViewModel> PageAsync(string country, string text, int page);
+    /// <summary>Every subject of one country (for pickers).</summary>
+    Task<List<Subject>> ByCountryAsync(string country);
     Task<bool> SaveAsync(Subject subject);
 }
 
@@ -20,9 +27,9 @@ public interface IQuestionService
     /// <returns>The question, or null when it does not exist.</returns>
     Task<Question> GetByIdAsync(int questionId);
     Task<QuestionListViewModel> GetBySubjectAsync(int subjectId);
-    Task<QuestionListViewModel> SearchAsync(string search, int? subjectId = null);
+    Task<QuestionListViewModel> SearchAsync(string search, int? subjectId = null, string country = null);
     /// <summary>A few matches for type-ahead suggestions, plus the total number of matches.</summary>
-    Task<(List<Question> Items, int Total)> SuggestAsync(string search, int? subjectId, int limit = 6);
+    Task<(List<Question> Items, int Total)> SuggestAsync(string search, int? subjectId, int limit = 6, string country = null);
     Task<bool> SaveAsync(Question question);
     Task<bool> UpdateAsync(Question question);
     Task<bool> DeleteAsync(int questionId);

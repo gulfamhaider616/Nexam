@@ -14,18 +14,18 @@
 
         <form class="hero-search" action="/Home/SearchResult" method="get" role="search" data-suggest="/Home/SearchSuggest">
             <input class="input" type="search" name="search" placeholder="Search any question" aria-label="Search questions" data-search-input>
-            <select class="select" name="subject" aria-label="Subject">
-                <option value="">All subjects</option>
-                @foreach (var s in Model.SubjectList.Where(x => SubjectGroups.Of(x.SubjectName) == SubjectGroups.General))
+            <select class="select" name="country" aria-label="Country">
+                <option value="">All countries</option>
+                @foreach (var c in Model.Countries)
                 {
-                    <option value="@s.SubjectID">@s.SubjectName</option>
+                    <option value="@c.Country">@SubjectGroups.Label(c.Country)</option>
                 }
             </select>
         </form>
 
         <div class="hero-stats">
             <div><strong>@Model.PPSCList.Count</strong><span>PPSC past papers</span></div>
-            <div><strong>@Model.SubjectList.Count</strong><span>Subjects</span></div>
+            <div><strong>@Model.SubjectCount</strong><span>Subjects</span></div>
             @if (latestYear != null)
             {
                 <div><strong>@latestYear</strong><span>Latest papers</span></div>

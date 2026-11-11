@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     int counter = 1;
     bool hasSearch = !string.IsNullOrWhiteSpace(Model.Search);
-    string summary = Model.TotalCount + (Model.TotalCount == 1 ? " matching question" : " matching questions");
+    string summary = (Model.TotalCount > 1000 ? "1000+" : Model.TotalCount.ToString()) + (Model.TotalCount == 1 ? " matching question" : " matching questions");
     if (Model.questions != null && Model.questions.Count < Model.TotalCount) { summary += ", showing the first " + Model.questions.Count; }
 }
 @section Head {
