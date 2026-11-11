@@ -819,7 +819,7 @@
     <Content Include="images\question.png" />
     <Content Include="images\slider_bg.jpg" />
     <Content Include="images\social-icons.png" />
-    <Content Include="images\trans-mcqsLogo.png" />
+    <Content Include="images\trans-nexamLogo.png" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\Forum.js" />

@@ -55,12 +55,12 @@ namespace Nexam.Business
             string username = "ecareerspk@gmail.com";
             string password = "32129241770ab";
             string mailFrom = "ecareerspk@gmail.com";
-            string mailTitle = "Thanks for Registration | Mcqsprep.com";
+            string mailTitle = "Thanks for Registration | Nexam.com";
             string mailMessage = @"Dear User,<br/><br/>
 
-                Thank you so much for your registration to <a href='http://mcqsprep.com' target='_blank'> Mcqsprep.com</a>.<br/><br/>
+                Thank you so much for your registration to <a href='http://nexam.com' target='_blank'> Nexam.com</a>.<br/><br/>
 
-                <a href='http://mcqsprep.com' target='_blank'>Nexam</a> is 100 % free platform and we'll not charge anything from the users. It's just for the help of those people who want to prepare themselves and looking for a job in Pakistan. Our team is continuously working to add more data in our web platform. We are also requesting you to help us to improve this system. 
+                <a href='http://nexam.com' target='_blank'>Nexam</a> is 100 % free platform and we'll not charge anything from the users. It's just for the help of those people who want to prepare themselves and looking for a job in Pakistan. Our team is continuously working to add more data in our web platform. We are also requesting you to help us to improve this system. 
                 <br/><br/>
                 We are also going to build a new module in which we allow the users to add their own mcqs according to their subject and earn from our website on the daily basis. This will increase your daily earning. 
                  <br/><br/>
@@ -72,7 +72,7 @@ namespace Nexam.Business
 
                 Ahmed Shair<br/><br/>
 
-                CTO <a href='http://mcqsprep.com' target='_blank'>Mcqsprep.com</a>";
+                CTO <a href='http://nexam.com' target='_blank'>Nexam.com</a>";
 
             using (SmtpClient client = new SmtpClient())
             {

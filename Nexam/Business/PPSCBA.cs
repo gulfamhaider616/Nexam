@@ -273,11 +273,11 @@ namespace Nexam.Business
                 + "</head><body style='font-family: sans-serif;'>"
                 + "<div class='page' style='page-break-after:always;' ><div class='cover-page'>"
                 + "<div class='logo-campus' style='text-align: center;'>"
-                + "<img src='http://mcqsprep.com/images/trans-mcqsLogo.png' style='width: 207px;margin-top: 68px;' /></div>"
+                + "<img src='http://nexam.com/images/trans-nexamLogo.png' style='width: 207px;margin-top: 68px;' /></div>"
                 + "<div class='booklet-name' style='margin-top: 185px;font-size: 20px !important;text-align: center;'><b style='color: #093;'>Paper Name:</b>"
                 + "<div class='assess-name' style='text-align: center;;word-wrap: break-word;font-size: 20px !important;'>" + papername + "</div>"
                 + "<span class='ver-no'></span></div>"
-                + "</div><div class='logo-sc' style='margin-top: 250px;text-align: center;'><img src='http://mcqsprep.com/images/trans-mcqsLogo.png' style='width: 110px;'/><br/><span>© All rights reserved | Nexam.</span></div></div>");
+                + "</div><div class='logo-sc' style='margin-top: 250px;text-align: center;'><img src='http://nexam.com/images/trans-nexamLogo.png' style='width: 110px;'/><br/><span>© All rights reserved | Nexam.</span></div></div>");
             if (dataset.Tables.Count > 0)
             {
                 _html.Append("<div class='page'>");
