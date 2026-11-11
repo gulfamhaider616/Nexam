@@ -170,8 +170,10 @@
     }
     
     //preloader
+    // The loader is hidden by an inline script in _Layout (on DOMContentLoaded, 1.2s at the latest).
+    // This is only a fallback if that script did not run.
     $(window).on('load', function() {
-        $("#loader").delay(1000).fadeOut(500);
+        $("#loader").hide();
     })
 
     //Videos popup jQuery 

@@ -11,8 +11,12 @@ public sealed class QuestionRepository : DapperRepository, IQuestionRepository
     public Task<Question> GetByIdAsync(int questionId) =>
         QueryFirstProcAsync<Question>("GetQuestionById", new { QuestionID = questionId });
 
-    public Task<List<Question>> GetBySubjectAsync(int subjectId) =>
-        QueryProcAsync<Question>("GetAllQuestionsBySubjectID", new { SubjectID = subjectId });
+    // Latest first: the newest past paper's questions on top (in paper order), then the question bank, newest added first.
+    public async Task<List<Question>> GetBySubjectAsync(int subjectId) =>
+        (await QueryProcAsync<Question>("GetAllQuestionsBySubjectID", new { SubjectID = subjectId }))
+            .OrderByDescending(q => q.PaperID)
+            .ThenBy(q => q.PaperID == 0 ? -q.QuestionID : q.QuestionID)
+            .ToList();
 
     public Task<List<Question>> SearchAsync(string search) =>
         QueryProcAsync<Question>("SearchResult", new { Search = search });
