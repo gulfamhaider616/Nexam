@@ -1,103 +1,71 @@
-﻿using Nexam.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
+using Nexam.Models.Entities;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class FPSCController(IFpscService fpsc) : Controller
 {
-    public class FPSCController : Controller
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult FPSC_Home() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult NewFPSCPaper() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveFPSCNewPaper(string name, string detail)
     {
-        // GET: FPSC
-        [Authorize]
-        public ActionResult FPSC_Home()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult NewFPSCPaper()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult SaveFPSCNewPaper(string name, string detail)
-        {
-            PaperDO paper = new PaperDO();
-            paper.PaperName = name;
-            paper.PaperDetail = detail;
-            bool result = new FPSCBA().SaveFPSCNewPaper(paper);
-            if (result)
-            {
-                return RedirectToAction("FPSC_Home");
-            }
-            else
-            {
-                return RedirectToAction("NewFPSCPaper");
-            }
-        }
-        [Authorize]
-        public ActionResult NewFPSCQuestion()
-        {
-            List<PaperDO> list = new FPSCBA().GetAllFPSCPaper();
-            return View(list);
-        }
-        [Authorize]
-        public ActionResult SaveNewFPSCQuestion(string paperid, string questionstatement, string choices, string correctanswer)
-        {
-            QuestionDO question = new QuestionDO();
-            question.PaperID = Convert.ToInt32(paperid);
-            question.QuestionStatement = questionstatement;
-            question.Choices = choices;
-            question.CorrectAnswer = correctanswer;
-            bool result = new FPSCBA().SaveFPSCQuestion(question);
-            if (result)
-            {
-                return RedirectToAction("NewFPSCQuestion");
-            }
-            else
-            {
-                return RedirectToAction("FPSC_Home");
-            }
-        }
+        var saved = await fpsc.SavePaperAsync(new Paper { PaperName = name, PaperDetail = detail });
+        return RedirectToAction(saved ? "FPSC_Home" : "NewFPSCPaper");
+    }
 
-        public ActionResult GetAllFPSCPapers()
-        {
-            List<PaperDO> list = new FPSCBA().GetAllFPSCPaper();
-            return View(list);
-        }
-        public ActionResult GetAllFPSCPapersByAdmin()
-        {
-            List<PaperDO> list = new FPSCBA().GetAllFPSCPaper();
-            return View(list);
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> NewFPSCQuestion() => View(await fpsc.GetPapersAsync());
 
-        public ActionResult GetAllFPSCQuestionsByPaperID(int paperid)
-        {
-            return View(new FPSCBA().GetAllFPSCQuestionsByPaperID(paperid));
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveNewFPSCQuestion(int paperid, string questionstatement, string choices,
+        string correctanswer)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("FPSC_Home");
 
-        [Authorize]
-        public ActionResult GetAllFPSCQuestionsByPaperIDAdmin(int paperid)
+        var saved = await fpsc.SaveQuestionAsync(new Question
         {
-            return View(new FPSCBA().GetAllFPSCQuestionsByPaperID(paperid));
-        }
+            PaperID = paperid, QuestionStatement = questionstatement, Choices = choices, CorrectAnswer = correctanswer
+        });
+        return RedirectToAction(saved ? "NewFPSCQuestion" : "FPSC_Home");
+    }
 
-        public ActionResult GetFPSCQuestionById(int questionID)
-        {
-            return View(new FPSCBA().GetFPSCQuestionById(questionID));
-        }
+    public async Task<IActionResult> GetAllFPSCPapers() => View(await fpsc.GetPapersAsync());
 
-        [Authorize]
-        public ActionResult DeleteFPSCQuestionById(int questionID)
-        {
-            var result = new FPSCBA().DeleteFPSCQuestionById(questionID);
-            return RedirectToAction("GetAllFPSCPapersByAdmin");
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllFPSCPapersByAdmin() => View(await fpsc.GetPapersAsync());
 
-        public ActionResult FPSCQuestionDiscussion(int questionID)
-        {
-            return View(new FPSCBA().GetFPSCQuestionById(questionID));
-        }
+    public async Task<IActionResult> GetAllFPSCQuestionsByPaperID(int paperid) =>
+        View(await fpsc.GetPaperWithQuestionsAsync(paperid));
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllFPSCQuestionsByPaperIDAdmin(int paperid) =>
+        View(await fpsc.GetPaperWithQuestionsAsync(paperid));
+
+    public async Task<IActionResult> GetFPSCQuestionById(int questionID)
+    {
+        var question = await fpsc.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> DeleteFPSCQuestionById(int questionID)
+    {
+        await fpsc.DeleteQuestionAsync(questionID);
+        return RedirectToAction("GetAllFPSCPapersByAdmin");
+    }
+
+    public async Task<IActionResult> FPSCQuestionDiscussion(int questionID)
+    {
+        var question = await fpsc.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
     }
 }

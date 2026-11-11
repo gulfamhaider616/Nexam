@@ -1,49 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Nexam.Business;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
+using Nexam.Models.Entities;
+using Nexam.Models.ViewModels;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class QuizController(IQuizService quizzes, ISubjectService subjects) : Controller
 {
-    public class QuizController : Controller
-    {
-        // GET: Quiz
-        public ActionResult QuizHome()
-        {
-            return View();
-        }
-        public ActionResult NewQuiz()
-        {
-            if (Session["name"] != null) {
-                return View(new MCQPrepBA().GetAllSubjects().ToList());
-            }
-            else { return RedirectToAction("UserLogin","User"); }
-        }
-        
-        public ActionResult SaveQuiz(string title, string subjectid,string totalquestions,string userid) 
-        {
-            QuizDO quiz=new QuizDO();
-            quiz.Title = title;
-            quiz.SubjectID = Convert.ToInt32(subjectid);
-            quiz.TotalQuestions = Convert.ToInt32(totalquestions);
-            quiz.UserID = Convert.ToInt32(userid);
-            var result = new QuizBA().SaveQuiz(quiz);
-            return View(result);
-        }
+    public IActionResult QuizHome() => View();
 
-        [HttpPost]
-        public JsonResult InsertQuizQuestion(QuizQuestionContract quizquestioncontract)
-        {
-            var result = new QuizBA().QuizResult(quizquestioncontract);
-            result.Name = Session["name"].ToString();
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-        public ActionResult GeTQuizById(int quizID)
-        {
-            var result = new QuizBA().GeTQuizById(quizID);
-            return View(result);
-        }
+    public async Task<IActionResult> NewQuiz()
+    {
+        if (!User.IsInRole(AppRoles.User))
+            return RedirectToAction("UserLogin", "User");
+
+        return View(await subjects.GetAllAsync());
     }
+
+    public async Task<IActionResult> SaveQuiz(string title, int subjectid, int totalquestions)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("NewQuiz");
+
+        var userId = User.IsInRole(AppRoles.User) ? User.GetUserId() : null;
+        if (userId is null)
+            return RedirectToAction("UserLogin", "User");
+
+        // The user comes from the sign-in cookie, not from a form field anyone could edit.
+        var quiz = new Quiz { Title = title, SubjectID = subjectid, TotalQuestions = totalquestions, UserID = userId.Value };
+        return View(await quizzes.StartAsync(quiz));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> InsertQuizQuestion([FromBody] QuizSubmission quizquestioncontract)
+    {
+        if (!User.IsInRole(AppRoles.User))
+            return Unauthorized();
+
+        var result = await quizzes.SubmitAsync(quizquestioncontract);
+        result.Name = User.Identity?.Name;
+        return Json(result);
+    }
+
+    public async Task<IActionResult> GeTQuizById(int quizID) => View(await quizzes.GetByIdAsync(quizID));
 }

@@ -1,208 +1,147 @@
-﻿using Nexam.Business;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-//using IronPdf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
+using Nexam.Models.Entities;
+using Nexam.Models.ViewModels;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class PPSCController(IPpscService ppsc, ISubjectService subjects) : Controller
 {
-    public class PPSCController : Controller
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult PPSC_Home() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> NewPaper() => View(await ppsc.GetNewPaperModelAsync());
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult NewPPSCPost() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveNewPaper(int paperyear, int paperpost, string name, string detail)
     {
-        // GET: PPSC
-        [Authorize]
-        public ActionResult PPSC_Home()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult NewPaper()
-        {
-            NewPPSCPaperContract obj = new NewPPSCPaperContract();
-            obj = new PPSCBA().GetPaperYearPost();
-            return View(obj);
-        }
-        [Authorize]
-        public ActionResult NewPPSCPost()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult SaveNewPaper(string paperyear, string paperpost, string name, string detail)
-        {
-            PaperDO paper = new PaperDO();
-            paper.PaperYearID = Convert.ToInt32(paperyear);
-            paper.PaperPostID = Convert.ToInt32(paperpost);
-            paper.PaperName = name;
-            paper.PaperDetail = detail;
-            bool result = new PPSCBA().SaveNewPaper(paper);
-            if (result)
-            {
-                return RedirectToAction("PPSC_Home");
-            }
-            else
-            {
-                return RedirectToAction("NewPaper");
-            }
-        }
-        [Authorize]
-        public ActionResult SaveUpdatedPPSCPaper(string paperid, string paperyear, string paperpost, string name, string detail)
-        {
-            PaperDO paper = new PaperDO();
-            paper.PaperID = Convert.ToInt32(paperid);
-            paper.PaperYearID = Convert.ToInt32(paperyear);
-            paper.PaperPostID = Convert.ToInt32(paperpost);
-            paper.PaperName = name;
-            paper.PaperDetail = detail;
-            bool result = new PPSCBA().UpdatePPSCPaper(paper);
-            if (result)
-            {
-                return RedirectToAction("GetAllPPSCPapersByAdmin");
-            }
-            else
-            {
-                return RedirectToAction("NewPaper");
-            }
-        }
-        [Authorize]
-        public ActionResult SavePPSCPost(string postname, string postdetail)
-        {
-            PostDO post = new PostDO();
-            post.PostName = postname;
-            post.PostDetail = postdetail;
-            bool result = new PPSCBA().SavePPSCPost(post);
-            if (result)
-            {
-                return RedirectToAction("NewPPSCPost");
-            }
-            else
-            {
-                return RedirectToAction("NewPaper");
-            }
-        }
-        [Authorize]
-        public ActionResult NewPPSCQuestion()
-        {
-            HomeContract contract = new HomeContract();
-            contract.PPSCList = new PPSCBA().GetAllPPSCPaper();
-            contract.SubjectList = new MCQPrepBA().GetAllSubjects();
-            //List<PaperDO> list = new PPSCBA().GetAllPPSCPaper();
-            return View(contract);
-        }
-        [Authorize]
-        public ActionResult SaveNewPPSCQuestion(string paperid, string subjectid, string questionstatement, string numberofchoices, string choices, string correctanswer)
-        {
-            QuestionDO question = new QuestionDO();
-            question.PaperID = Convert.ToInt32(paperid);
-            question.SubjectID = Convert.ToInt32(subjectid);
-            question.QuestionStatement = questionstatement;
-            question.NumberOfChoices = Convert.ToInt32(numberofchoices);
-            question.Choices = choices;
-            question.CorrectAnswer = correctanswer;
-            bool result = new PPSCBA().SavePPSCQuestion(question);
-            if (result)
-            {
-                return RedirectToAction("NewPPSCQuestion");
-            }
-            else
-            {
-                return RedirectToAction("PPSC_Home");
-            }
-        }
+        if (!ModelState.IsValid)
+            return RedirectToAction("NewPaper");
 
-        public ActionResult GetAllPPSCPapers()
+        var saved = await ppsc.SavePaperAsync(new Paper
         {
-            List<PaperDO> list = new PPSCBA().GetAllPPSCPaper();
-            return View(list);
-        }
-        public ActionResult GetAllPPSCPapersByAdmin()
-        {
-            List<PaperDO> list = new PPSCBA().GetAllPPSCPaper();
-            return View(list);
-        }
-
-        public ActionResult GetAllQuestionsByPaperID(int paperid)
-        {
-            return View(new PPSCBA().GetAllQuestionsByPaperID(paperid));
-        }
-
-        [Authorize]
-        public ActionResult GetAllQuestionsByPaperIDAdmin(int paperid)
-        {
-            return View(new PPSCBA().GetAllQuestionsByPaperID(paperid));
-        }
-
-        public ActionResult GetPPSCQuestionById(int questionID)
-        {
-            //HomeContract contract = new HomeContract();
-            
-            return View(new PPSCBA().GetPPSCQuestionById(questionID));
-        }
-
-        [Authorize]
-        public ActionResult DeletePPSCQuestionById(int questionID)
-        {
-            var result = new PPSCBA().DeletePPSCQuestionById(questionID);
-            return RedirectToAction("GetAllPPSCPapersByAdmin");
-        }
-        public ActionResult PPSCQuestionDiscussion(int questionID)
-        {
-            return View(new PPSCBA().GetPPSCQuestionById(questionID));
-        }
-        [Authorize]
-        public ActionResult UpdatePPSCPaper(int paperid)
-        {
-            NewPPSCPaperContract obj = new NewPPSCPaperContract();
-            obj = new PPSCBA().GetPaperYearPost();
-            obj.Paper = new PPSCBA().GetPPSCPaperDetail(paperid);
-            return View(obj);
-        }
-        [Authorize]
-        public ActionResult SaveEditPPSCQuestion(string questionid, string subjectid, string questionstatement, string numberofchoices, string choices, string correctanswer)
-        {
-            QuestionDO question = new QuestionDO();
-            question.QuestionID = Convert.ToInt32(questionid);
-            question.SubjectID = Convert.ToInt32(subjectid);
-            question.QuestionStatement = questionstatement;
-            question.NumberOfChoices = Convert.ToInt32(numberofchoices);
-            question.Choices = choices;
-            question.CorrectAnswer = correctanswer;
-            bool result = new MCQPrepBA().SaveEditPPSCQuestion(question);
-            if (result)
-            {
-                return RedirectToAction("GetAllPPSCPapersByAdmin");
-            }
-            else
-            {
-                return RedirectToAction("PPSC_Home");
-            }
-        }
-        public ActionResult Download_PPSC_Paper(int PaperID)
-        {
-            string html = new PPSCBA().PPSCPaperHTML(PaperID);
-            string strStoredFileName = Guid.NewGuid() + ".pdf";
-            string strFilePathUrl = "/PDFFiles/" + strStoredFileName;
-            string strSaveFileUrl = "~/images/" + strFilePathUrl;
-            var Renderer = new IronPdf.HtmlToPdf();
-            var PDF = Renderer.RenderHtmlAsPdf(html);
-            PDF.SaveAs(strSaveFileUrl);
-            string startupPath = AppDomain.CurrentDomain.BaseDirectory + "images\\PDFFiles\\" + strStoredFileName;
-            string startupPath1 = Environment.CurrentDirectory;
-            System.Diagnostics.Process.Start(startupPath);
-            Response.ContentType = "Application/pdf";
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + strStoredFileName);
-            Response.TransmitFile(Server.MapPath("~/images/PDFFiles/" + strStoredFileName));
-            Response.End();
-            return RedirectToAction("GetAllPPSCPapers", "PPSC");
-        }
-
-        public ActionResult SearchPPSCPaperYearwise(int yearid)
-        {
-            List<PaperDO> list = new PPSCBA().SearchPPSCPaperYearwise(yearid);
-            return View(list);
-        }
-
+            PaperYearID = paperyear, PaperPostID = paperpost, PaperName = name, PaperDetail = detail
+        });
+        return RedirectToAction(saved ? "PPSC_Home" : "NewPaper");
     }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveUpdatedPPSCPaper(int paperid, int paperyear, int paperpost, string name, string detail)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("NewPaper");
+
+        var saved = await ppsc.UpdatePaperAsync(new Paper
+        {
+            PaperID = paperid, PaperYearID = paperyear, PaperPostID = paperpost, PaperName = name, PaperDetail = detail
+        });
+        return RedirectToAction(saved ? "GetAllPPSCPapersByAdmin" : "NewPaper");
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SavePPSCPost(string postname, string postdetail)
+    {
+        var saved = await ppsc.SavePostAsync(new JobPost { PostName = postname, PostDetail = postdetail });
+        return RedirectToAction(saved ? "NewPPSCPost" : "NewPaper");
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> NewPPSCQuestion()
+    {
+        var papers = ppsc.GetPapersAsync();
+        var subjectList = subjects.GetAllAsync();
+        await Task.WhenAll(papers, subjectList);
+        return View(new HomeViewModel { PPSCList = papers.Result, SubjectList = subjectList.Result });
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveNewPPSCQuestion(int paperid, int subjectid, string questionstatement,
+        int numberofchoices, string choices, string correctanswer)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("PPSC_Home");
+
+        var saved = await ppsc.SaveQuestionAsync(new Question
+        {
+            PaperID = paperid, SubjectID = subjectid, QuestionStatement = questionstatement,
+            NumberOfChoices = numberofchoices, Choices = choices, CorrectAnswer = correctanswer
+        });
+        return RedirectToAction(saved ? "NewPPSCQuestion" : "PPSC_Home");
+    }
+
+    public async Task<IActionResult> GetAllPPSCPapers() => View(await ppsc.GetPapersAsync());
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllPPSCPapersByAdmin() => View(await ppsc.GetPapersAsync());
+
+    public async Task<IActionResult> GetAllQuestionsByPaperID(int paperid) =>
+        View(await ppsc.GetPaperWithQuestionsAsync(paperid));
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllQuestionsByPaperIDAdmin(int paperid) =>
+        View(await ppsc.GetPaperWithQuestionsAsync(paperid));
+
+    public async Task<IActionResult> GetPPSCQuestionById(int questionID)
+    {
+        var question = await ppsc.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> DeletePPSCQuestionById(int questionID)
+    {
+        await ppsc.DeleteQuestionAsync(questionID);
+        return RedirectToAction("GetAllPPSCPapersByAdmin");
+    }
+
+    public async Task<IActionResult> PPSCQuestionDiscussion(int questionID)
+    {
+        var question = await ppsc.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> UpdatePPSCPaper(int paperid)
+    {
+        var model = await ppsc.GetUpdatePaperModelAsync(paperid);
+        return model.Paper is null ? NotFound() : View(model);
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveEditPPSCQuestion(int questionid, int subjectid, string questionstatement,
+        int numberofchoices, string choices, string correctanswer)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("PPSC_Home");
+
+        var saved = await ppsc.UpdateQuestionAsync(new Question
+        {
+            QuestionID = questionid, SubjectID = subjectid, QuestionStatement = questionstatement,
+            NumberOfChoices = numberofchoices, Choices = choices, CorrectAnswer = correctanswer
+        });
+        return RedirectToAction(saved ? "GetAllPPSCPapersByAdmin" : "PPSC_Home");
+    }
+
+    public async Task<IActionResult> Download_PPSC_Paper(int PaperID, [FromServices] ILogger<PPSCController> logger)
+    {
+        try
+        {
+            var pdf = await ppsc.GetPaperPdfAsync(PaperID);
+            return File(pdf, "application/pdf", $"{Guid.NewGuid()}.pdf");
+        }
+        catch (PdfUnavailableException ex)
+        {
+            logger.LogError(ex, "PDF download unavailable");
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, "PDF downloads are temporarily unavailable.");
+        }
+    }
+
+    public async Task<IActionResult> SearchPPSCPaperYearwise(int yearid) =>
+        View(await ppsc.SearchPapersByYearAsync(yearid));
 }

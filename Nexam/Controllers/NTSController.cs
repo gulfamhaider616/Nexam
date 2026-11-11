@@ -1,103 +1,71 @@
-﻿using Nexam.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
+using Nexam.Models.Entities;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class NTSController(INtsService nts) : Controller
 {
-    public class NTSController : Controller
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult NTS_Home() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public IActionResult NewNTSPaper() => View();
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveNTSNewPaper(string name, string detail)
     {
-        // GET: NTS
-        [Authorize]
-        public ActionResult NTS_Home()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult NewNTSPaper()
-        {
-            return View();
-        }
-        [Authorize]
-        public ActionResult SaveNTSNewPaper(string name, string detail)
-        {
-            PaperDO paper = new PaperDO();
-            paper.PaperName = name;
-            paper.PaperDetail = detail;
-            bool result = new NTSBA().SaveNTSNewPaper(paper);
-            if (result)
-            {
-                return RedirectToAction("NTS_Home");
-            }
-            else
-            {
-                return RedirectToAction("NewNTSPaper");
-            }
-        }
-        [Authorize]
-        public ActionResult NewNTSQuestion()
-        {
-            List<PaperDO> list = new NTSBA().GetAllNTSPaper();
-            return View(list);
-        }
-        [Authorize]
-        public ActionResult SaveNewNTSQuestion(string paperid, string questionstatement, string choices, string correctanswer)
-        {
-            QuestionDO question = new QuestionDO();
-            question.PaperID = Convert.ToInt32(paperid);
-            question.QuestionStatement = questionstatement;
-            question.Choices = choices;
-            question.CorrectAnswer = correctanswer;
-            bool result = new NTSBA().SaveNTSQuestion(question);
-            if (result)
-            {
-                return RedirectToAction("NewNTSQuestion");
-            }
-            else
-            {
-                return RedirectToAction("NTS_Home");
-            }
-        }
+        var saved = await nts.SavePaperAsync(new Paper { PaperName = name, PaperDetail = detail });
+        return RedirectToAction(saved ? "NTS_Home" : "NewNTSPaper");
+    }
 
-        public ActionResult GetAllNTSPapers()
-        {
-            List<PaperDO> list = new NTSBA().GetAllNTSPaper();
-            return View(list);
-        }
-        public ActionResult GetAllNTSPapersByAdmin()
-        {
-            List<PaperDO> list = new NTSBA().GetAllNTSPaper();
-            return View(list);
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> NewNTSQuestion() => View(await nts.GetPapersAsync());
 
-        public ActionResult GetAllNTSQuestionsByPaperID(int paperid)
-        {
-            return View(new NTSBA().GetAllNTSQuestionsByPaperID(paperid));
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SaveNewNTSQuestion(int paperid, string questionstatement, string choices,
+        string correctanswer)
+    {
+        if (!ModelState.IsValid)
+            return RedirectToAction("NTS_Home");
 
-        [Authorize]
-        public ActionResult GetAllNTSQuestionsByPaperIDAdmin(int paperid)
+        var saved = await nts.SaveQuestionAsync(new Question
         {
-            return View(new NTSBA().GetAllNTSQuestionsByPaperID(paperid));
-        }
+            PaperID = paperid, QuestionStatement = questionstatement, Choices = choices, CorrectAnswer = correctanswer
+        });
+        return RedirectToAction(saved ? "NewNTSQuestion" : "NTS_Home");
+    }
 
-        public ActionResult GetNTSQuestionById(int questionID)
-        {
-            return View(new NTSBA().GetNTSQuestionById(questionID));
-        }
+    public async Task<IActionResult> GetAllNTSPapers() => View(await nts.GetPapersAsync());
 
-        [Authorize]
-        public ActionResult DeleteNTSQuestionById(int questionID)
-        {
-            var result = new NTSBA().DeleteNTSQuestionById(questionID);
-            return RedirectToAction("GetAllNTSPapersByAdmin");
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllNTSPapersByAdmin() => View(await nts.GetPapersAsync());
 
-        public ActionResult NTSQuestionDiscussion(int questionID)
-        {
-            return View(new NTSBA().GetNTSQuestionById(questionID));
-        }
+    public async Task<IActionResult> GetAllNTSQuestionsByPaperID(int paperid) =>
+        View(await nts.GetPaperWithQuestionsAsync(paperid));
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> GetAllNTSQuestionsByPaperIDAdmin(int paperid) =>
+        View(await nts.GetPaperWithQuestionsAsync(paperid));
+
+    public async Task<IActionResult> GetNTSQuestionById(int questionID)
+    {
+        var question = await nts.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> DeleteNTSQuestionById(int questionID)
+    {
+        await nts.DeleteQuestionAsync(questionID);
+        return RedirectToAction("GetAllNTSPapersByAdmin");
+    }
+
+    public async Task<IActionResult> NTSQuestionDiscussion(int questionID)
+    {
+        var question = await nts.GetQuestionByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
     }
 }

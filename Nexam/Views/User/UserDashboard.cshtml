@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QuizDO>
+﻿@model IEnumerable<Quiz>
 @{
     ViewBag.Title = "UserDashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,7 +6,7 @@
 
 <div class="container">
     <div style="background-color: #21a7d0; padding: 20px; color: white; font-size: x-large;text-align:center;">
-        @Session["name"].ToString(), You have attempted total @Model.Count() Quizzes and got average score
+        @User.Identity.Name, You have attempted total @Model.Count() Quizzes and got average score
 
         @{
             int res = 0;

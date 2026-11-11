@@ -90,9 +90,9 @@
                                 <li class="login-register">
                                     @*<i class="fa fa-sign-in"></i>*@
                                     @{
-                                        if (Session["name"] != null)
+                                        if (User.IsInRole("User"))
                                         {
-                                            <a href="~/User/UserDashboard">Welcome @Session["name"].ToString()</a>
+                                            <a href="~/User/UserDashboard">Welcome @User.Identity.Name</a>
                                             <a href="/Admin/Logout" style="color: #ff5151; padding-left: 20px;">Logout</a>
                                         }
                                         else

@@ -4,4 +4,4 @@
 packages/
 Nexam/bin/
 Nexam/obj/
-Nexam/images/PDFFiles/*
+appsettings.Local.json

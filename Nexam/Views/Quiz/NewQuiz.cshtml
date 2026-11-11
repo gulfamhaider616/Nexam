@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SubjectDO>
+﻿@model IEnumerable<Subject>
 @{
     ViewBag.Title = "Learn Free Quran | Ask Question";
     ViewBag.Description = "Learn Free Quran is also providing a questions and answers platform when anyone can ask Islamic question. People from whole world are allowed to answer the question. Our qualified team will also answer you in the similar manners.";
@@ -27,7 +27,6 @@
                             <input type="text" id="title" name="title" value="" placeholder="Quiz Title" required="">
                         </div>
                         <div class="form-group col-lg-12">
-                            <input type="text" id="userid" name="userid" value="@Session["Id"]" placeholder="quiz title" hidden required="">
                         </div>
                         <div class="form-group col-lg-12" style="margin-bottom:30px">
                             <select class="form-control" name="subjectid">

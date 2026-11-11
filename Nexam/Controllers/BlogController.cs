@@ -1,40 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class BlogController : Controller
 {
-    public class BlogController : Controller
-    {
-        // GET: Blog
-        public ActionResult ShowAllBlogs()
-        {
-            return View();
-        }
-        public ActionResult WriteBlog ()
-        {
-            return View();
-        }
-        public ActionResult SaveBlog(string blogid, string uname, string email, string country, string title, string desp)
-        {
-            //BlogDO blog = new BlogDO();
-            //blog.BlogID = Convert.ToInt32(blogid);
-            //blog.UserName = uname;
-            //blog.Email = email;
-            //blog.Country = country;
-            //blog.Title = title;
-            //blog.Detail = desp;
-            bool result = true;// new MCQPrepBA().SaveQuestion(blog);
-            if (result)
-            {
-                return RedirectToAction("ShowAllBlogs");
-            }
-            else
-            {
-                return RedirectToAction("WriteBlog");
-            }
-        }
-    }
+    public IActionResult ShowAllBlogs() => View();
+
+    public IActionResult WriteBlog() => View();
+
+    // Blogging is not implemented yet (it never persisted anything); it just returns to the list.
+    public IActionResult SaveBlog(string blogid, string uname, string email, string country, string title, string desp) =>
+        RedirectToAction("ShowAllBlogs");
 }

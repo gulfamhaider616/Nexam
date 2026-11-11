@@ -1,85 +1,57 @@
-﻿using Nexam.Business;
-using Nexam.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
+using Nexam.Models.Entities;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class ForumController(IForumService forum) : Controller
 {
-    public class ForumController : Controller
+    public async Task<IActionResult> ForumHomePage() => View(await forum.GetPublishedAsync());
+
+    public IActionResult AskQuestion() => View();
+
+    public async Task<IActionResult> SaveQuestion(string uname, string qemail, string qcountry, string qsubject,
+        string qexplanation)
     {
-        // GET: Forum
-        // GET: Forum
-        public ActionResult ForumHomePage()
+        var saved = await forum.SaveAsync(new ForumQuestion
         {
-            return View(new ForumBA().GetAllPublishedQuestion().ToList());
-        }
-        public ActionResult AskQuestion()
-        {
-            return View();
-        }
-        public ActionResult SaveQuestion(string uname, string qemail, string qcountry, string qsubject, string qexplanation)
-        {
-            AskQuestionDO question = new AskQuestionDO();
-            question.UserName = uname;
-            question.Email = qemail;
-            question.Country = qcountry;
-            question.Subject = qsubject;
-            question.Explanation = qexplanation;
-            bool res = new ForumBA().SaveQuestion(question);
-            //if(res)
-            //{
-            return RedirectToAction("ForumHomePage", "Forum");
-            //}
-            //else
-            //{
-            //return View("AskQuestion");
-            //}
-        }
-        public ActionResult SingleQuestion(int QuestionID)
-        {
-            return View(new ForumBA().GetSingleQuestion(QuestionID));
-        }
+            UserName = uname, Email = qemail, Country = qcountry, Subject = qsubject, Explanation = qexplanation
+        });
 
-        #region Forum
+        // The Ask-a-question page submits through AJAX and expects a boolean; plain form posts get redirected.
+        if (Request.Headers.XRequestedWith == "XMLHttpRequest")
+            return Json(saved);
 
-        [Authorize]
-        public ActionResult ForumMainPage()
-        {
-            return View(new ForumBA().GetAllQuestions().ToList());
-        }
+        return RedirectToAction("ForumHomePage", "Forum");
+    }
 
-        [Authorize]
-        public ActionResult Publish()
-        {
-            return View(new ForumBA().GetAllPublishedQuestion().ToList());
-        }
+    public async Task<IActionResult> SingleQuestion(int QuestionID)
+    {
+        var question = await forum.GetByIdAsync(QuestionID);
+        return question is null ? NotFound() : View(question);
+    }
 
-        [Authorize]
-        public ActionResult UnPublish()
-        {
-            return View(new ForumBA().GetAllUnPublishedQuestion().ToList());
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> ForumMainPage() => View(await forum.GetAllAsync());
 
-        [Authorize]
-        public JsonResult PublishQuestionByAdmin(int QuestionID)
-        {
-            return Json(new ForumBA().PublishQuestionByAdmin(QuestionID), JsonRequestBehavior.AllowGet);
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> Publish() => View(await forum.GetPublishedAsync());
 
-        [Authorize]
-        public JsonResult DeleteQuestions(int QuestionID)
-        {
-            return Json(new ForumBA().DeleteQuestions(QuestionID), JsonRequestBehavior.AllowGet);
-        }
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> UnPublish() => View(await forum.GetUnpublishedAsync());
 
-        [Authorize]
-        public ActionResult AdminQuestionPreview(int QuestionID)
-        {
-            return View(new ForumBA().GetSingleQuestion(QuestionID));
-        }
-        #endregion
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> PublishQuestionByAdmin(int QuestionID) => Json(await forum.PublishAsync(QuestionID));
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> DeleteQuestions(int QuestionID) => Json(await forum.DeleteAsync(QuestionID));
+
+    [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> AdminQuestionPreview(int QuestionID)
+    {
+        var question = await forum.GetByIdAsync(QuestionID);
+        return question is null ? NotFound() : View(question);
     }
 }

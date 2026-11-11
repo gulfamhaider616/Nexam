@@ -1,97 +1,63 @@
-﻿using Nexam.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Nexam.Business.Interfaces;
+using Nexam.Models.Entities;
+using Nexam.Models.ViewModels;
 
-namespace Nexam.Controllers
+namespace Nexam.Controllers;
+
+public class HomeController(
+    ISubjectService subjects,
+    IQuestionService questions,
+    IContactService contacts,
+    IPpscService ppsc,
+    INtsService nts,
+    IFpscService fpsc,
+    ICssService css) : Controller
 {
-    public class HomeController : Controller
+    public async Task<IActionResult> Index()
     {
-        public ActionResult Index()
+        var subjectList = subjects.GetAllAsync();
+        var ppscList = ppsc.GetPapersAsync();
+        var ntsList = nts.GetPapersAsync();
+        var fpscList = fpsc.GetPapersAsync();
+        var cssList = css.GetPapersAsync();
+        await Task.WhenAll(subjectList, ppscList, ntsList, fpscList, cssList);
+
+        return View(new HomeViewModel
         {
-            //EmailFormModel model = new EmailFormModel();
-            //Business.EmailSenderBA email = new Business.EmailSenderBA();
-            //string res = email.SendEmail(model);
-            //email.sendMessage();
-            HomeContract homeContract = new HomeContract();
-            homeContract.SubjectList = new MCQPrepBA().GetAllSubjects();
-            homeContract.PPSCList = new PPSCBA().GetAllPPSCPaper();
-            homeContract.NTSList = new NTSBA().GetAllNTSPaper();
-            homeContract.FPSCList = new FPSCBA().GetAllFPSCPaper();
-            homeContract.CSSList = new CSSBA().GetAllCSSPaper();
-            //List<SubjectDO> list = new MCQPrepBA().GetAllSubjects();
-            return View(homeContract);
-        }
+            SubjectList = subjectList.Result,
+            PPSCList = ppscList.Result,
+            NTSList = ntsList.Result,
+            FPSCList = fpscList.Result,
+            CSSList = cssList.Result
+        });
+    }
 
-        //[Route("/nexam-about")]
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+    public IActionResult About() => View();
 
-            return View();
-        }
+    public IActionResult Contact() => View();
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+    public IActionResult Terms() => View();
 
-            return View();
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error() => View();
 
-        //[Route("/nexam/all-subjects")]
-        public ActionResult Subjects()
-        {
-            List<SubjectDO> list = new MCQPrepBA().GetAllSubjects();
-            return View(list);
-        }
+    public async Task<IActionResult> Subjects() => View(await subjects.GetAllAsync());
 
-        /// <summary>
-        /// Sub Categories for a subject
-        /// </summary>
-        /// <param name="SubjectID"></param>
-        /// <returns></returns>
-        public ActionResult GetSubCategoryBySubjectID(int SubjectID)
-        {
-            return View(new MCQPrepBA().GetSubCategoryBySubjectID(SubjectID));
-        }
-        public ActionResult GetAllQuestionsBySubjectID(int SubjectID)
-        {
-            return View(new MCQPrepBA().GetAllQuestionsBySubjectID(SubjectID));
-        }
+    public async Task<IActionResult> GetAllQuestionsBySubjectID(int SubjectID) =>
+        View(await questions.GetBySubjectAsync(SubjectID));
 
-        public ActionResult SaveContact(string name,string email, string subject)
-        {
-            ContactDO contact = new ContactDO();
-            contact.Name = name;
-            contact.Email = email;
-            contact.Subject = subject;
+    public async Task<IActionResult> SaveContact(string name, string email, string subject)
+    {
+        var saved = await contacts.SaveAsync(new ContactMessage { Name = name, Email = email, Subject = subject });
+        return saved ? RedirectToAction("Index") : View("Contact");
+    }
 
-            bool result = new MCQPrepBA().SaveContact(contact);
-            if(result)
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return View("Contact");
-            }
-        }
+    public async Task<IActionResult> SearchResult(string search) => View(await questions.SearchAsync(search));
 
-        public ActionResult SearchResult(string search)
-        {
-            return View(new MCQPrepBA().SearchResult(search));
-        }
-
-        public ActionResult Terms()
-        {
-            return View();
-        }
-
-        public ActionResult QuestionDiscussion(int questionID)
-        {
-            return View(new MCQPrepBA().GetQuestionById(questionID));
-        }
+    public async Task<IActionResult> QuestionDiscussion(int questionID)
+    {
+        var question = await questions.GetByIdAsync(questionID);
+        return question is null ? NotFound() : View(question);
     }
 }
