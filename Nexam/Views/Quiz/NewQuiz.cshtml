@@ -1,83 +1,54 @@
 ﻿@model IEnumerable<Subject>
 @{
-    ViewBag.Title = "Learn Free Quran | Ask Question";
-    ViewBag.Description = "Learn Free Quran is also providing a questions and answers platform when anyone can ask Islamic question. People from whole world are allowed to answer the question. Our qualified team will also answer you in the similar manners.";
-    ViewBag.KeyWords = "Forum,LFQ Forum, LFQ question and answers,Ask Question, online Namaz,LFQ Students,LFQ, Learn Free Quran,Quran Tutor,Online Quran";
+    ViewBag.Title = "Nexam | New Quiz";
+    ViewBag.Description = "Choose a subject and the number of questions to start a new practice quiz on Nexam.";
+    ViewBag.KeyWords = "Nexam quiz, new quiz, MCQs quiz, PPSC quiz, practice test";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    #ab:hover{
+@section Head {
+    <link rel="stylesheet" href="/css/pages-user.css">
+}
 
-        background-color:transparent;
-        color:black
-    }
-</style>
-@*<section class="register-section pt-100 pb-10 loaded" >*@
-    <div class="container mb-20 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms"" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; height: 20%; width: 50%; padding: 4%; margin-top: 2%; margin-bottom: 2%;border-radius:10px ">
-        <div class="register-box">
-
-            <div class="sec-title text-center mb-30">
-                <h2 class="title mb-10">Please fill your Quiz Information</h2>
-            </div>
-            <div class="styled-form">
-                <form method="post" action="/Quiz/SaveQuiz">
-                    <div class="row clearfix">
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="title" name="title" value="" placeholder="Quiz Title" required="">
-                        </div>
-                        <div class="form-group col-lg-12">
-                        </div>
-                        <div class="form-group col-lg-12" style="margin-bottom:30px">
-                            <select class="form-control" name="subjectid">
-                                @foreach (var Item in Model)
-                                {
-                                    <option value="@Item.SubjectID">@Item.SubjectName</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-12 mb-25">
-                            <select class="form-control" name="totalquestions">
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                @*@foreach (var Item in Model)
-                {
-                    <option value="@Item.SubjectID">@Item.SubjectName</option>
-                }*@
-                            </select>
-                        </div>
-                        <!-- Form Group -->
-                        <!--<div class="form-group col-lg-12">
-        <input type="email" id="email" name="qemail" value="" placeholder="Email address " required="">
-    </div>-->
-                        <!-- Form Group -->
-                        <!-- Form Group -->
-                        <!--<div class="form-group col-lg-12">
-        <input type="text" id="Username" name="qcountry" value="" placeholder="Country" required="">
-    </div>-->
-                        <!-- Form Group -->
-                        <!--<div class="form-group col-lg-12">
-        <input type="text" id="Username" name="qsubject" value="" placeholder="Subject" required="">
-    </div>-->
-                        <!-- Form Group -->
-                        <!--<div class="form-group col-lg-12">
-        <textarea name="qexplanation" style="border-radius:0px;" value="" placeholder="Question Detail" required=""></textarea>
-    </div>-->
-                        <div class="form-group col-lg-12">
-                            <input type="checkbox" style="width: 30px;height: 16px !important;" name="CHKBOX1" id="CHKBOX1" value="1" required>
-                            <label style="font-size: 17px;font-weight: normal !important;"> You must agree with our <a href="~/nexam/terms-conditions" target="_blank"> Terms and Conditions</a>.</label>
-                        </div>
-                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
-                            <button id="ab" type="submit" class="readon register-btn" style="border: 1px solid; border-color: orangered; width: 50%"><span class="txt">Submit</span></button>
-                        </div>
-
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
+<div class="container container-narrow">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/Quiz/QuizHome">Quiz</a><span>/</span><span aria-current="page">New quiz</span></nav>
+        <h1>Please fill your quiz information</h1>
+        <p>Pick a subject and how many questions you want to practise.</p>
     </div>
-@*</section>*@
+
+    <div class="section" style="padding-top:20px">
+        <form class="form-card" method="post" action="/Quiz/SaveQuiz">
+            <div class="field">
+                <label for="title">Quiz title</label>
+                <input class="input" type="text" id="title" name="title" placeholder="e.g. My first practice quiz" maxlength="120" required>
+            </div>
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label for="subjectid">Subject</label>
+                    <select class="select" id="subjectid" name="subjectid" required>
+                        @foreach (var item in Model)
+                        {
+                            <option value="@item.SubjectID">@item.SubjectName</option>
+                        }
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="totalquestions">Number of questions</label>
+                    <select class="select" id="totalquestions" name="totalquestions">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field">
+                <label class="check"><input type="checkbox" name="CHKBOX1" id="CHKBOX1" value="1" required><span>You must agree with our <a href="/nexam/terms-conditions" target="_blank" rel="noopener">Terms and Conditions</a>.</span></label>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg"><svg class="icon" aria-hidden="true"><use href="#i-quiz"/></svg>Start quiz</button>
+                <a class="btn btn-secondary btn-lg" href="/Quiz/QuizHome">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

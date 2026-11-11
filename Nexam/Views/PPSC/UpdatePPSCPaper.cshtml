@@ -1,73 +1,49 @@
-﻿@model NewPaperViewModel
+@model NewPaperViewModel
 @{
     ViewBag.Title = "NewPaper";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="main_btm">
-    <!-- start main_btm -->
-    <div class="container">
-        <div class="main row">
-            <div class="col-md-8">
-                <div class="contact-form">
-                    <h2>Update PPSC Paper</h2>
-                    <form action="/PPSC/SaveUpdatedPPSCPaper" method="post" style="font-size:18px;line-height:2em;">
-                        <div>
-                            <input type="text" name="paperid" class="form-control" value="@Model.Paper.PaperID" hidden>
-                        </div>
-                        <div>
-                            <span>Select Year</span>
-                            <span>
-                                <select class="form-control" name="paperyear" id="userName">
-                                    @foreach (var Item in Model.PaperYear)
-                                    {
-                                        if (Model.Paper.PaperYear == Item.Year)
-                                        {
-                                            <option value="@Item.YearID" selected>@Item.Year</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@Item.YearID">@Item.Year</option>
-                                        }
-                                    }
-                                </select>
-                            </span>
-                        </div>
-                        <div>
-                            <span>Select Post</span>
-                            <span>
-                                <select class="form-control" name="paperpost" id="userName">
-                                    @foreach (var Item in Model.PaperPost)
-                                    {
-                                        if (Model.Paper.PaperPost == Item.Post)
-                                        {
-                                            <option value="@Item.PostID" selected>@Item.Post</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@Item.PostID">@Item.Post</option>
-                                        }
-
-                                    }
-                                </select>
-                            </span>
-                        </div>
-                        <div>
-                            <span>Paper Name</span>
-                            <span><input type="text" name="name" class="form-control" value="@Model.Paper.PaperName" id="userName" placeholder="Enter subject name"></span>
-                        </div>
-                        <div>
-                            <span>Paper Detail</span>
-                            <span><input type="text" name="detail" class="form-control"  value="@Model.Paper.PaperDetail" placeholder="enter one line subject detail"></span>
-                        </div>
-                        <div>
-                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Update"></label>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
+<div class="page-head">
+    <h1>Update PPSC paper</h1>
+    <p dir="auto">Editing: @Model.Paper.PaperName</p>
+    <div class="cluster"><a class="btn btn-secondary btn-sm" href="/PPSC/GetAllPPSCPapersByAdmin">Back to papers</a></div>
 </div>
 
+<form class="form-card" action="/PPSC/SaveUpdatedPPSCPaper" method="post" style="max-width:720px">
+    <input type="hidden" name="paperid" value="@Model.Paper.PaperID">
+    <div class="form-grid cols-2">
+        <div class="field">
+            <label for="paper-year">Year</label>
+            <select class="select" id="paper-year" name="paperyear">
+                @foreach (var Item in Model.PaperYear)
+                {
+                    <option value="@Item.YearID" selected="@(Model.Paper.PaperYear == Item.Year)">@Item.Year</option>
+                }
+            </select>
+        </div>
+        <div class="field">
+            <label for="paper-post">Post</label>
+            <select class="select" id="paper-post" name="paperpost">
+                @foreach (var Item in Model.PaperPost)
+                {
+                    <option value="@Item.PostID" selected="@(Model.Paper.PaperPost == Item.Post)">@Item.Post</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-grid">
+        <div class="field">
+            <label for="paper-name">Paper name</label>
+            <input class="input" type="text" id="paper-name" name="name" dir="auto" value="@Model.Paper.PaperName" placeholder="Enter paper name" required>
+        </div>
+        <div class="field">
+            <label for="paper-detail">Paper detail</label>
+            <input class="input" type="text" id="paper-detail" name="detail" dir="auto" value="@Model.Paper.PaperDetail" placeholder="Enter one line paper detail">
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Update</button>
+        <a class="btn btn-ghost" href="/PPSC/GetAllPPSCPapersByAdmin">Cancel</a>
+    </div>
+</form>

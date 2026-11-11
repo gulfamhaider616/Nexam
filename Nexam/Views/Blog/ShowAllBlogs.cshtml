@@ -1,7 +1,23 @@
-﻿
-@{
-    ViewBag.Title = "ShowAllBlogs";
+﻿@{
+    ViewBag.Title = "Nexam | Blog";
+    ViewBag.Description = "The Nexam blog: exam preparation tips and stories. Coming soon.";
+    ViewBag.KeyWords = "Nexam blog, exam preparation tips";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="blogstyle.css"/>
-<a class="btn btn-outline-light" href="~/Blog/WriteBlog">Click here to write Blog</a>
+
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Blog</span></nav>
+        <h1>Blog</h1>
+        <p>Exam preparation tips and stories from the Nexam community.</p>
+    </div>
+
+    <div class="section" style="padding-top:20px">
+        <div class="empty">
+            <svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>
+            <h2>Coming soon</h2>
+            <p>The Nexam blog is not open yet. Check back soon for new posts.</p>
+            <a class="btn btn-primary" href="/Blog/WriteBlog">Click here to write Blog</a>
+        </div>
+    </div>
+</div>

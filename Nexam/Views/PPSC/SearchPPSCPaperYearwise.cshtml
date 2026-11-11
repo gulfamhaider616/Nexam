@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<Paper>
 @{
-    ViewBag.Title = "Nexam | PPSC Past Papers";
-    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    var year = Model.Select(p => p.PaperYear).FirstOrDefault(y => !string.IsNullOrWhiteSpace(y));
+    var pageTitle = string.IsNullOrWhiteSpace(year) ? "PPSC Past Papers" : "PPSC Past Papers " + year;
+    ViewBag.Title = "Nexam | " + pageTitle;
+    ViewBag.Description = "Solve PPSC past papers online with answers. Nexam measures your improvement against the exam requirement and gives you constant feedback and guidance.";
+    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var subtitle = string.IsNullOrWhiteSpace(year)
+        ? "No papers were found for this year. Try another year or browse all PPSC papers."
+        : "All PPSC papers held in " + year + ", with answers.";
 }
 
-@await Html.PartialAsync("_PaperList", new PaperListModel("PPSC Past Papers",
-    Model.Select(p => new PaperCardModel(p, Url.Content("~/PPSC-Past-Paper-Question/" + p.PaperID), p.PaperYear ?? "Recent", "Post: " + (p.PaperPost ?? "Generic")))))
+@await Html.PartialAsync("_PaperList", new PaperListModel(pageTitle,
+    Model.Select(p => new PaperCardModel(p, Url.Content("~/PPSC-Past-Paper-Question/" + p.PaperID), p.PaperYear ?? "Recent", "Post: " + (p.PaperPost ?? "Generic"))),
+    subtitle))

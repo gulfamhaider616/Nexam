@@ -4,62 +4,75 @@
     ViewBag.Description = "NEXAM FORUM,GENERAL KNOWLEDGE MCQS FOR, NTS TEST, PPSC TEST, FPSC TEST, BPSC TEST, SPSC TEST, KPKPSC TEST, AJKPSC TEST, SOLVED MCQS ABOUT WORLD COUNTRY CAPITALS, WORLD ORGANIZATIONS, GENERAL KNOWLEDGE HELPING MATERIAL FOR JOB TEST";
     ViewBag.KeyWords = "GENERAL KNOWLEDGE MCQS FOR, NTS TEST, PPSC TEST, FPSC TEST, BPSC TEST, SPSC TEST, KPKPSC TEST, AJKPSC TEST, SOLVED MCQS ABOUT WORLD COUNTRY CAPITALS, WORLD ORGANIZATIONS, GENERAL KNOWLEDGE HELPING MATERIAL FOR JOB TEST";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var threads = Model?.ToList() ?? new List<ForumQuestion>();
+    string Excerpt(string text)
+    {
+        var t = (text ?? "").Trim();
+        return t.Length > 180 ? t.Substring(0, 180).TrimEnd() + "..." : t;
+    }
+}
+@section Head {
+    <link rel="stylesheet" href="/css/pages-user.css">
 }
 
-<div class="rs-inner-blog orange-color pt-40 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 pr-10" style="text-align: right;margin-bottom: 15px;">
-                <a href="~/Nexam-Forum-Question"> <input type="button" value="Ask Question" style="color:white;font-size: inherit;padding: 2px;height: 40px;border-radius: 10px;background: #208dd0;border-color: #208dd0;" /></a>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Forum</span></nav>
+        <h1>Nexam Forum</h1>
+        <p>Questions asked by students, with discussion. Have something to ask?</p>
+        <div class="cluster">
+            <a class="btn btn-primary" href="/Nexam-Forum-Question"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Ask a question</a>
+        </div>
+    </div>
+
+    <div class="section" style="padding-top:20px">
+        @if (threads.Count == 0)
+        {
+            <div class="empty">
+                <svg class="icon" aria-hidden="true"><use href="#i-message"/></svg>
+                <p>No questions have been published yet. Be the first to ask.</p>
+                <a class="btn btn-primary" href="/Nexam-Forum-Question">Ask a question</a>
             </div>
-            <div class="col-lg-12 pr-10">
-                <div class="row">
-                        @foreach (var Item in Model)
-                        {
-                            <div class="col-lg-12 mb-10">
-                                <div class="blog-item">
-                                    <div class="blog-content">
-                                        <h3 class="blog-title"><a href="~/Nexam-Forum-Question-Discussion/@Item.AskQuestionID" style="text-decoration: none;font-size: 150%;color: #28a7d0;"> @Item.Subject</a></h3>
-                                        <div class="blog-meta">
-                                            <ul class="btm-cate">
-                                                <li>
-                                                    <div class="blog-date">
+        }
+        else
+        {
+            <div data-filter-scope>
+                <div class="filters">
+                    <div class="search-field">
+                        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                        <input class="input" type="search" placeholder="Filter questions" aria-label="Filter questions" data-filter-input>
+                    </div>
+                    <div class="filter-meta"><span data-filter-count></span></div>
+                </div>
 
-                                                   <i class="fa fa-calendar-check-o"></i> <span>@Item.UserName</span>
-
-                                                    </div>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </div>
+                <div class="stack" style="--gap:12px">
+                    @foreach (var item in threads)
+                    {
+                        <div data-filter-item data-filter-text="@item.Subject @item.UserName @item.Country @item.Explanation">
+                            <a class="thread" href="/Nexam-Forum-Question-Discussion/@item.AskQuestionID">
+                                <h3 dir="auto">@item.Subject</h3>
+                                <div class="meta">
+                                    <span><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg> @item.UserName</span>
+                                    @if (!string.IsNullOrWhiteSpace(item.Country))
+                                    {
+                                        <span><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg> @item.Country</span>
+                                    }
                                 </div>
-                            </div>
-                        }
- 
+                                @if (!string.IsNullOrWhiteSpace(item.Explanation))
+                                {
+                                    <p class="excerpt" dir="auto">@Excerpt(item.Explanation)</p>
+                                }
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <div class="empty hidden" data-filter-empty>
+                    <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                    <p class="mb-0">No questions match your filter.</p>
                 </div>
             </div>
-            @*<div class="col-lg-4 col-md-12 order-last">
-                    <div class="widget-area">
-                        <div class="search-widget mb-50">
-                            <div class="search-wrap">
-                                <form action="/Home/SearchResult" method="post">
-                                    <input type="search" placeholder="Searching..." name="search" class="search-input" value="">
-                                    <button type="submit" value="Search"><i class="flaticon-search"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="recent-posts mb-50">
-                            <h3 class="widget-title">All Subjects</h3>
-                            <ul>
-                                @foreach (var item in Model.SubjectList)
-                                {
-                                    <li><a href="/Questions/@item.SubjectID">@item.SubjectName</a></li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>*@
-        </div>
+        }
     </div>
 </div>

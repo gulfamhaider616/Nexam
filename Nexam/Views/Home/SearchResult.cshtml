@@ -1,116 +1,66 @@
 ﻿@model QuestionListViewModel
 @{
-    ViewBag.Title = "Nexam | Search";
-    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "Search,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    var hasSearch = !string.IsNullOrWhiteSpace(Model.Search);
+    ViewBag.Title = hasSearch ? $"Nexam | Search: {Model.Search}" : "Nexam | Search questions";
+    ViewBag.Description = "Search thousands of solved MCQs across PPSC, FPSC and NTS past papers and subject banks.";
+    ViewBag.KeyWords = "search MCQs, PPSC questions, past paper questions";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var number = 1;
 }
-<div class="rs-inner-blog orange-color pt-40 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row">
 
-            <div class="col-lg-8 pr-10">
-                @*<div class="col-lg-12 pr-50">
-                    <h2 style="text-align:center;">@Model.Paper</h2>
-                </div>*@
-                <div class="row" id="easyPaginate">
-                    
-                    @{ int counter = 1;
-                        foreach (var item in Model.questions)
-                        {
-                            <div class="col-lg-12 mb-10 items">
-                                <div class="blog-item">
-                                    <div class="blog-content">
-                                        <h3 class="blog-title"> @counter. <a href="~/PPSC-Past-Paper-Question-Discussion/@item.QuestionID"> @item.QuestionStatement </a></h3>
-                                        <div class="blog-meta">
-                                            <ul class="btm-cate">
-                                                <li>
-                                                    <div class="blog-date">
-                                                        @if (item.SubjectName != null)
-                                                        {
-                                                            <i class="fa fa-calendar-check-o"></i> <span>Subject:&nbsp; @item.SubjectName</span>
-                                                        }
-                                                        else
-                                                        {
-                                                            <i class="fa fa-calendar-check-o"></i><span>Subject: &nbsp;Generic</span>
-                                                        }
-                                                    </div>
-                                                </li>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Search</span></nav>
+        <h1>Search questions</h1>
+    </div>
 
-                                            </ul>
-                                        </div>
-                                        <div class="blog-desc">
-                                            @if (item.Options != null)
-                                            {
-                                                <ol style="list-style-type:upper-alpha">
-                                                    @foreach (var option in item.Options)
-                                                    {
-                                                        <li>@option.Choice</li>
-                                                    }
-                                                </ol>if (!String.IsNullOrEmpty(item.CorrectAnswer))
-                                                {
-                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <br /><br />if (!String.IsNullOrEmpty(item.CorrectAnswer))
-                                                {
-                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
-                                                }
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            counter++;
-                        }
+    <div class="section" style="padding-top:12px">
+        <form class="filters" action="/Home/SearchResult" method="get" role="search">
+            <div class="search-field">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" type="search" name="search" value="@Model.Search" placeholder="Search any question, e.g. largest ocean" aria-label="Search questions" data-search-input autofocus>
+            </div>
+            <div class="cluster">
+                <select class="select" name="subject" aria-label="Subject" style="max-width:260px">
+                    <option value="">All subjects</option>
+                    @foreach (var s in Model.SubjectList)
+                    {
+                        <option value="@s.SubjectID" selected="@(Model.SelectedSubjectId == s.SubjectID)">@s.SubjectName</option>
                     }
-                </div>
+                </select>
+                <button class="btn btn-primary" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Search</button>
+                <label class="switch"><input type="checkbox" data-answers-toggle><span>Show answers</span></label>
             </div>
-            <div class="col-lg-4 col-md-12 order-last">
-                <div class="widget-area">
-                    <div class="search-widget mb-50">
-                        <div class="search-wrap">
-                            <form action="/Home/SearchResult" method="post">
-                                <input type="search" placeholder="Searching..." name="search" class="search-input" value="">
-                                <button type="submit" value="Search"><i class="flaticon-search"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="recent-posts mb-50">
-                        <h3 class="widget-title">All Subjects</h3>
-                        <ul>
-                            @foreach (var item in Model.SubjectList)
-                            {
-                                <li><a href="/Questions/@item.SubjectID">@item.SubjectName</a></li>
-                            }
-                        </ul>
-                    </div>
-                </div>
+        </form>
+
+        @if (!hasSearch)
+        {
+            <div class="empty">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <p class="mb-0">Type a word or phrase to search all questions.</p>
             </div>
-        </div>
+        }
+        else if (Model.questions.Count == 0)
+        {
+            <div class="empty">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <p class="mb-0">No questions found for <strong>@Model.Search</strong>. Try fewer or different words.</p>
+            </div>
+        }
+        else
+        {
+            <p class="muted">
+                @Model.TotalCount @(Model.TotalCount == 1 ? "question" : "questions") found for <strong>@Model.Search</strong>@(Model.TotalCount > Model.questions.Count ? $" (showing the first {Model.questions.Count}; refine your search to narrow it down)" : "").
+            </p>
+            <div class="q-list">
+                @foreach (var question in Model.questions)
+                {
+                    var url = question.PaperID == 0
+                        ? "/Question-Detail/" + question.QuestionID
+                        : "/PPSC-Past-Paper-Question-Discussion/" + question.QuestionID;
+                    @await Html.PartialAsync("_QuestionCard", new QuestionCardModel(question, number++, url))
+                }
+            </div>
+        }
     </div>
 </div>
-
-<script src="/assets/js/jquery-latest.js"></script>
-<script src="/assets/js/jquery.easyPaginate.js"></script>
-<script>
-    $('#easyPaginate').easyPaginate({
-        paginateElement: 'div.items',
-        elementsPerPage:10,
-        effect: 'climb',
-        slideOffset: '50'
-    });
-</script>
-
-<style>
-    .easyPaginateNav a {
-        padding: 5px;
-    }
-
-        .easyPaginateNav a.current {
-            font-weight: bold;
-            text-decoration: underline;
-        }
-</style>

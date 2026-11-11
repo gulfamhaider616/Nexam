@@ -2,38 +2,84 @@
 @{
     ViewBag.Title = "ForumMainPage";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 1;
+}
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
+}
+@section Scripts {
+    <script src="/js/forum-admin.js"></script>
 }
 
-<div id="banner-wrapper">
-    <div id="banner" class="box container" style="width:100%;">
-        <div class="row">
-            <div class="col-md-12" style="width:100%;margin:0 auto;overflow-x:auto;padding:1%;">
-                @*<h5 style="float:right;">Total Records:  <label style="color:red;padding-left: 5px;">  @Model.TotalRecords</label></h5>*@
-                <table class="rest" border="0" style="width: 100%;text-align: center;color: black;border: 1px solid black;font-size: 88%;">
-                    <thead style="font-weight: 600;background: darksalmon !important;">
-                        <tr style="color:white;">
-                            <td>Serial</td>
-                            <td>Title</td>
-                            <td>Name</td>
-                            <td>Country</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{int count = 1; }
-                        @foreach (var Item in Model)
-                        {
-                            <tr>
-                                <td>@count</td>
-                                <td><a href="/Admin/AdminQuestionPreview?QuestionID=@Item.AskQuestionID" style="text-decoration:none"> @Item.Subject </a></td>
-                                <td>@Item.UserName</td>
-                                <td>@Item.Country</td>
-                            </tr>
-                            count++;
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="page-head">
+    <h1>Published questions</h1>
+    <p>Questions that are visible on the public forum.</p>
+    <div class="cluster">
+        <a class="chip" href="/Forum/ForumMainPage">All</a>
+        <a class="chip" href="/Forum/Publish" aria-pressed="true">Published</a>
+        <a class="chip" href="/Forum/UnPublish">Awaiting review</a>
     </div>
 </div>
 
+@if (!Model.Any())
+{
+    <div class="empty mt-3">
+        <svg class="icon" aria-hidden="true"><use href="#i-message"/></svg>
+        <p class="mb-0">No published questions yet.</p>
+    </div>
+}
+else
+{
+    <div class="mt-3" data-filter-scope>
+        <div class="table-tools">
+            <div class="search-field">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" type="search" placeholder="Filter by title, name or country" aria-label="Filter published questions" data-filter-input>
+            </div>
+            <span class="count" data-filter-count></span>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr><th class="num">#</th><th>Title</th><th>Name</th><th>Country</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var Item in Model)
+                    {
+                        <tr data-filter-item>
+                            <td class="num">@count</td>
+                            <td><a class="cell-title" dir="auto" href="/Forum/AdminQuestionPreview?QuestionID=@Item.AskQuestionID">@Item.Subject</a></td>
+                            <td>@Item.UserName</td>
+                            <td>@Item.Country</td>
+                            <td>
+                                @if (Item.Publish == 0)
+                                {
+                                    <span class="badge badge-amber">Awaiting review</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-success">Published</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <a class="btn btn-secondary btn-sm" href="/Forum/AdminQuestionPreview?QuestionID=@Item.AskQuestionID"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Preview</a>
+                                    @if (Item.Publish == 0)
+                                    {
+                                        <button type="button" class="btn btn-primary btn-sm" data-action="publish" data-id="@Item.AskQuestionID">Publish</button>
+                                    }
+                                    <button type="button" class="btn btn-danger btn-sm" data-action="delete" data-id="@Item.AskQuestionID" data-confirm="Delete this forum question? This cannot be undone."><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="empty hidden mt-3" data-filter-empty>
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <p class="mb-0">No question matches your filter.</p>
+        </div>
+    </div>
+}

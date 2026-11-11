@@ -19,7 +19,8 @@ public interface IQuestionRepository
 {
     Task<Question> GetByIdAsync(int questionId);
     Task<List<Question>> GetBySubjectAsync(int subjectId);
-    Task<List<Question>> SearchAsync(string search);
+    /// <summary>Searches the question bank and the PPSC questions; returns at most <paramref name="limit"/> rows plus the total match count.</summary>
+    Task<(List<Question> Items, int Total)> SearchAsync(string search, int? subjectId, int limit);
     Task<bool> SaveAsync(Question question);
     Task<bool> UpdateAsync(Question question);
     Task<bool> DeleteAsync(int questionId);

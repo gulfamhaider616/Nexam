@@ -1,100 +1,91 @@
-﻿@model QuestionListViewModel
+@model QuestionListViewModel
 @{
-	ViewBag.Title = "Nexam | FPSC Question";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,FPSC,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Nexam | FPSC Question";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var questions = Model.questions ?? new List<Question>();
+    var paperList = Model.PaperList ?? new List<Paper>();
+    var paperName = string.IsNullOrWhiteSpace(Model.Paper) ? "FPSC paper" : Model.Paper;
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="">
-			<div style="">
-				<div class="col-md-3">
-					<br /><br />
-					<ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
-						@foreach (var item in Model.PaperList)
-						{
-							<li class="list-group-item"><a href="~/FPSC-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
-						}
-					</ul>
-				</div>
-				<div class="col-md-8">
-					<h2 style="text-align:center;text-decoration: underline;">@Model.Paper</h2>
-					<table class="table_data">
-						@{ int counter = 1;
-							foreach (var item in Model.questions)
-							{
-								<tr>
-									<td>
-										<br />
-										<div style="border-bottom: 1px solid;font-size: 16px;line-height: 1.8;">
-											<strong>
-												<span>@counter.  </span>
-
-												<span style="display: inline;"><a href="/FPSC/FPSCQuestionDiscussion?questionID=@item.QuestionID"> @item.QuestionStatement </a></span>
-											</strong>
-											@if (item.Options != null)
-											{
-												<ol style="list-style-type:upper-alpha">
-													@foreach (var option in item.Options)
-													{
-														<li>@option.Choice</li>
-}
-												</ol>if (!String.IsNullOrEmpty(item.CorrectAnswer))
-												{
-													<strong>Correct Answer: @item.CorrectAnswer</strong>
-}
-											}
-											else
-											{
-												<br /><br />if (!String.IsNullOrEmpty(item.CorrectAnswer))
-												{
-													<strong>Correct Answer: @item.CorrectAnswer</strong>
-}
-											}
-											<div style="float:right;">
-												<span><a href="~/FPSC-Past-Paper-Question-Discussion/@item.QuestionID">Edit</a></span> <span><a href="/FPSC/DeleteFPSCQuestionById?questionID=@item.QuestionID"> | Delete</a></span>
-											</div>
-											<br />
-										</div>
-									</td>
-								</tr>
-								counter++;
-							}
-						}
-					</table>
-				</div>
-
-			</div>
-		</div>
-	</div>
+<div class="page-head">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/FPSC/FPSC_Home">FPSC</a><span>/</span><a href="/FPSC/GetAllFPSCPapersByAdmin">Papers</a><span>/</span><span aria-current="page" dir="auto">@paperName</span></nav>
+    <h1 dir="auto">@paperName</h1>
+    <p>@questions.Count @(questions.Count == 1 ? "question" : "questions") in this paper.</p>
+    <div class="cluster">
+        <a class="btn btn-primary" href="/FPSC/NewFPSCQuestion"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add question</a>
+        <a class="btn btn-secondary" href="/FPSC/GetAllFPSCPapersByAdmin">All papers</a>
+        @if (Model.PaperID != 0)
+        {
+            <a class="btn btn-ghost" href="/FPSC-Past-Paper-Question/@Model.PaperID" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg>View on site</a>
+        }
+    </div>
 </div>
 
-<script>
-    $('table.table_data').each(function () {
-        var currentPage = 0;
-        var numPerPage = 10;
-        var $table = $(this);
-        $table.bind('repaginate', function () {
-            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-        });
-        $table.trigger('repaginate');
-        var numRows = $table.find('tbody tr').length;
-        var numPages = Math.ceil(numRows / numPerPage);
-        var $pager = $('<div class="pager"></div>');
-        for (var page = 0; page < numPages; page++) {
-            $('<span class="page-number"></span>').text(page + 1).bind('click', {
-                newPage: page
-            }, function (event) {
-                currentPage = event.data['newPage'];
-                $table.trigger('repaginate');
-                $(this).addClass('active').siblings().removeClass('active');
-            }).appendTo($pager).addClass('clickable');
-        }
+@if (paperList.Count > 0)
+{
+    <details class="panel" style="margin-bottom:16px">
+        <summary style="cursor:pointer;font-weight:600">Switch to another paper</summary>
+        <div class="stack" style="--gap:4px;margin-top:12px;max-height:260px;overflow-y:auto">
+            @foreach (var item in paperList)
+            {
+                <a href="/FPSC/GetAllFPSCQuestionsByPaperIDAdmin?paperid=@item.PaperID" dir="auto" style="display:block;padding:4px 0">@item.PaperName</a>
+            }
+        </div>
+    </details>
+}
 
-        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
-    });
-</script>
+<div data-filter-scope>
+    <div class="filters">
+        <div class="search-field">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" type="search" placeholder="Filter these questions" aria-label="Filter these questions" data-filter-input>
+        </div>
+        <div class="filter-meta"><span data-filter-count></span></div>
+    </div>
 
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>#</th><th>Question</th><th>Answer</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < questions.Count; i++)
+                {
+                    var item = questions[i];
+                    <tr data-filter-item>
+                        <td>@(i + 1)</td>
+                        <td>
+                            <strong dir="auto">@item.QuestionStatement</strong>
+                            @if (item.Options != null && item.Options.Count > 0)
+                            {
+                                <ol type="A" dir="auto" style="margin:8px 0 0;padding-left:1.4em">
+                                    @foreach (var option in item.Options)
+                                    {
+                                        <li>@option.Choice</li>
+                                    }
+                                </ol>
+                            }
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.CorrectAnswer))
+                            {
+                                <span class="badge badge-success" dir="auto">@item.CorrectAnswer</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a class="btn btn-secondary btn-sm" href="/FPSC/GetFPSCQuestionById?questionID=@item.QuestionID"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>Edit</a>
+                                <a class="btn btn-danger btn-sm" href="/FPSC/DeleteFPSCQuestionById?questionID=@item.QuestionID" data-confirm="Delete this question? This cannot be undone."><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="empty @(questions.Count == 0 ? "" : "hidden")" data-filter-empty>
+        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <p class="mb-0">No questions found.</p>
+    </div>
+</div>

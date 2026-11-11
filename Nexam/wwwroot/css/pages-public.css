@@ -1,0 +1,40 @@
+/* Small page-specific additions for public pages (paper question lists, discussions, contact, text pages).
+   Uses the tokens from nexam.css; loaded through @section Head on the pages that need it. */
+
+/* Sidebar link lists (other papers, subjects) */
+.side-links { display: grid; gap: 2px; max-height: 420px; overflow-y: auto; margin: 0 -6px; padding: 0 6px; scrollbar-width: thin; }
+.side-links a { display: block; padding: 8px 10px; border-radius: 10px; color: var(--text); font-size: .92rem; line-height: 1.35; }
+.side-links a:hover { background: var(--surface-2); text-decoration: none; }
+.side-links a[aria-current="page"] { background: var(--brand-soft); color: var(--brand); font-weight: 700; }
+
+/* Question discussion */
+.discussion { max-width: 820px; margin-inline: auto; }
+.discussion .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.discussion .meta-row a { text-decoration: none; }
+.comments { margin-top: 28px; }
+.comments > h2 { font-size: 1.2rem; margin-bottom: 12px; }
+.comments-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; min-height: 120px; }
+
+/* Stored paper HTML (CSS papers) */
+.prose.paper-text { max-width: none; line-height: 1.8; }
+.prose.paper-text img { max-width: 100%; height: auto; }
+.prose.paper-text table { max-width: 100%; display: block; overflow-x: auto; }
+
+/* Contact */
+.contact-layout { display: grid; gap: 24px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 860px) { .contact-layout { grid-template-columns: 320px minmax(0, 1fr); gap: 32px; } }
+.contact-item { display: flex; gap: 14px; align-items: flex-start; }
+.contact-item .tile { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: var(--brand-soft); color: var(--brand); }
+.contact-item .tile .icon { width: 22px; height: 22px; }
+.contact-item strong { display: block; }
+
+/* About */
+.about-grid { display: grid; gap: 28px; align-items: center; }
+@media (min-width: 860px) { .about-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.about-grid img { width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow); }
+
+/* Error page */
+.error-state { text-align: center; padding-block: 56px; }
+.error-state .tile { width: 72px; height: 72px; margin: 0 auto 18px; display: grid; place-items: center; border-radius: 20px; background: var(--brand-soft); color: var(--brand); }
+.error-state .tile .icon { width: 34px; height: 34px; }
+.error-state p { color: var(--muted); max-width: 46ch; margin-inline: auto; }

@@ -5,19 +5,62 @@
     ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
+}
 
-<div class="main_bg">
-    <!-- start main -->
-    <div class="container">
-        <div class="main row">
-            @foreach (var Item in Model)
-            {
-                <div class="col-md-3 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-                    <h4><a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID">@Item.SubjectName</a></h4>
-                    <p class="para">@Item.SubjectDetail</p>
-                    <a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID" class="fa-btn btn-1 btn-1e">Get Started</a>
-                </div>
-            }
-        </div>
+<div class="page-head">
+    <h1>Subjects</h1>
+    <p>Open a subject to review, edit or delete its questions.</p>
+    <div class="cluster">
+        <a class="btn btn-primary" href="/Admin/AddNewQuestion"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add question</a>
+        <a class="btn btn-secondary" href="/Admin/AddNewSubject"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add subject</a>
     </div>
-</div><!-- end main -->
+</div>
+
+<div class="stat-grid mt-3">
+    <div class="stat"><strong>@Model.Count()</strong><span>Subjects</span></div>
+</div>
+
+<section data-filter-scope aria-label="Subjects">
+    <div class="table-tools">
+        <div class="search-field">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" type="search" placeholder="Filter subjects" aria-label="Filter subjects" data-filter-input>
+        </div>
+        <span class="count" data-filter-count></span>
+    </div>
+
+    <div class="admin-tiles">
+        @foreach (var Item in Model)
+        {
+            <a class="admin-tile" href="/Admin/GetAllQuestionsByAdmin?SubjectID=@Item.SubjectID" data-filter-item>
+                <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span>
+                <div>
+                    <h3>@Item.SubjectName</h3>
+                    <p>@Item.SubjectDetail</p>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="empty hidden" data-filter-empty>
+        <svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>
+        <p class="mb-0">No subject matches your filter.</p>
+    </div>
+</section>
+
+<h2 class="mt-4" style="font-size:1.2rem">Other areas</h2>
+<div class="admin-tiles">
+    <a class="admin-tile" href="/Forum/UnPublish">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-message"/></svg></span>
+        <div><h3>Forum moderation</h3><p>Review questions waiting to be published.</p></div>
+    </a>
+    <a class="admin-tile" href="/Admin/GetContacts">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-inbox"/></svg></span>
+        <div><h3>Contact messages</h3><p>Messages sent from the contact form.</p></div>
+    </a>
+    <a class="admin-tile" href="/CSS/CSS_Home">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+        <div><h3>CSS papers</h3><p>Add and review CSS past papers.</p></div>
+    </a>
+</div>

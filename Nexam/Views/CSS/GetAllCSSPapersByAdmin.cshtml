@@ -4,20 +4,64 @@
 	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
 	ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,CSS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	int count = 1;
+}
+@section Head {
+	<link rel="stylesheet" href="/css/pages-admin.css">
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row">
-			@foreach (var Item in Model)
-            {
-				<div class="col-md-3 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-					<h4><a href="/CSS/GetAllCSSQuestionsByPaperIDAdmin?paperid=@Item.PaperID">@Item.PaperName</a></h4>
-					<p class="para">@Item.PaperDetail</p>
-					<a href="/PPSC/GetAllCSSQuestionsByPaperIDAdmin?paperid=@Item.PaperID" class="fa-btn btn-1 btn-1e">Get Started</a>
-				</div>
-            }
+<div class="page-head">
+	<h1>CSS papers</h1>
+	<p>All CSS past papers. Open one to see its full question paper.</p>
+	<div class="cluster">
+		<a class="btn btn-primary" href="/CSS/NewCSSPaper"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add CSS paper</a>
+		<a class="btn btn-secondary" href="/CSS/CSS_Home">CSS home</a>
+	</div>
+</div>
+
+@if (!Model.Any())
+{
+	<div class="empty mt-3">
+		<svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>
+		<p class="mb-0">No CSS papers yet.</p>
+	</div>
+}
+else
+{
+	<div class="mt-3" data-filter-scope>
+		<div class="table-tools">
+			<div class="search-field">
+				<svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+				<input class="input" type="search" placeholder="Filter papers" aria-label="Filter papers" data-filter-input>
+			</div>
+			<span class="count" data-filter-count></span>
+		</div>
+		<div class="table-wrap">
+			<table class="table">
+				<thead>
+					<tr><th class="num">#</th><th>Paper</th><th>Detail</th><th>Actions</th></tr>
+				</thead>
+				<tbody>
+					@foreach (var Item in Model)
+					{
+						<tr data-filter-item>
+							<td class="num">@count</td>
+							<td><a class="cell-title" href="/CSS-Past-Paper-Question/@Item.PaperID">@Item.PaperName</a></td>
+							<td class="muted">@Item.PaperDetail</td>
+							<td>
+								<div class="actions">
+									<a class="btn btn-secondary btn-sm" href="/CSS-Past-Paper-Question/@Item.PaperID"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Open</a>
+								</div>
+							</td>
+						</tr>
+						count++;
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="empty hidden mt-3" data-filter-empty>
+			<svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+			<p class="mb-0">No paper matches your filter.</p>
 		</div>
 	</div>
-</div><!-- end main -->
+}

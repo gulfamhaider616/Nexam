@@ -1,25 +1,25 @@
-﻿
-@{
-    ViewBag.Title = "UserLogin";
+﻿@{
+    ViewBag.Title = "Nexam | Log in";
+    ViewBag.Description = "Log in to your Nexam account to take quizzes and track your progress.";
+    ViewBag.KeyWords = "Nexam login, user login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="rs-login pt-100 pb-100 md-pt-70 md-pb-70">
-    <div class="container">
-        <div class="noticed">
-            <div class="main-part">
-                <div class="method-account">
-                    <h2 class="login">Login</h2>
-                    <form action="/User/VerifyUser" method="post">
-                        <input type="email" name="email" placeholder="E-mail" required="">
-                        <input type="password" name="password" placeholder="Password" required="">
-                        <button type="submit" class="readon submit-btn">login</button>
-                        <div class="last-password">
-                            <p>Not registered? <a href="/User/User_Registration">Create an account</a></p>
-                        </div>
-                    </form>
-                </div>
+<div class="container auth-wrap">
+    <div class="auth-card form-card">
+        <h1>Log in</h1>
+        <p class="muted">Welcome back. Log in to take quizzes and see your progress.</p>
+        <form action="/User/VerifyUser" method="post">
+            <div class="field">
+                <label for="email">Email</label>
+                <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
             </div>
-        </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input class="input" type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
+        </form>
+        <p class="muted text-center mt-3 mb-0">Not registered? <a href="/User/User_Registration">Create an account</a></p>
     </div>
 </div>

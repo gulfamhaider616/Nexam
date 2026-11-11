@@ -1,68 +1,80 @@
 ﻿@model IEnumerable<Quiz>
 @{
-    ViewBag.Title = "UserDashboard";
+    ViewBag.Title = "Nexam | My Quizzes";
+    ViewBag.Description = "Your Nexam quiz history, scores and results.";
+    ViewBag.KeyWords = "Nexam dashboard, quiz results, my quizzes";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var quizzes = Model?.ToList() ?? new List<Quiz>();
+    int res = 0;
+    int totalitems = quizzes.Count;
+    int totalsum = quizzes.Select(x => x.Score).Sum();
+    if (totalitems > 0)
+    {
+        res = totalsum / totalitems;
+    }
+    var best = totalitems > 0 ? quizzes.Max(x => x.Score) : 0;
+}
+@section Head {
+    <link rel="stylesheet" href="/css/pages-user.css">
 }
 
 <div class="container">
-    <div style="background-color: #21a7d0; padding: 20px; color: white; font-size: x-large;text-align:center;">
-        @User.Identity.Name, You have attempted total @Model.Count() Quizzes and got average score
-
-        @{
-            int res = 0;
-            int totalitems = Model.Count();
-            int totalsum = Model.Select(x => x.Score).Sum();
-            if(totalitems > 0)
-            {
-                res = totalsum / totalitems;
-            }
-            <span>@res%</span>
-        }
-
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped" style="text-align: center;padding: 25px; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; ">
-            <thead style="background-color: #21a7d0; padding: 20px; color: white;">
-                <tr>
-                    <th>Quiz Title</th>
-                    <th>Subject</th>
-                    <th>Total Questions</th>
-                    <th>Score</th>
-                    <th>Total Attempts</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    @*<tr>
-                        <td>@item.QuizID</td>
-                    </tr>*@
-                    <tr>
-                        <td>@item.Title</td>
-                        <td>@item.SubjectName</td>
-                        <td>@item.TotalQuestions</td>
-                        <td>@item.Score%</td>
-                        <td>@item.TotalAttempts</td>
-                        <td>@item.InsertDate.Split(' ')[0]</td>
-                        <td><a href="/Quiz/GeTQuizById?quizID=@item.QuizID">View</a></td>
-                    </tr>
-                    @*<tr>
-                        <td>@item.UpdateDate</td>
-                    </tr>*@
-
-                    @*<tr>
-                        <td>@item.AllowedAttempts</td>
-                    </tr>
-                    <tr>
-                        <td>@item.TimeLimit</td>
-                    </tr>*@
-                }
-            </tbody>
-        </table>
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">My quizzes</span></nav>
+        <h1>Welcome, @User.Identity.Name</h1>
+        <p>You have attempted a total of @totalitems @(totalitems == 1 ? "quiz" : "quizzes") and your average score is @res%.</p>
+        <div class="cluster">
+            <a class="btn btn-primary" href="/Quiz/NewQuiz"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Start a quiz</a>
         </div>
     </div>
 
+    <div class="section" style="padding-top:20px">
+        <div class="stat-grid">
+            <div class="stat"><strong>@totalitems</strong><span>Quizzes taken</span></div>
+            <div class="stat"><strong>@res%</strong><span>Average score</span></div>
+            <div class="stat"><strong>@best%</strong><span>Best score</span></div>
+        </div>
+
+        @if (totalitems == 0)
+        {
+            <div class="empty">
+                <svg class="icon" aria-hidden="true"><use href="#i-trophy"/></svg>
+                <p>You have not taken any quiz yet. Start your first one to see your results here.</p>
+                <a class="btn btn-primary" href="/Quiz/NewQuiz">Start a quiz</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Quiz title</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Questions</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Attempts</th>
+                            <th scope="col">Date</th>
+                            <th scope="col"><span class="sr-only">Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in quizzes)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.SubjectName</td>
+                                <td>@item.TotalQuestions</td>
+                                <td><span class="badge @(item.Score >= 50 ? "badge-success" : "badge-danger") score-pill">@item.Score%</span></td>
+                                <td>@item.TotalAttempts</td>
+                                <td>@((item.InsertDate ?? "").Split(' ')[0])</td>
+                                <td><a class="btn btn-secondary btn-sm" href="/Quiz/GeTQuizById?quizID=@item.QuizID">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

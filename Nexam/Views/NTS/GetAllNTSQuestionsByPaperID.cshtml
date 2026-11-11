@@ -1,100 +1,66 @@
 ﻿@model QuestionListViewModel
 @{
-	ViewBag.Title = "Nexam | NTS Past Paper Questions";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    var paperName = string.IsNullOrWhiteSpace(Model.Paper) ? "NTS Past Paper" : Model.Paper;
+    var questions = Model.questions ?? new List<Question>();
+    var papers = Model.PaperList ?? new List<Paper>();
+    ViewBag.Title = $"Nexam | {paperName} - NTS Past Paper Questions";
+    ViewBag.Description = $"Solve {paperName}: NTS past paper MCQs with answers. Nexam measures your improvement against the exam requirement and gives you constant feedback and guidance.";
+    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var number = 1;
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="">
-			<div style="">
-				<div class="col-md-3">
-					<br /><br />
-					<ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
-						@foreach (var item in Model.PaperList)
-						{
-							<li class="list-group-item"><a href="~/NTS-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
-						}
-					</ul>
-				</div>
-				<div class="col-md-8">
-					<h2 style="text-align:center;text-decoration: underline;">@Model.Paper</h2>
-					<table class="table_data">
-						@{ int counter = 1;
-							foreach (var item in Model.questions)
-							{
-								<tr>
-									<td>
-										<br />
-										<div style="border-bottom: 1px solid;font-size: 16px;line-height: 1.8;">
-											<strong>
-												<span>@counter.  </span>
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
 
-												<span style="display: inline;"><a href="~/NTS-Past-Paper-Question-Discussion/@item.QuestionID"> @item.QuestionStatement </a></span>
-											</strong>
-											@if (item.Options != null)
-											{
-												<ol style="list-style-type:upper-alpha">
-													@foreach (var option in item.Options)
-													{
-														<li>@option.Choice</li>
-}
-												</ol>if (!String.IsNullOrEmpty(item.CorrectAnswer))
-												{
-													<strong>Correct Answer: @item.CorrectAnswer</strong>
-}
-											}
-											else
-											{
-												<br /><br />if (!String.IsNullOrEmpty(item.CorrectAnswer))
-												{
-													<strong>Correct Answer: @item.CorrectAnswer</strong>
-}
-											}
-											@*<div style="float:right;">
-													<span><a href="~/PPSC-Past-Paper-Question-Discussion/@item.QuestionID">Edit</a></span> <span><a href="/PPSC/DeletePPSCQuestionById?questionID=@item.QuestionID"> | Delete</a></span>
-												</div>*@
-											<br />
-										</div>
-									</td>
-								</tr>
-								counter++;
-							}
-						}
-					</table>
-				</div>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/NTS-Past-Papers">NTS Past Papers</a><span>/</span><span aria-current="page">@paperName</span></nav>
+        <h1>@paperName</h1>
+        <p>@questions.Count questions with answers. Select a question to open its discussion.</p>
+    </div>
 
-			</div>
-		</div>
-	</div>
+    <div class="section layout-sidebar" style="padding-top:20px">
+        <div data-filter-scope>
+            <div class="filters">
+                <div class="search-field">
+                    <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                    <input class="input" type="search" placeholder="Filter these questions" aria-label="Filter these questions" data-filter-input>
+                </div>
+                <div class="filter-meta">
+                    <span data-filter-count></span>
+                    <label class="switch"><input type="checkbox" data-answers-toggle><span>Show answers</span></label>
+                </div>
+            </div>
+
+            <div class="q-list">
+                @foreach (var question in questions)
+                {
+                    @await Html.PartialAsync("_QuestionCard", new QuestionCardModel(question, number++, "/NTS-Past-Paper-Question-Discussion/" + question.QuestionID))
+                }
+            </div>
+
+            <div class="empty @(questions.Count == 0 ? "" : "hidden")" data-filter-empty>
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <p class="mb-0">No questions found.</p>
+            </div>
+        </div>
+
+        <aside class="sticky stack" style="--gap:16px">
+            <form class="panel" action="/Home/SearchResult" method="get" role="search">
+                <h3>Search all questions</h3>
+                <div class="field mb-0"><input class="input" type="search" name="search" placeholder="Search…" aria-label="Search questions"></div>
+            </form>
+            <div class="panel">
+                <h3>All NTS papers</h3>
+                <nav class="side-links" aria-label="NTS papers">
+                    @foreach (var item in papers)
+                    {
+                        <a href="/NTS-Past-Paper-Question/@item.PaperID" aria-current="@(item.PaperID == Model.PaperID ? "page" : null)">@item.PaperName</a>
+                    }
+                </nav>
+            </div>
+        </aside>
+    </div>
 </div>
-
-<script>
-    $('table.table_data').each(function () {
-        var currentPage = 0;
-        var numPerPage = 10;
-        var $table = $(this);
-        $table.bind('repaginate', function () {
-            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-        });
-        $table.trigger('repaginate');
-        var numRows = $table.find('tbody tr').length;
-        var numPages = Math.ceil(numRows / numPerPage);
-        var $pager = $('<div class="pager"></div>');
-        for (var page = 0; page < numPages; page++) {
-            $('<span class="page-number"></span>').text(page + 1).bind('click', {
-                newPage: page
-            }, function (event) {
-                currentPage = event.data['newPage'];
-                $table.trigger('repaginate');
-                $(this).addClass('active').siblings().removeClass('active');
-            }).appendTo($pager).addClass('clickable');
-        }
-
-        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
-    });
-</script>
-

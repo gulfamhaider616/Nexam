@@ -1,81 +1,50 @@
 ﻿@{
     ViewBag.Title = "Nexam | Contact";
-    ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    ViewBag.Description = "Contact Nexam. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
 
-<div class="contact-page-section pt-100 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row rs-contact-box mb-90 md-mb-50">
-            @*<div class="col-lg-4 col-md-12-4 lg-pl-0 sm-mb-30 md-mb-30">
-                <div class="address-item">
-                    <div class="icon-part">
-                        <img src="assets/images/contact/icon/1.png" alt="">
-                    </div>
-                    <div class="address-text">
-                        <span class="label">Address</span>
-                        <span class="des">10 B1 Nabi Pura, Gulberg 3, Lahore Pakistan.</span>
-                    </div>
-                </div>
-            </div>*@
-            <div class="col-lg-4 col-md-12 lg-pl-0 sm-mb-30 md-mb-30">
-                <div class="address-item">
-                    <div class="icon-part">
-                        <img src="assets/images/contact/icon/2.png" alt="">
-                    </div>
-                    <div class="address-text">
-                        <span class="label">Email Address</span>
-                        <span class="des"><a href="mailto:info@nexam.com">info@nexam.com</a></span>
-                    </div>
-                </div>
-            </div>
-            @*<div class="col-lg-4 col-md-12 lg-pl-0 sm-mb-30">
-                <div class="address-item">
-                    <div class="icon-part">
-                        <img src="assets/images/contact/icon/3.png" alt="">
-                    </div>
-                    <div class="address-text">
-                        <span class="label">Phone Number</span>
-                        <span class="des"><a href="tel:(092)-300-0890444">(092)-300-0890444</a></span>
-                    </div>
-                </div>
-            </div>*@
-        </div>
-        <div class="row align-items-center">
-            @*<div class="col-lg-6 md-mb-30">
-                <div class="contact-map3">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13605.063067580071!2d74.3550554!3d31.5168598!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8912fbfbae5244b8!2sNexam%20Pvt.%20Ltd.!5e0!3m2!1sen!2s!4v1607588330656!5m2!1sen!2s" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                </div>
-            </div>*@
-            <div class="col-lg-6 pl-60 md-pl-15">
-                <div class="contact-comment-box">
-                    <div class="inner-part">
-                        <h2 class="title mb-mb-15">Get In Touch</h2>
-                        <p>Have some suggestions or just want to say hi? Our  support team are ready to help you 24/7.</p>
-                    </div>
-                    <div id="form-messages"></div>
-                    <form id="contact-form" method="post" action="/Home/SaveContact">
-                        <fieldset>
-                            <div class="row">
-                                <div class="col-lg-6 mb-35 col-md-6 col-sm-6">
-                                    <input class="from-control" type="text" id="name" name="name" placeholder="Name" required="">
-                                </div>
-                                <div class="col-lg-6 mb-35 col-md-6 col-sm-6">
-                                    <input class="from-control" type="text" id="name" name="email" placeholder="Email" required="">
-                                </div>
-
-                                <div class="col-lg-12 mb-50">
-                                    <textarea class="from-control" id="message" name="subject" placeholder="Message" required=""></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group mb-0">
-                                <input class="btn-send" type="submit" value="Submit Now">
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Contact</span></nav>
+        <h1>Get In Touch</h1>
+        <p>Have some suggestions or just want to say hi? Our support team are ready to help you 24/7.</p>
     </div>
-</div> 
+
+    <div class="section contact-layout" style="padding-top:20px">
+        <aside class="panel stack" style="--gap:16px">
+            <div class="contact-item">
+                <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
+                <div>
+                    <strong>Email Address</strong>
+                    <a href="mailto:info@nexam.com">info@nexam.com</a>
+                </div>
+            </div>
+        </aside>
+
+        <form id="contact-form" class="form-card" method="post" action="/Home/SaveContact">
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input class="input" type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required>
+                </div>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                </div>
+            </div>
+            <div class="field">
+                <label for="message">Message</label>
+                <textarea class="textarea" id="message" name="subject" rows="6" placeholder="How can we help?" required></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Submit Now</button>
+            </div>
+        </form>
+    </div>
+</div>

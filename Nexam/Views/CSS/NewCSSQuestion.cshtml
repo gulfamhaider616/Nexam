@@ -3,59 +3,45 @@
 	ViewBag.Title = "NewCSSQuestion";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-<div class="main_btm">
-	<!-- start main_btm -->
-	<div class="container">
-		<div class="main row">
-			<div class="col-md-8">
-				<div class="contact-form">
-					<h2>ADD New CSS Questions</h2>
-					<form action="/CSS/SaveNewCSSQuestion" method="post" style="font-size:18px;line-height:2em;">
-						<div>
-							<span>Select Paper Name</span>
-							<span>
-								<select class="form-control" name="paperid" id="userName">
-									@foreach (var Item in Model)
-									{
-										<option value="@Item.PaperID">@Item.PaperName</option>
-									}
-								</select>
-							</span>
-						</div>
-						<div>
-							<span>Question Paper</span>
-							@*<span><input type="text" name="questionstatement" class="form-control" id="inputEmail3" placeholder="For inline only add question statement"></span>*@
-							<span>
-								<textarea name="questionstatement" id="questionstatement"></textarea>
-								<script>
-									ClassicEditor
-										.create(document.querySelector('#questionstatement'))
-										.then( editor => {
-											console.log( editor );
-										} )
-										.catch( error => {
-											console.error( error );
-										} );
-								</script>
-							</span>
-						</div>
-						@*<div>
-							<span>Choices</span>
-							<span><input type="text" name="choices" class="form-control" id="inputEmail3" placeholder="enter , separated choices"></span>
-						</div>
-						<div>
-							<span>Correct Answer</span>
-							<span><input type="text" name="correctanswer" class="form-control" id="inputEmail3" placeholder="enter correct answer"></span>
-						</div>*@
-						<div>
-							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
+@section Head {
+	<link rel="stylesheet" href="/css/pages-admin.css">
+}
+@section Scripts {
+	<script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+	<script>
+		(function () {
+			var el = document.getElementById('questionstatement');
+			if (el && window.ClassicEditor) {
+				ClassicEditor.create(el).catch(function (err) { console.error(err); });
+			}
+		})();
+	</script>
+}
+
+<div class="page-head">
+	<h1>Add new CSS questions</h1>
+	<p>Attach question text to an existing CSS paper.</p>
 </div>
 
+<div class="form-card wide mt-3">
+	<form action="/CSS/SaveNewCSSQuestion" method="post">
+		<div class="field">
+			<label for="paperid">Paper</label>
+			<select class="select" name="paperid" id="paperid">
+				@foreach (var Item in Model)
+				{
+					<option value="@Item.PaperID">@Item.PaperName</option>
+				}
+			</select>
+		</div>
+		<div class="field">
+			<label for="questionstatement">Question paper</label>
+			<textarea class="textarea" name="questionstatement" id="questionstatement" rows="18" style="min-height:340px"></textarea>
+			<span class="help">The content may contain HTML.</span>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save questions</button>
+			<a class="btn btn-secondary" href="/CSS/CSS_Home">Cancel</a>
+		</div>
+	</form>
+</div>

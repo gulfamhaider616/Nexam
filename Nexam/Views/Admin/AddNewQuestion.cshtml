@@ -5,66 +5,55 @@
     ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
+}
 
-<div class="main_btm">
-    <!-- start main_btm -->
-    <div class="container">
-        <div class="main row">
-            <div class="col-md-8">
-                <div class="contact-form">
-                    <h2>ADD New Question</h2>
-                    <form action="/Admin/SaveQuestion" method="post" style="font-size:18px;line-height:2em;">
-                        <div>
-                            <span>Select Subject Name</span>
-                            <span>
-                                <select class="form-control" name="subjectid" id="userName">
-                                    @foreach (var Item in Model)
-                                     {
-                                         <option value="@Item.SubjectID">@Item.SubjectName</option>
-                                    }
-                                </select>
-                            </span>
-                        </div>
-                        <div>
-                            <span>Question Statement</span>
-                            <span><input type="text" name="questionstatement" class="form-control" id="inputEmail3" placeholder="For inline only add question statement"></span>
-                        </div>
-                        @*<div>
-                            <span>Total Choices</span>
-                            <span>
-                                <select class="form-control" name="numberofchoices" id="userName">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4" selected>4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-
-                            </span>
-                        </div>*@
-                        <div>
-                            <span>Choices</span>
-                            <span><input type="text" name="choices" class="form-control" id="inputEmail3" placeholder="enter , separated choices"></span>
-                        </div>
-                        <div>
-                            <span>Correct Answer</span>
-                            <span><input type="text" name="correctanswer" class="form-control" id="inputEmail3" placeholder="enter correct answer"></span>
-                        </div>
-                        <div>
-                            <label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
+<div class="page-head">
+    <h1>Add question</h1>
+    <p>Add a multiple-choice question to a subject.</p>
 </div>
 
-
+<div class="form-card wide mt-3">
+    <form action="/Admin/SaveQuestion" method="post">
+        <div class="form-grid cols-2">
+            <div class="field">
+                <label for="subjectid">Subject</label>
+                <select class="select" name="subjectid" id="subjectid">
+                    @foreach (var Item in Model)
+                    {
+                        <option value="@Item.SubjectID">@Item.SubjectName</option>
+                    }
+                </select>
+            </div>
+            <div class="field">
+                <label for="numberofchoices">Total choices</label>
+                <select class="select" name="numberofchoices" id="numberofchoices">
+                    @for (int n = 0; n <= 10; n++)
+                    {
+                        <option value="@n" selected="@(n == 4)">@n</option>
+                    }
+                </select>
+                <span class="help">Use 0 for a question without choices.</span>
+            </div>
+        </div>
+        <div class="field">
+            <label for="questionstatement">Question statement</label>
+            <input class="input" type="text" name="questionstatement" id="questionstatement" dir="auto" placeholder="For inline only add question statement" required>
+        </div>
+        <div class="field">
+            <label for="choices">Choices</label>
+            <input class="input" type="text" name="choices" id="choices" dir="auto" placeholder="Choice one, choice two, choice three, choice four">
+            <span class="help">Enter the choices separated by commas.</span>
+        </div>
+        <div class="field">
+            <label for="correctanswer">Correct answer</label>
+            <input class="input" type="text" name="correctanswer" id="correctanswer" dir="auto" placeholder="Enter the correct answer">
+            <span class="help">Type it exactly as it appears in the choices.</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save question</button>
+            <a class="btn btn-secondary" href="/Admin/GetAllSubjects">Cancel</a>
+        </div>
+    </form>
+</div>

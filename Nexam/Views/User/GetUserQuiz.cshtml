@@ -1,49 +1,62 @@
 ﻿@model IEnumerable<Quiz>
 @{
-    ViewBag.Title = "GetUserQuiz";
+    ViewBag.Title = "Nexam | User Quizzes";
+    ViewBag.Description = "Quizzes taken by a Nexam user.";
+    ViewBag.KeyWords = "Nexam quizzes, quiz history";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var quizzes = Model?.ToList() ?? new List<Quiz>();
+}
+@section Head {
+    <link rel="stylesheet" href="/css/pages-user.css">
 }
 
 <div class="container">
-    <table class="table">
-        @foreach (var item in Model)
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/User/UserDashboard">My quizzes</a><span>/</span><span aria-current="page">Quiz list</span></nav>
+        <h1>Quiz list</h1>
+    </div>
+
+    <div class="section" style="padding-top:20px">
+        @if (quizzes.Count == 0)
         {
-            <tr>
-                <td>@item.QuizID</td>
-            </tr>
-
-            <tr>
-                <td>@item.SubjectID</td>
-            </tr>
-            <tr>
-                <td>@item.Title</td>
-            </tr>
-            <tr>
-                <td>@item.UserID</td>
-            </tr>
-            <tr>
-                <td>@item.Score</td>
-            </tr>
-            <tr>
-                <td>@item.TotalQuestions</td>
-            </tr>
-            <tr>
-                <td>@item.InsertDate</td>
-            </tr>
-            <tr>
-                <td>@item.UpdateDate</td>
-            </tr>
-            <tr>
-                <td>@item.TotalAttempts</td>
-            </tr>
-            <tr>
-                <td>@item.AllowedAttempts</td>
-            </tr>
-            <tr>
-                <td>@item.TimeLimit</td>
-            </tr>
+            <div class="empty">
+                <svg class="icon" aria-hidden="true"><use href="#i-inbox"/></svg>
+                <p>There are no quizzes to show here yet.</p>
+                <div class="cluster" style="justify-content:center">
+                    <a class="btn btn-primary" href="/Quiz/NewQuiz">Start a quiz</a>
+                    <a class="btn btn-secondary" href="/User/UserDashboard">My dashboard</a>
+                </div>
+            </div>
         }
-
-    </table>
+        else
+        {
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Quiz title</th>
+                            <th scope="col">Questions</th>
+                            <th scope="col">Score</th>
+                            <th scope="col">Attempts</th>
+                            <th scope="col">Date</th>
+                            <th scope="col"><span class="sr-only">Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in quizzes)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.TotalQuestions</td>
+                                <td><span class="badge @(item.Score >= 50 ? "badge-success" : "badge-danger") score-pill">@item.Score%</span></td>
+                                <td>@item.TotalAttempts</td>
+                                <td>@((item.InsertDate ?? "").Split(' ')[0])</td>
+                                <td><a class="btn btn-secondary btn-sm" href="/Quiz/GeTQuizById?quizID=@item.QuizID">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
 </div>
-

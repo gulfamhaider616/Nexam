@@ -1,146 +1,79 @@
-﻿<!DOCTYPE HTML>
-<html>
+﻿<!DOCTYPE html>
+@{
+    var path = (Context.Request.Path.Value ?? "/").ToLowerInvariant();
+    string Cur(params string[] prefixes) => prefixes.Any(p => path.StartsWith(p)) ? "page" : null;
+}
+<html lang="en">
 <head>
-    <title>@ViewBag.Title</title>
-    <meta name="description" content="@ViewBag.Description">
-    <meta name="keywords" content="@ViewBag.KeyWords">
-    <link href="~/trans-favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <!-- Bootstrap -->
-    <link href="~/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
-    <link href="~/css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <link href="~/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <!-- start plugins -->
-    <script type="text/javascript" src="~/js/jquery.min.js"></script>
-    <script type="text/javascript" src="~/js/bootstrap.js"></script>
-    <script type="text/javascript" src="~/js/bootstrap.min.js"></script>
-    <!-- start slider -->
-    <link href="~/css/slider.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="~/js/modernizr.custom.28468.js"></script>
-    <script type="text/javascript" src="~/js/jquery.cslider.js"></script>
-    <script type="text/javascript">
-        $(function () {
+    <title>@(ViewBag.Title ?? "Admin") | Nexam Admin</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#2447d6">
+    <link rel="icon" href="/images/nexam-mark.svg" type="image/svg+xml">
 
-            $('#da-slider').cslider({
-                autoplay: true,
-                bgincrement: 450
-            });
-
-        });
-    </script>
-    <!-- Owl Carousel Assets -->
-    <link href="~/css/owl.carousel.css" rel="stylesheet">
-    <script src="~/js/owl.carousel.js"></script>
     <script>
-        $(document).ready(function () {
-
-            $("#owl-demo").owlCarousel({
-                items: 4,
-                lazyLoad: true,
-                autoPlay: true,
-                navigation: true,
-                navigationText: ["", ""],
-                rewindNav: false,
-                scrollPerPage: false,
-                pagination: false,
-                paginationNumbers: false,
-            });
-            function setNavigation() {
-                var path = window.location.pathname;
-                path = path.replace(/\/$/, "");
-                path = decodeURIComponent(path);
-                //debugger;
-                $("ul.nav li").each(function () {
-                    var href = $(this).children().attr('href');
-                    $(this).removeClass('active');
-                    if (path.substring(0, href.length) === href) {
-                        $(this).closest('li').addClass('active');
-                    }
-                });
-            }
-            setNavigation();
-
-        });
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('nx-theme'); } catch (e) { }
+            if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            var q = new URLSearchParams(location.search).get('theme');   // ?theme=light|dark previews a theme without saving it
+            if (q === 'light' || q === 'dark') t = q;
+            document.documentElement.setAttribute('data-theme', t);
+        })();
     </script>
-    <!-- //Owl Carousel Assets -->
-    <!----font-Awesome----->
-    <link rel="stylesheet" href="/fonts/css/font-awesome.min.css">
-    <!----font-Awesome----->
-    <!-- Global Site Tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106794809-1"></script>
-    <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments)};
-          gtag('js', new Date());
-
-          gtag('config', 'UA-106794809-1');
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;600&display=swap">
+    <link rel="stylesheet" href="/css/nexam.css">
+    @RenderSection("Head", required: false)
 </head>
 <body>
-    <div class="header_bg header_bg1">
-        <div class="container">
-            <div class="row header">
-                <div class="logo navbar-left">
-                    <a href="/"><img src="/images/trans-nexamLogo.png" style="height: 75px;" /></a>
-                </div>
-                <div class="h_search navbar-right">
-                    <form action="/Admin/AdminSearchResult" method="post">
-                        <input type="text" name="search" class="text" value="Enter text here" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter text here';}">
-                        <input type="submit" value="search">
+    @await Html.PartialAsync("_Icons")
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="admin">
+        <header class="admin-top">
+            <div class="container header-bar" style="max-width:none">
+                <a class="brand" href="/Admin/GetAllSubjects"><img src="/images/nexam-mark.svg" alt="" width="30" height="30">Nexam <span class="badge badge-amber">Admin</span></a>
+                <div class="header-actions">
+                    <form class="header-search" action="/Admin/AdminSearchResult" method="get" role="search">
+                        <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                        <input class="input" type="search" name="search" placeholder="Search questions" aria-label="Search questions">
                     </form>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row h_menu">
-            <nav class="navbar navbar-default navbar-left" role="navigation">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                    <a class="btn btn-ghost btn-sm" href="/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg><span class="hidden-sm">View site</span></a>
+                    <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode">
+                        <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+                        <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
                     </button>
+                    <a class="btn btn-secondary btn-sm" href="/Admin/Logout"><svg class="icon" aria-hidden="true"><use href="#i-logout"/></svg>Log out</a>
                 </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="/Admin/GetAllSubjects">All Subjects</a></li>
-                        <li><a href="/Admin/AddNewSubject">Add Subject</a></li>
-                        <li><a href="/Admin/AddNewQuestion">Add Question</a></li>
-						<li><a href="/PPSC/PPSC_Home">PPSC</a></li>
-						<li><a href="/NTS/NTS_Home">NTS</a></li>
-						<li><a href="/FPSC/FPSC_Home">FPSC</a></li>
-						<li><a href="/CSS/CSS_Home">CSS</a></li>
-						<li><a href="/Forum/ForumMainPage">Forum</a></li>
-                        <li><a href="/Admin/GetContacts">Contact</a></li>
-                        <li><a href="/Admin/Logout">Logout</a></li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-                <!-- start soc_icons -->
+            </div>
+        </header>
+
+        <div class="admin-body">
+            <nav class="admin-nav" aria-label="Admin">
+                <span class="group-label">Content</span>
+                <a href="/Admin/GetAllSubjects" aria-current="@Cur("/admin/getallsubjects", "/admin/getallquestionsbyadmin", "/admin/getquestionbyid", "/admin/adminsearchresult")"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>Subjects</a>
+                <a href="/Admin/AddNewSubject" aria-current="@Cur("/admin/addnewsubject")"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add subject</a>
+                <a href="/Admin/AddNewQuestion" aria-current="@Cur("/admin/addnewquestion")"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add question</a>
+                <span class="group-label">Exams</span>
+                <a href="/PPSC/PPSC_Home" aria-current="@Cur("/ppsc/")"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>PPSC</a>
+                <a href="/NTS/NTS_Home" aria-current="@Cur("/nts/")"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>NTS</a>
+                <a href="/FPSC/FPSC_Home" aria-current="@Cur("/fpsc/")"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>FPSC</a>
+                <a href="/CSS/CSS_Home" aria-current="@Cur("/css/")"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>CSS</a>
+                <span class="group-label">Community</span>
+                <a href="/Forum/ForumMainPage" aria-current="@Cur("/forum/")"><svg class="icon" aria-hidden="true"><use href="#i-message"/></svg>Forum</a>
+                <a href="/Admin/GetContacts" aria-current="@Cur("/admin/getcontacts")"><svg class="icon" aria-hidden="true"><use href="#i-inbox"/></svg>Contacts</a>
             </nav>
-            @*<div class="soc_icons navbar-right">
-                <ul class="list-unstyled text-center">
-                    <li><a href="/Admin/Logout" style="font-size: 18px;color: white;">Logout</a></li>
-                </ul>
-            </div>*@
+
+            <main class="admin-main" id="main">
+                @RenderBody()
+            </main>
         </div>
     </div>
 
-    @RenderBody()
-    <div class="footer_bg">
-        <!-- start footer -->
-        <div class="container">
-            <div class="row  footer">
-                <div class="copy text-center">
-                    <p class="link"><span>&#169; All rights reserved | Design by&nbsp;<a href="#"> Nexam.</a></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script src="/js/nexam.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

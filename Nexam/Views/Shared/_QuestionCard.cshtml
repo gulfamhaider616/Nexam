@@ -1,0 +1,43 @@
+@model QuestionCardModel
+@{
+    var q = Model.Question;
+    var correct = (q.CorrectAnswer ?? "").Trim();
+    var options = q.Options ?? new List<QuestionOption>();
+    var letters = "ABCDEFGH";
+}
+<article class="q-card" id="q-@q.QuestionID" data-filter-item>
+    <div class="q-head">
+        <span class="q-num">@Model.Number</span>
+        @if (Model.ShowSubject)
+        {
+            <span class="badge badge-muted">@(string.IsNullOrWhiteSpace(q.SubjectName) ? "General" : q.SubjectName)</span>
+        }
+    </div>
+    <h3 class="q-text" dir="auto">
+        @if (!string.IsNullOrEmpty(Model.DetailUrl))
+        {
+            <a href="@Model.DetailUrl">@q.QuestionStatement</a>
+        }
+        else
+        {
+            @q.QuestionStatement
+        }
+    </h3>
+    @if (options.Count > 0)
+    {
+        <ol class="options">
+            @for (var i = 0; i < options.Count; i++)
+            {
+                var isCorrect = correct.Length > 0 && string.Equals((options[i].Choice ?? "").Trim(), correct, StringComparison.OrdinalIgnoreCase);
+                <li class="option@(isCorrect ? " is-correct" : "")">
+                    <span class="letter">@(i < letters.Length ? letters[i].ToString() : (i + 1).ToString())</span>
+                    <span dir="auto">@options[i].Choice</span>
+                </li>
+            }
+        </ol>
+    }
+    @if (correct.Length > 0)
+    {
+        <p class="q-answer" dir="auto">Correct answer: @correct</p>
+    }
+</article>

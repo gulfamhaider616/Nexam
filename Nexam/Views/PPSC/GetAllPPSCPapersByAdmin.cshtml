@@ -1,24 +1,54 @@
-﻿@model IEnumerable<Paper>
+@model IEnumerable<Paper>
 @{
-	ViewBag.Title = "Nexam | Paper";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Nexam | Paper";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var papers = Model?.ToList() ?? new List<Paper>();
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row">
-			@foreach (var Item in Model)
-            {
-				<div class="col-md-3 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-					<h4><a href="/PPSC/GetAllQuestionsByPaperIDAdmin?paperid=@Item.PaperID">@Item.PaperName</a></h4>
-					<p class="para">@Item.PaperDetail</p>
-					<a href="/PPSC/GetAllQuestionsByPaperIDAdmin?paperid=@Item.PaperID" class="fa-btn btn-1 btn-1e">Get Started</a>
-                    <a href="/PPSC/UpdatePPSCPaper?paperid=@Item.PaperID" class="fa-btn btn-1 btn-1e">Update</a>
-				</div>
-            }
-		</div>
-	</div>
-</div><!-- end main -->
+<div class="page-head">
+    <h1>PPSC papers</h1>
+    <p>All PPSC papers. Open one to manage its questions, or update the paper details.</p>
+    <div class="cluster">
+        <a class="btn btn-primary" href="/PPSC/NewPaper"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add paper</a>
+        <a class="btn btn-secondary" href="/PPSC/NewPPSCQuestion">Add question</a>
+    </div>
+</div>
+
+<div data-filter-scope>
+    <div class="filters">
+        <div class="search-field">
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" type="search" placeholder="Filter papers by name, year or detail" aria-label="Filter papers" data-filter-input>
+        </div>
+        <div class="filter-meta"><span data-filter-count></span></div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Paper</th><th>Year</th><th>Detail</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var Item in papers)
+                {
+                    <tr data-filter-item>
+                        <td><strong dir="auto">@Item.PaperName</strong></td>
+                        <td>@Item.PaperYear</td>
+                        <td dir="auto">@Item.PaperDetail</td>
+                        <td>
+                            <div class="actions">
+                                <a class="btn btn-secondary btn-sm" href="/PPSC/GetAllQuestionsByPaperIDAdmin?paperid=@Item.PaperID">Questions</a>
+                                <a class="btn btn-ghost btn-sm" href="/PPSC/UpdatePPSCPaper?paperid=@Item.PaperID">Update</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="empty @(papers.Count == 0 ? "" : "hidden")" data-filter-empty>
+        <svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>
+        <p class="mb-0">No papers found.</p>
+    </div>
+</div>

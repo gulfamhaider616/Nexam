@@ -1,64 +1,78 @@
 ﻿@model QuestionListViewModel
 @{
-	ViewBag.Title = Model.PaperDetail.PaperName +" | Nexam";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "CSS,PPSC Past Papers,All Past Papers, CSS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,CSS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    var paper = Model.PaperDetail;
+    var paperName = string.IsNullOrWhiteSpace(paper?.PaperName) ? "CSS Past Paper" : paper.PaperName;
+    var papers = Model.PaperList ?? new List<Paper>();
+    ViewBag.Title = paperName + " | Nexam";
+    ViewBag.Description = $"Read {paperName}: CSS past paper with full questions. Nexam measures your improvement against the exam requirement and gives you constant feedback and guidance.";
+    ViewBag.KeyWords = "CSS,PPSC Past Papers,All Past Papers, CSS Past Papers,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,CSS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="">
-			<div style="">
-				<div class="col-md-3">
-					<br /><br />
-					<ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
-						@foreach (var item in Model.PaperList)
-						{
-							<li class="list-group-item"><a href="~/CSS-Past-Paper-Question/@item.PaperID">@item.PaperName</a></li>
-						}
-					</ul>
-				</div>
-				<div class="col-md-8">
-					<h2 style="text-align:center;text-decoration: underline;">@Model.PaperDetail.PaperName</h2>
-					<div style="text-align:center;">@Model.PaperDetail.PaperDetail</div>
-					<table class="table_data">
-								<tr>
-									<td>
-										<br />
-										<div style="border-bottom: 1px solid;font-size: 14px;line-height: 2.8;">
-											<strong>
-												<span>@Html.Raw(Model.PaperDetail.QuestionsText)</span>
-											</strong>
-											
-											<br />
-										</div>
-									</td>
-								</tr>
-					</table>
-					<div id="disqus_thread"></div>
-					<script>
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
 
-									/**
-									*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-									*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-									/*
-									var disqus_config = function () {
-									this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-									this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-									};
-									*/
-									(function() { // DON'T EDIT BELOW THIS LINE
-									var d = document, s = d.createElement('script');
-									s.src = 'https://nexam.disqus.com/embed.js';
-									s.setAttribute('data-timestamp', +new Date());
-									(d.head || d.body).appendChild(s);
-									})();
-					</script>
-				</div>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/CSS-Past-Papers">CSS Past Papers</a><span>/</span><span aria-current="page">@paperName</span></nav>
+        <h1>@paperName</h1>
+        @if (!string.IsNullOrWhiteSpace(paper?.PaperDetail))
+        {
+            <p>@paper.PaperDetail</p>
+        }
+    </div>
 
-			</div>
-		</div>
-	</div>
+    <div class="section layout-sidebar" style="padding-top:20px">
+        <div>
+            <article class="card">
+                <div class="card-body prose paper-text" dir="auto">
+                    @Html.Raw(paper?.QuestionsText)
+                </div>
+            </article>
+
+            <section class="comments" aria-labelledby="comments-title">
+                <h2 id="comments-title">Discussion</h2>
+                <div class="comments-box">
+                    <div id="disqus_thread"></div>
+                </div>
+            </section>
+        </div>
+
+        <aside class="sticky stack" style="--gap:16px">
+            <form class="panel" action="/Home/SearchResult" method="get" role="search">
+                <h3>Search all questions</h3>
+                <div class="field mb-0"><input class="input" type="search" name="search" placeholder="Search…" aria-label="Search questions"></div>
+            </form>
+            <div class="panel">
+                <h3>All CSS papers</h3>
+                <nav class="side-links" aria-label="CSS papers">
+                    @foreach (var item in papers)
+                    {
+                        <a href="/CSS-Past-Paper-Question/@item.PaperID" aria-current="@(paper != null && item.PaperID == paper.PaperID ? "page" : null)">@item.PaperName</a>
+                    }
+                </nav>
+            </div>
+        </aside>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        /*
+        var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        */
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://nexam.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+    </script>
+}

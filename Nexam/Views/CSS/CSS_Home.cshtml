@@ -2,26 +2,26 @@
 	ViewBag.Title = "CSS_Home";
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section Head {
+	<link rel="stylesheet" href="/css/pages-admin.css">
+}
 
+<div class="page-head">
+	<h1>CSS papers</h1>
+	<p>Add new CSS past papers and review the ones already published.</p>
+</div>
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="text-align:center;margin: auto;width: 70%;">
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/CSS/NewCSSPaper">ADD New CSS Paper</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/CSS/NewCSSPaper" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-			@*<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/CSS/NewCSSQuestion">ADD New CSS Question</a></h4>
-				<a href="/CSS/NewCSSQuestion" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>*@
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/CSS/GetAllCSSPapers">Get All CSS Papers</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/CSS/GetAllCSSPapersByAdmin" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-		</div>
-	</div>
-</div><!-- end main -->
+<div class="admin-tiles mt-3">
+	<a class="admin-tile" href="/CSS/NewCSSPaper">
+		<span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+		<div><h3>Add new CSS paper</h3><p>Create a paper with its full question text.</p></div>
+	</a>
+	<a class="admin-tile" href="/CSS/GetAllCSSPapersByAdmin">
+		<span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+		<div><h3>All CSS papers</h3><p>Browse every CSS paper in the admin list.</p></div>
+	</a>
+	<a class="admin-tile" href="/CSS/GetAllCSSPapers">
+		<span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></span>
+		<div><h3>Public paper list</h3><p>See how visitors see the CSS papers.</p></div>
+	</a>
+</div>

@@ -64,7 +64,7 @@ public class HomeController(
         return saved ? RedirectToAction("Index") : View("Contact");
     }
 
-    public async Task<IActionResult> SearchResult(string search) => View(await questions.SearchAsync(search));
+    public async Task<IActionResult> SearchResult(string search, int? subject) => View(await questions.SearchAsync(search, subject));
 
     public async Task<IActionResult> QuestionDiscussion(int questionID)
     {

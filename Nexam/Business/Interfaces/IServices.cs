@@ -20,7 +20,7 @@ public interface IQuestionService
     /// <returns>The question, or null when it does not exist.</returns>
     Task<Question> GetByIdAsync(int questionId);
     Task<QuestionListViewModel> GetBySubjectAsync(int subjectId);
-    Task<QuestionListViewModel> SearchAsync(string search);
+    Task<QuestionListViewModel> SearchAsync(string search, int? subjectId = null);
     Task<bool> SaveAsync(Question question);
     Task<bool> UpdateAsync(Question question);
     Task<bool> DeleteAsync(int questionId);

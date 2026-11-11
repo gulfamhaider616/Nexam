@@ -1,18 +1,51 @@
 @model PaperListModel
-<div id="rs-popular-courses" class="rs-popular-courses bg6 style1 pt-94 pb-70 md-pt-64 md-pb-40" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row y-middle mb-50 md-mb-30">
-            <div class="col-md-6 sm-mb-30">
-                <div class="sec-title">
-                    <h2 class="title mb-0">@Model.Title</h2>
+@{
+    var cards = Model.Cards.ToList();
+    // Year / exam chips, in the order the cards come (newest first).
+    var groups = cards.Select(c => c.Badge).Where(b => !string.IsNullOrWhiteSpace(b)).Distinct().Take(14).ToList();
+}
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">@Model.Title</span></nav>
+        <h1>@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <p>@Model.Subtitle</p>
+        }
+    </div>
+
+    <div class="section" style="padding-top:20px" data-filter-scope>
+        @if (Model.Filterable && cards.Count > 1)
+        {
+            <div class="filters">
+                <div class="search-field">
+                    <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                    <input class="input" type="search" placeholder="Filter papers by name, post or year" aria-label="Filter papers" data-filter-input>
                 </div>
+                @if (groups.Count > 1)
+                {
+                    <div class="chips" role="group" aria-label="Filter by year">
+                        <button type="button" class="chip" data-filter-chip="" aria-pressed="true">All</button>
+                        @foreach (var g in groups)
+                        {
+                            <button type="button" class="chip" data-filter-chip="@g" aria-pressed="false">@g</button>
+                        }
+                    </div>
+                }
+                <div class="filter-meta"><span data-filter-count></span></div>
             </div>
-        </div>
-        <div class="row">
-            @foreach (var card in Model.Cards)
+        }
+
+        <div class="grid-cards">
+            @foreach (var card in cards)
             {
                 @await Html.PartialAsync("_PaperCard", card)
             }
+        </div>
+
+        <div class="empty @(cards.Count == 0 ? "" : "hidden")" data-filter-empty>
+            <svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg>
+            <p class="mb-0">No papers found. Try a different search or year.</p>
         </div>
     </div>
 </div>

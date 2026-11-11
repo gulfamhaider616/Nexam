@@ -1,35 +1,28 @@
-﻿@{
+@{
     ViewBag.Title = "PPSC_Home";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="page-head">
+    <h1>PPSC papers</h1>
+    <p>Manage PPSC past papers and their questions.</p>
+</div>
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="text-align:center;margin: auto;width: 70%;">
-				<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-					<h4><a href="/PPSC/NewPaper">ADD New PPSC Paper</a></h4>
-					@*<p class="para">@Item.SubjectDetail</p>*@
-					<a href="/PPSC/NewPaper" class="fa-btn btn-1 btn-1e">Get Started</a>
-				</div>
-            <div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-                <h4><a href="/PPSC/NewPPSCPost">ADD New Post</a></h4>
-                @*<p class="para">@Item.SubjectDetail</p>*@
-                <a href="/PPSC/NewPPSCPost" class="fa-btn btn-1 btn-1e">Get Started</a>
-            </div>
-				<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-					<h4><a href="/PPSC/NewPPSCQuestion">ADD New PPSC Question</a></h4>
-					@*<p class="para">@Item.SubjectDetail</p>*@
-					<a href="/PPSC/NewPPSCQuestion" class="fa-btn btn-1 btn-1e">Get Started</a>
-				</div>
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/PPSC/GetAllPPSCPapers">Get All PPSC Papers</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/PPSC/GetAllPPSCPapersByAdmin" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-            
-		</div>
-	</div>
-</div><!-- end main -->
-
+<div class="admin-tiles">
+    <a class="admin-tile" href="/PPSC/NewPaper">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+        <div><h3>Add new PPSC paper</h3><p>Create a paper with its year and post.</p></div>
+    </a>
+    <a class="admin-tile" href="/PPSC/NewPPSCPost">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+        <div><h3>Add new post</h3><p>Add a job post that papers can belong to.</p></div>
+    </a>
+    <a class="admin-tile" href="/PPSC/NewPPSCQuestion">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></span>
+        <div><h3>Add new PPSC question</h3><p>Add an MCQ to an existing paper.</p></div>
+    </a>
+    <a class="admin-tile" href="/PPSC/GetAllPPSCPapersByAdmin">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+        <div><h3>All PPSC papers</h3><p>Browse, update and manage questions.</p></div>
+    </a>
+</div>

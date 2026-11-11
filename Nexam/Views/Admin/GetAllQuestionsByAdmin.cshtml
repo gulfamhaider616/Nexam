@@ -4,99 +4,92 @@
     ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
     ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 1;
+}
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
 }
 
-<div class="main_bg">
-    <!-- start main -->
-    <div class="container">
-        <div class="main row" style="">
-            <div style="">
-                <div class="col-md-3">
-                    <br /><br />
-                    <ul class="list-group" id="subjectlist" style="font-size: 16px;line-height: 1.5;">
-                        @foreach (var item in Model.SubjectList)
-                        {
-                            <li class="list-group-item"><a href="/Admin/GetAllQuestionsByAdmin?SubjectID=@item.SubjectID">@item.SubjectName</a></li>
-                        }
-                    </ul>
-                </div>
-                <div class="col-md-8">
-                    <h2 style="text-align:center;text-decoration: underline;">@Model.Subject</h2>
-                    <table class="table_data">
-                        @{ int counter = 1;
-                            foreach (var item in Model.questions)
-                            {
-                                <tr>
-                                    <td>
-                                        <br />
-                                        <div style="border-bottom: 1px solid;font-size: 16px;line-height: 1.8;">
-                                            <strong>
-                                                <span>@counter.  </span>
-
-                                                <span style="display: inline;"><a href="/Question-Detail/@item.QuestionID"> @item.QuestionStatement </a></span>
-                                            </strong>
-                                            @if (item.Options != null)
-                                            {
-                                                <ol style="list-style-type:upper-alpha">
-                                                    @foreach (var option in item.Options)
-                                                    {
-                                                        <li>@option.Choice</li>
-                                                    }
-                                                </ol>
-                                                if (!String.IsNullOrEmpty(item.CorrectAnswer))
-                                                {
-                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <br /><br />
-                                                if (!String.IsNullOrEmpty(item.CorrectAnswer))
-                                                {
-                                                    <strong>Correct Answer: @item.CorrectAnswer</strong>
-                                                }
-                                            }
-                                            <div style="float:right;">
-                                                <span><a href="/Admin/GetQuestionById?questionID=@item.QuestionID">Edit</a></span> <span><a href="/Admin/DeleteQuestion?questionID=@item.QuestionID"> | Delete</a></span>
-                                            </div>
-                                            <br />
-                                        </div>
-                                    </td>
-                                </tr>
-                                counter++;
-                            }
-                        }
-                    </table>  
-</div>
-
-            </div>
-        </div>
+<div class="page-head">
+    <h1>@(string.IsNullOrWhiteSpace(Model.Subject) ? "Questions" : Model.Subject)</h1>
+    <p>Edit or delete questions in this subject.</p>
+    <div class="cluster">
+        <a class="btn btn-primary" href="/Admin/AddNewQuestion"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>Add question</a>
+        <a class="btn btn-secondary" href="/Admin/GetAllSubjects">All subjects</a>
     </div>
 </div>
 
-<script>
-    $('table.table_data').each(function () {
-        var currentPage = 0;
-        var numPerPage = 10;
-        var $table = $(this);
-        $table.bind('repaginate', function () {
-            $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-        });
-        $table.trigger('repaginate');
-        var numRows = $table.find('tbody tr').length;
-        var numPages = Math.ceil(numRows / numPerPage);
-        var $pager = $('<div class="pager"></div>');
-        for (var page = 0; page < numPages; page++) {
-            $('<span class="page-number"></span>').text(page + 1).bind('click', {
-                newPage: page
-            }, function (event) {
-                currentPage = event.data['newPage'];
-                $table.trigger('repaginate');
-                $(this).addClass('active').siblings().removeClass('active');
-            }).appendTo($pager).addClass('clickable');
+@if (Model.SubjectList != null && Model.SubjectList.Count > 0)
+{
+    <nav class="chips subject-chips mt-3" aria-label="Subjects">
+        @foreach (var item in Model.SubjectList)
+        {
+            <a class="chip" href="/Admin/GetAllQuestionsByAdmin?SubjectID=@item.SubjectID" aria-pressed="@(item.SubjectName == Model.Subject ? "true" : null)">@item.SubjectName</a>
         }
+    </nav>
+}
 
-        $pager.insertAfter($table).find('span.page-number:first').addClass('active');
-    });
-</script>
+@if (Model.questions == null || Model.questions.Count == 0)
+{
+    <div class="empty">
+        <svg class="icon" aria-hidden="true"><use href="#i-quiz"/></svg>
+        <p class="mb-0">There are no questions in this subject yet.</p>
+    </div>
+}
+else
+{
+    <div data-filter-scope>
+        <div class="table-tools">
+            <div class="search-field">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" type="search" placeholder="Filter these questions" aria-label="Filter these questions" data-filter-input>
+            </div>
+            <span class="count" data-filter-count></span>
+        </div>
 
+        <div class="table-wrap">
+            <table class="table qa-list">
+                <thead>
+                    <tr><th class="num">#</th><th>Question</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.questions)
+                    {
+                        <tr data-filter-item>
+                            <td class="num">@counter</td>
+                            <td>
+                                <a class="qa-text" dir="auto" href="/Question-Detail/@item.QuestionID">@item.QuestionStatement</a>
+                                @if (item.Options != null && item.Options.Count > 0)
+                                {
+                                    int letter = 0;
+                                    <ul class="qa-opts" dir="auto">
+                                        @foreach (var option in item.Options)
+                                        {
+                                            var isCorrect = !string.IsNullOrWhiteSpace(item.CorrectAnswer) && string.Equals((option.Choice ?? "").Trim(), item.CorrectAnswer.Trim(), StringComparison.OrdinalIgnoreCase);
+                                            <li class="@(isCorrect ? "is-correct" : null)"><span class="l">@((char)('A' + letter++))</span>@option.Choice</li>
+                                        }
+                                    </ul>
+                                }
+                                @if (!string.IsNullOrEmpty(item.CorrectAnswer))
+                                {
+                                    <p class="qa-answer" dir="auto">Correct answer: @item.CorrectAnswer</p>
+                                }
+                            </td>
+                            <td>
+                                <div class="actions">
+                                    <a class="btn btn-secondary btn-sm" href="/Admin/GetQuestionById?questionID=@item.QuestionID"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>Edit</a>
+                                    <a class="btn btn-danger btn-sm" href="/Admin/DeleteQuestion?questionID=@item.QuestionID" data-confirm="Delete this question? This cannot be undone."><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        counter++;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="empty hidden mt-3" data-filter-empty>
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <p class="mb-0">No question matches your filter.</p>
+        </div>
+    </div>
+}

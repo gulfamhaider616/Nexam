@@ -21,12 +21,19 @@ public sealed class QuestionService(IQuestionRepository questions, ISubjectRepos
         };
     }
 
-    public async Task<QuestionListViewModel> SearchAsync(string search)
+    private const int SearchLimit = 200;
+
+    public async Task<QuestionListViewModel> SearchAsync(string search, int? subjectId = null)
     {
-        var list = (await questions.SearchAsync(search)).WithOptions();
+        var (found, total) = string.IsNullOrWhiteSpace(search)
+            ? (new List<Question>(), 0)
+            : await questions.SearchAsync(search.Trim(), subjectId, SearchLimit);
         return new QuestionListViewModel
         {
-            questions = list,
+            Search = search?.Trim(),
+            SelectedSubjectId = subjectId,
+            TotalCount = total,
+            questions = found.WithOptions(),
             SubjectList = await subjects.GetAllAsync()
         };
     }

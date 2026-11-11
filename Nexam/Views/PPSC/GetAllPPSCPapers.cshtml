@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<Paper>
 @{
-	ViewBag.Title = "Nexam | PPSC Past Papers";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Nexam | PPSC Past Papers";
+    ViewBag.Description = "Solve PPSC past papers online with answers. Nexam measures your improvement against the exam requirement and gives you constant feedback and guidance.";
+    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @await Html.PartialAsync("_PaperList", new PaperListModel("PPSC Past Papers",
-    Model.Select(p => new PaperCardModel(p, Url.Content("~/PPSC-Past-Paper-Question/" + p.PaperID), p.PaperYear ?? "Recent", "Post: " + (p.PaperPost ?? "Generic")))))
+    Model.Select(p => new PaperCardModel(p, Url.Content("~/PPSC-Past-Paper-Question/" + p.PaperID), p.PaperYear ?? "Recent", "Post: " + (p.PaperPost ?? "Generic"))),
+    "Punjab Public Service Commission papers with answers, newest first. Filter by name, post or year."))

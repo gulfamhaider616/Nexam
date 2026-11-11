@@ -1,0 +1,36 @@
+/* Admin page extras (loaded via @section Head on admin question/list/editor pages). Builds on nexam.css tokens. */
+
+/* Table helpers */
+.table .num { width: 1%; white-space: nowrap; color: var(--muted); font-variant-numeric: tabular-nums; }
+.table td.nowrap, .table th.nowrap { white-space: nowrap; }
+.table .cell-title { font-weight: 650; color: var(--text); }
+.table .cell-title:hover { color: var(--brand); text-decoration: none; }
+.table .sub { display: block; color: var(--muted); font-size: .85rem; }
+.table-tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 14px; }
+.table-tools .search-field { position: relative; flex: 1 1 260px; max-width: 420px; }
+.table-tools .search-field .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.table-tools .search-field .input { padding-left: 40px; }
+.table-tools .count { color: var(--muted); font-size: .9rem; }
+.subject-chips { margin-bottom: 16px; }
+
+/* Question rows in admin lists */
+.qa-text { font-weight: 650; color: var(--text); }
+.qa-text:hover { color: var(--brand); text-decoration: none; }
+.qa-opts { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 8px 0 0; padding: 0; }
+.qa-opts li { display: inline-flex; gap: 6px; align-items: baseline; padding: 3px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: .88rem; background: var(--surface); }
+.qa-opts .l { color: var(--muted); font-weight: 700; font-size: .78rem; }
+.qa-opts li.is-correct { border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 600; }
+.qa-opts li.is-correct .l { color: var(--green); }
+.qa-answer { margin: 8px 0 0; font-size: .88rem; color: var(--green); font-weight: 600; }
+.qa-list td:first-child { width: 1%; }
+
+/* Forum moderation */
+.preview-card h2 { margin-bottom: 4px; }
+.preview-body { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1.02rem; margin: 14px 0 0; }
+.preview-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); font-size: .9rem; }
+
+/* Rich-text editor (CKEditor) readable in both themes */
+.ck.ck-editor__editable_inline { min-height: 340px; color: #0f1b33; background: #fff; }
+.ck-content { color: #0f1b33; }
+
+.form-card.wide { max-width: 860px; }

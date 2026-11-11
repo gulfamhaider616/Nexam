@@ -1,76 +1,69 @@
 ﻿@model Question
 @{
-	ViewBag.Title = Model.QuestionStatement + " | Nexam";
-	ViewBag.KeyWords = Model.SubjectName + " | " + Model.QuestionStatement + " | " + Model.Choices + " | " + Model.CorrectAnswer;
-	ViewBag.Description = Model.SubjectName + " | " + Model.QuestionStatement + " | " + Model.Choices + " | " + Model.CorrectAnswer;
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = Model.QuestionStatement + " | Nexam";
+    ViewBag.KeyWords = Model.SubjectName + " | " + Model.QuestionStatement + " | " + Model.Choices + " | " + Model.CorrectAnswer;
+    ViewBag.Description = Model.SubjectName + " | " + Model.QuestionStatement + " | " + Model.Choices + " | " + Model.CorrectAnswer;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Options are not always populated on a single question: build them from the stored choices (English or Arabic comma).
+    if (Model.Options == null || Model.Options.Count == 0)
+    {
+        Model.Options = (Model.Choices ?? "")
+            .Split(new[] { ',', '،' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(c => new QuestionOption { Choice = c })
+            .ToList();
+    }
+    var subject = string.IsNullOrWhiteSpace(Model.SubjectName) ? "Generic" : Model.SubjectName;
+    var paper = string.IsNullOrWhiteSpace(Model.PaperName) ? "Past paper" : Model.PaperName;
 }
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="border-bottom: 1px solid black;">
-			<div style="">
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
 
-				<div style="padding-left: 17%;padding-right: 17%;">
-					<h2 style="text-align:center;"> Paper : <a href="~/FPSC-Past-Paper-Question/@Model.PaperID" style="text-decoration:underline;">  @Model.PaperName</a></h2>
-					<br />
-					<div style="border-bottom:1px solid;font-size: 16px;line-height: 1.8;">
-						<strong>
-							<span style="display: inline;">@Model.QuestionStatement</span>
-						</strong>
-						@if (!String.IsNullOrEmpty(Model.Choices))
-						{
-							var options = Model.Choices.Split(',', '،');
-							<ol style="list-style-type:upper-alpha">
-								@if (options.Length > 0)
-								{
-									foreach (var option in options)
-									{
-										<li>@option</li>
-									}
-								}
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/FPSC-Past-Papers">FPSC Past Papers</a><span>/</span><a href="/FPSC-Past-Paper-Question/@Model.PaperID">@paper</a><span>/</span><span aria-current="page">Question</span></nav>
+        <h1>Question discussion</h1>
+        <p>From <a href="/FPSC-Past-Paper-Question/@Model.PaperID">@paper</a></p>
+    </div>
 
-							</ol>
-							if (!String.IsNullOrEmpty(Model.CorrectAnswer))
-							{
-								<strong>Correct Answer: @Model.CorrectAnswer</strong>
-							}
-						}
-						else
-						{
-							<br /><br />
-							if (!String.IsNullOrEmpty(Model.CorrectAnswer))
-							{
-								<strong>Correct Answer: @Model.CorrectAnswer</strong>
-							}
-						}
-					</div>
+    <div class="section discussion" style="padding-top:20px">
+        <div class="meta-row">
+            <span class="badge">FPSC</span>
+            <a class="badge badge-muted" href="/Questions/@Model.SubjectID">Subject: @subject</a>
+            <a class="badge badge-muted" href="/FPSC-Past-Paper-Question/@Model.PaperID">View full paper</a>
+        </div>
 
-					<div id="disqus_thread"></div>
-					<script>
+        <div class="q-list">
+            @await Html.PartialAsync("_QuestionCard", new QuestionCardModel(Model, Model.QuestionID, null, ShowSubject: false))
+        </div>
 
-									/**
-									*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-									*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-									/*
-									var disqus_config = function () {
-									this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-									this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-									};
-									*/
-									(function() { // DON'T EDIT BELOW THIS LINE
-									var d = document, s = d.createElement('script');
-									s.src = 'https://nexam.disqus.com/embed.js';
-									s.setAttribute('data-timestamp', +new Date());
-									(d.head || d.body).appendChild(s);
-									})();
-					</script>
-				</div>
-			</div>
-		</div>
-	</div>
+        <section class="comments" aria-labelledby="comments-title">
+            <h2 id="comments-title">Discussion</h2>
+            <div class="comments-box">
+                <div id="disqus_thread"></div>
+            </div>
+        </section>
+    </div>
 </div>
 
-
-
+@section Scripts {
+    <script>
+        /**
+        *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+        *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+        /*
+        var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        */
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://nexam.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+        })();
+    </script>
+}

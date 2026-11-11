@@ -1,59 +1,53 @@
-﻿@model HomeViewModel
+@model HomeViewModel
 @{
     ViewBag.Title = "NewPPSCQuestion";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="main_btm">
-	<!-- start main_btm -->
-	<div class="container">
-		<div class="main row">
-			<div class="col-md-8">
-				<div class="contact-form">
-					<h2>ADD New PPSC Question</h2>
-					<form action="/PPSC/SaveNewPPSCQuestion" method="post" style="font-size:18px;line-height:2em;">
-						<div>
-							<span>Select Paper Name</span>
-							<span>
-								<select class="form-control" name="paperid" id="userName">
-									@foreach (var Item in Model.PPSCList)
-									{
-										<option value="@Item.PaperID">@Item.PaperName</option>
-									}
-								</select>
-							</span>
-						</div>
-                        <div>
-                            <span>Select Subject</span>
-                            <span>
-                                <select class="form-control" name="subjectid">
-                                    @foreach (var Item in Model.SubjectList)
-                                    {
-                                        <option value="@Item.SubjectID">@Item.SubjectName</option>
-                                    }
-                                </select>
-                            </span>
-                        </div>
-						<div>
-							<span>Question Statement</span>
-							<span><input type="text" name="questionstatement" class="form-control" id="inputEmail3" placeholder="For inline only add question statement"></span>
-						</div>
-						<div>
-							<span>Choices</span>
-							<span><input type="text" name="choices" class="form-control" id="inputEmail3" placeholder="enter , separated choices"></span>
-						</div>
-						<div>
-							<span>Correct Answer</span>
-							<span><input type="text" name="correctanswer" class="form-control" id="inputEmail3" placeholder="enter correct answer"></span>
-						</div>
-						<div>
-							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
+<div class="page-head">
+    <h1>Add new PPSC question</h1>
+    <p>Pick the paper and subject, then enter the question, its comma-separated choices and the correct answer.</p>
+    <div class="cluster"><a class="btn btn-secondary btn-sm" href="/PPSC/PPSC_Home">Back to PPSC</a></div>
 </div>
 
+<form class="form-card" action="/PPSC/SaveNewPPSCQuestion" method="post" style="max-width:720px">
+    <div class="form-grid cols-2">
+        <div class="field">
+            <label for="q-paper">Paper</label>
+            <select class="select" id="q-paper" name="paperid">
+                @foreach (var Item in Model.PPSCList)
+                {
+                    <option value="@Item.PaperID">@Item.PaperName</option>
+                }
+            </select>
+        </div>
+        <div class="field">
+            <label for="q-subject">Subject</label>
+            <select class="select" id="q-subject" name="subjectid">
+                @foreach (var Item in Model.SubjectList)
+                {
+                    <option value="@Item.SubjectID">@Item.SubjectName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-grid">
+        <div class="field">
+            <label for="q-statement">Question statement</label>
+            <textarea class="textarea" id="q-statement" name="questionstatement" dir="auto" rows="3" placeholder="For inline only add question statement" required></textarea>
+        </div>
+        <div class="field">
+            <label for="q-choices">Choices</label>
+            <input class="input" type="text" id="q-choices" name="choices" dir="auto" placeholder="Enter comma separated choices">
+            <span class="help">Separate each choice with a comma.</span>
+        </div>
+        <div class="field">
+            <label for="q-answer">Correct answer</label>
+            <input class="input" type="text" id="q-answer" name="correctanswer" dir="auto" placeholder="Enter correct answer">
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <a class="btn btn-ghost" href="/PPSC/PPSC_Home">Cancel</a>
+    </div>
+</form>

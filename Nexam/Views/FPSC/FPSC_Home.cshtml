@@ -1,28 +1,24 @@
-﻿@{
-	ViewBag.Title = "FPSC_Home";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+@{
+    ViewBag.Title = "FPSC_Home";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<div class="page-head">
+    <h1>FPSC papers</h1>
+    <p>Manage FPSC past papers and their questions.</p>
+</div>
 
-<div class="main_bg">
-	<!-- start main -->
-	<div class="container">
-		<div class="main row" style="text-align:center;margin: auto;width: 70%;">
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/FPSC/NewFPSCPaper">ADD New FPSC Paper</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/FPSC/NewFPSCPaper" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/FPSC/NewFPSCQuestion">ADD New FPSC Question</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/FPSC/NewFPSCQuestion" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-			<div class="col-md-4 images_1_of_4 text-center" style="border: 1px solid #ff5454;border-radius: 10px;">
-				<h4><a href="/FPSC/GetAllFPSCPapers">Get All FPSC Papers</a></h4>
-				@*<p class="para">@Item.SubjectDetail</p>*@
-				<a href="/FPSC/GetAllFPSCPapersByAdmin" class="fa-btn btn-1 btn-1e">Get Started</a>
-			</div>
-		</div>
-	</div>
-</div><!-- end main -->
+<div class="admin-tiles">
+    <a class="admin-tile" href="/FPSC/NewFPSCPaper">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></span>
+        <div><h3>Add new FPSC paper</h3><p>Create a new FPSC paper.</p></div>
+    </a>
+    <a class="admin-tile" href="/FPSC/NewFPSCQuestion">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg></span>
+        <div><h3>Add new FPSC question</h3><p>Add an MCQ to an existing paper.</p></div>
+    </a>
+    <a class="admin-tile" href="/FPSC/GetAllFPSCPapersByAdmin">
+        <span class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></span>
+        <div><h3>All FPSC papers</h3><p>Browse papers and manage questions.</p></div>
+    </a>
+</div>

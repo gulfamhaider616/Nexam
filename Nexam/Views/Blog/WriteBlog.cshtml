@@ -1,68 +1,46 @@
-﻿
-@{
-    ViewBag.Title = "WriteBlog";
+﻿@{
+    ViewBag.Title = "Nexam | Write a Blog";
+    ViewBag.Description = "Write a blog post for Nexam. Blogging is coming soon.";
+    ViewBag.KeyWords = "Nexam blog, write blog";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<section class="register-section pt-100 pb-100 loaded">
-    <div class="container">
-        <div class="register-box">
-
-            <div class="sec-title text-center mb-30">
-                <h2 class="title mb-10">Welcome, Please Write Here</h2>
-            </div>
-
-            <!-- Login Form -->
-            <div class="styled-form">
-                <div id="form-messages"></div>
-                <form method="post" action="#">
-                    <div class="row clearfix">
-                        <!-- Form Group -->
-   
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="country" name="bcountry" value="" placeholder="Country" required="">
-                        </div>
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="title" name="btitle" value="" placeholder="Title" required="">
-                        </div>
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <textarea id="desp" name="desp" placeholder="Please Write Here"></textarea>
-
-                            <script src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"></script>
-
-                            <script>
-                                    $(function () {
-
-                                        $('#desp').ckeditor();
-                                    });
-                            </script>
-
-                            <script>
-                                    ClassicEditor
-                                        .create(document.querySelector('#desp'))
-                                        .catch(error => {
-                                            console.error(error);
-                                        });
-                            </script>
-                            <script>
-                                    window.onload = function ();
-                                    { CKEDITOR.replace('desp'); };
-                            </script>
-                            @*<textarea name="qexplanation" style="border-radius:0px;" value="" placeholder="Please Write Here" required=""></textarea>*@
-                        </div>
-                     
-                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
-                            <button type="submit" class="readon submit-btn"><span class="txt">Submit</span></button>
-                        </div>
-
-                    </div>
-
-                </form>
-            </div>
-
-        </div>
+<div class="container container-narrow">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/Blog/ShowAllBlogs">Blog</a><span>/</span><span aria-current="page">Write</span></nav>
+        <h1>Welcome, please write here</h1>
     </div>
-</section>
+
+    <div class="section" style="padding-top:20px">
+        <div class="alert" style="margin-bottom:20px">Blogging is coming soon. Posts you submit now are not published yet.</div>
+        <form class="form-card" method="post" action="/Blog/SaveBlog">
+            <input type="hidden" name="blogid" value="0">
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label for="uname">Your name</label>
+                    <input class="input" type="text" id="uname" name="uname" autocomplete="name">
+                </div>
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <input class="input" type="email" id="email" name="email" autocomplete="email">
+                </div>
+                <div class="field">
+                    <label for="country">Country</label>
+                    <input class="input" type="text" id="country" name="country" autocomplete="country-name" required>
+                </div>
+                <div class="field">
+                    <label for="title">Title</label>
+                    <input class="input" type="text" id="title" name="title" required>
+                </div>
+            </div>
+            <div class="field">
+                <label for="desp">Your post</label>
+                <textarea class="textarea" id="desp" name="desp" rows="10" dir="auto" placeholder="Please write here" required></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                <a class="btn btn-secondary btn-lg" href="/Blog/ShowAllBlogs">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

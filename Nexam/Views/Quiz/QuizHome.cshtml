@@ -1,85 +1,43 @@
-﻿
-@{
-    ViewBag.Title = "QuizHome";
+﻿@{
+    ViewBag.Title = "Nexam | Practice Quiz";
+    ViewBag.Description = "Take a choice based practice quiz on Nexam. Pick a subject and the number of questions, then see your result with feedback.";
+    ViewBag.KeyWords = "Nexam quiz, MCQs quiz, PPSC quiz, practice test, online quiz";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var signedIn = User.IsInRole("User");
 }
-<style>
-    #btn:hover {
-        background-color: transparent!important;
-        color: black!important
-    }
-</style>
-    <div class="container mb-20 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms" style="box-shadow: 0px 0px 16px lightgrey;width:80%;margin-top:3%;border-radius:15px" >
-        <div class="main row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-12">
-                        <br /><br />
-                        <h3 style="text-align:center;">Welcome to NEXAM Quiz System</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="exam-intro-box">
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    <span class="field">1- NEXAM provides choice based quiz. You can select Subject and No. of Questions according to your choice.</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    <span class="field">2- Each time, you will see different set of questions. We will keep your progress record for your evaluation.</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    <span class="field">3- We have a huge database collection to make your perfect preperatin with practice.</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <br />
-                                    <span class="field">4- After completing your quiz, you will see your result with System Feedback.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2"></div>
-                </div>
+@section Head {
+    <link rel="stylesheet" href="/css/pages-user.css">
+}
 
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-
-                        <div class="disclaimer-box mt-2">
-                            <br />
-                            <span><u>Disclaimers:</u></span>
-                            <ul class="disclaimer-list mt-1">
-                                <li>- NEXAM website is not affiliated with, endorsed or authorized by PPSC.</li>
-                                <li>- Trademarks, certification &amp; product names are used for reference only.</li>
-                            </ul>
-                        </div>
-
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8" style="text-align:center;">
-                        <div class="exam-call-to-action">
-                            <br />
-                            <a id="btn" class="btn btn-primary btn-md" href="/Quiz/NewQuiz" role="button" style="margin-bottom:40px; text-decoration:none;background-color:orangered;color:white;border:2px solid;border-color:orangered;width:50%">Create Quiz</a>
-
-                        </div>
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+<div class="container container-narrow">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Quiz</span></nav>
+        <h1>Welcome to Nexam Quiz System</h1>
+        <p>Practice with choice based quizzes and keep track of your progress.</p>
     </div>
 
+    <div class="section" style="padding-top:20px">
+        <ol class="rules">
+            <li>NEXAM provides choice based quiz. You can select Subject and No. of Questions according to your choice.</li>
+            <li>Each time, you will see different set of questions. We will keep your progress record for your evaluation.</li>
+            <li>We have a huge database collection to make your perfect preparation with practice.</li>
+            <li>After completing your quiz, you will see your result with System Feedback.</li>
+        </ol>
+
+        <div class="panel disclaimer mt-3">
+            <strong>Disclaimers:</strong>
+            <ul>
+                <li>NEXAM website is not affiliated with, endorsed or authorized by PPSC.</li>
+                <li>Trademarks, certification &amp; product names are used for reference only.</li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-4">
+            <a class="btn btn-primary btn-lg" href="/Quiz/NewQuiz"><svg class="icon" aria-hidden="true"><use href="#i-quiz"/></svg>Start a quiz</a>
+            @if (!signedIn)
+            {
+                <p class="muted mt-2 mb-0">You need an account to take a quiz. <a href="/User/UserLogin">Log in</a> or <a href="/User/User_Registration">create one</a>.</p>
+            }
+        </div>
+    </div>
+</div>

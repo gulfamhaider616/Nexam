@@ -16,6 +16,10 @@ public class HomeViewModel
 
 public class QuestionListViewModel
 {
+    /// <summary>Search page: the text searched, the subject filter, and how many questions matched in total.</summary>
+    public string Search { get; set; }
+    public int? SelectedSubjectId { get; set; }
+    public int TotalCount { get; set; }
     public List<Question> questions { get; set; }
     public string Subject { get; set; }
     public string Paper { get; set; }

@@ -5,24 +5,48 @@
     ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
+}
 
-<h2 style="text-align: center;">User Contacts</h2>
+<div class="page-head">
+    <h1>Contact messages</h1>
+    <p>Messages sent through the public contact form.</p>
+</div>
 
-<div class="main_bg">
-    <!-- start main -->
-    <div class="container">
-        <div class="main row">
-            @foreach (var Item in Model)
-            {
-                <div style="border: 1px solid #ff5454;border-radius: 10px;">
-                    <div style="padding:10px;">
-                        <h4>@Item.Name | @Item.Email</h4>
-                        <p class="para">@Item.Subject</p>
-                        <span>@Item.ContactDate</span>
-                    </div>
-                </div>
-            }
+@if (!Model.Any())
+{
+    <div class="empty mt-3">
+        <svg class="icon" aria-hidden="true"><use href="#i-inbox"/></svg>
+        <p class="mb-0">No messages yet.</p>
+    </div>
+}
+else
+{
+    <div class="mt-3" data-filter-scope>
+        <div class="table-tools">
+            <div class="search-field">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" type="search" placeholder="Filter by name, email or subject" aria-label="Filter messages" data-filter-input>
+            </div>
+            <span class="count" data-filter-count></span>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr><th>Name</th><th>Email</th><th>Subject</th><th class="nowrap">Date</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var Item in Model)
+                    {
+                        <tr data-filter-item><td>@Item.Name</td><td><a href="mailto:@Item.Email">@Item.Email</a></td><td dir="auto">@Item.Subject</td><td class="nowrap muted">@Item.ContactDate</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="empty hidden mt-3" data-filter-empty>
+            <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+            <p class="mb-0">No message matches your filter.</p>
         </div>
     </div>
-</div><!-- end main -->
-
+}

@@ -1,23 +1,52 @@
-﻿
-@model ForumQuestion
+﻿@model ForumQuestion
 @{
-    ViewBag.Title = "Learn Free Quran | Preview";
-    ViewBag.Description = "Learn Free Quran is also providing a questions and answers platform when anyone can ask Islamic question. People from whole world are allowed to answer the question. Our qualified team will also answer you in the similar manners.";
-    ViewBag.KeyWords = "Forum,LFQ Forum, LFQ question and answers,Ask Question, online Namaz,LFQ Students,LFQ, Learn Free Quran,Quran Tutor,Online Quran";
+    ViewBag.Title = "Nexam | Preview";
+    ViewBag.Description = "Preview of a forum question awaiting moderation.";
+    ViewBag.KeyWords = "Forum,Nexam Forum,Ask Question";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@section Head {
+    <link rel="stylesheet" href="/css/pages-admin.css">
+}
+@section Scripts {
+    <script src="/js/forum-admin.js"></script>
+}
 
-<div id="banner-wrapper">
-    <div id="banner" class="box container" style="width:70%;padding-top: 20px;padding-bottom: 20px;">
-        <div class="row">
-            <div class="col-md-12" style="width:100%;margin:0 auto;overflow-x:auto;">
-                <div style="font-size: 159%;color: crimson;">@Model.Subject</div><br />
-                <div>@Model.Explanation</div>
-                <div style="float:right;">@Model.UserName | @Model.Country</div>
-            </div>
-        </div>
-        <hr style="border-top:solid 1px #c60;width: 657px;">
-        <a href="#" onclick='PublishQuestion("@Model.AskQuestionID")' style="text-decoration:none;">Publish</a> | <a href="#" onclick='DeleteQuestions("@Model.AskQuestionID")' style="text-decoration:none;">Delete</a>
+<div class="page-head">
+    <h1>Question preview</h1>
+    <p>This is how the question reads. Publish it to show it on the forum, or delete it.</p>
+    <div class="cluster">
+        <a class="btn btn-secondary btn-sm" href="/Forum/UnPublish">Back to review queue</a>
+        <a class="btn btn-secondary btn-sm" href="/Forum/ForumMainPage">All questions</a>
     </div>
 </div>
-<script src="~/js/Forum.js"></script>
+
+<article class="card mt-3" style="max-width:860px">
+    <div class="card-body preview-card">
+        <div class="cluster" style="--gap:8px">
+            @if (Model.Publish == 0)
+            {
+                <span class="badge badge-amber">Awaiting review</span>
+            }
+            else
+            {
+                <span class="badge badge-success">Published</span>
+            }
+        </div>
+        <h2 class="mt-2" dir="auto">@Model.Subject</h2>
+        <div class="preview-meta">
+            <span>@Model.UserName</span>
+            @if (!string.IsNullOrEmpty(Model.Email)) { <span>@Model.Email</span> }
+            @if (!string.IsNullOrEmpty(Model.Country)) { <span>@Model.Country</span> }
+        </div>
+        <p class="preview-body" dir="auto">@Model.Explanation</p>
+    </div>
+</article>
+
+<div class="form-actions mt-3">
+    @if (Model.Publish == 0)
+    {
+        <button type="button" class="btn btn-primary" data-action="publish" data-id="@Model.AskQuestionID"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Publish</button>
+    }
+    <button type="button" class="btn btn-danger" data-action="delete" data-id="@Model.AskQuestionID" data-confirm="Delete this forum question? This cannot be undone."><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+</div>

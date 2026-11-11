@@ -1,0 +1,30 @@
+/* Quiz, account and forum pages (extends nexam.css; same tokens, light + dark). */
+
+/* ---------- Quiz intro ---------- */
+.rules { list-style: none; counter-reset: rule; display: grid; gap: 12px; }
+.rules li { counter-increment: rule; display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.rules li::before { content: counter(rule); flex: none; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 9px; background: var(--brand-soft); color: var(--brand); font-weight: 800; font-size: .85rem; }
+.disclaimer { font-size: .9rem; color: var(--muted); }
+.disclaimer strong { color: var(--text); }
+.disclaimer ul { margin: 6px 0 0; padding-left: 1.2em; }
+
+/* ---------- Quiz taking / review ---------- */
+.q-options { display: grid; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.q-card.is-missing { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-soft); }
+.choice > span { min-width: 0; overflow-wrap: anywhere; }
+.choice .tag { margin-left: auto; flex: none; }
+.choice > .icon, .choice > .dot { flex: none; }
+.choice .dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); }
+.choice.is-correct > .icon { color: var(--green); }
+.choice.is-wrong > .icon { color: var(--red); }
+.review .choice:not(.is-correct):not(.is-wrong):hover { border-color: var(--border); }
+.review-summary { display: grid; gap: 4px; margin-bottom: 18px; }
+.review-summary h2 { margin: 0; }
+.q-note { margin: 12px 0 0; font-size: .92rem; color: var(--muted); }
+
+/* ---------- Dashboard ---------- */
+.score-pill { font-weight: 800; }
+
+/* ---------- Forum ---------- */
+.thread p.excerpt { margin: 6px 0 0; color: var(--muted); font-size: .95rem; }
+.question-body { white-space: pre-line; overflow-wrap: anywhere; font-size: 1.05rem; }

@@ -1,214 +1,117 @@
 ﻿@model HomeViewModel
 @{
-    ViewBag.Title = "Exams Preperation,CSS,NTS,PPSC,GAT MCQ | Nexam";
-    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "PPSC Past Papers,All Past Papers, NTS Past Papers,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    ViewBag.Title = "Nexam | PPSC, FPSC, NTS & CSS past papers and practice MCQs";
+    ViewBag.Description = "Nexam is a free exam-preparation platform: solved PPSC, FPSC, NTS and CSS past papers and practice MCQs for every subject, kept up to date.";
+    ViewBag.KeyWords = "PPSC past papers, FPSC, NTS, CSS, MCQs, General Knowledge, Pak Studies, Islamiat, English, Mathematics, Current Affairs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var latestYear = Model.RecentPpscYears.FirstOrDefault()?.Year;
 }
 
-<!-- Main content Start -->
-<div class="main-content">
-    <!-- Banner Section Start -->
-    <div id="rs-banner" class="rs-banner style1">
-        <div class="container">
-            <div class="banner-content text-center">
-                <h1 class="banner-title capitalize wow fadeInLeft" data-wow-delay="300ms" data-wow-duration="3000ms">PPSC Past Papers - Moving Towards E-Learning</h1>
-                <div class="desc wow wow fadeInRight" data-wow-delay="900ms" data-wow-duration="3000ms">Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance.</div>
-                @*<div class="banner-btn wow fadeInUp" data-wow-delay="1500ms" data-wow-duration="2000ms">
-                    <a class="readon banner-style" href="#">Get Started Now</a>
-                </div>*@
-            </div>
+<section class="hero">
+    <div class="container">
+        <h1>Prepare smarter for PPSC, FPSC, NTS &amp; CSS</h1>
+        <p class="lead">Solved past papers and practice MCQs for every subject. Free, up to date, and built for revising on your phone.</p>
+
+        <form class="hero-search" action="/Home/SearchResult" method="get" role="search">
+            <input class="input" type="search" name="search" placeholder="Search any question" aria-label="Search questions" data-search-input>
+            <select class="select" name="subject" aria-label="Subject">
+                <option value="">All subjects</option>
+                @foreach (var s in Model.SubjectList)
+                {
+                    <option value="@s.SubjectID">@s.SubjectName</option>
+                }
+            </select>
+            <button class="btn btn-primary" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Search</button>
+        </form>
+
+        <div class="hero-stats">
+            <div><strong>@Model.PPSCList.Count</strong><span>PPSC past papers</span></div>
+            <div><strong>@Model.SubjectList.Count</strong><span>Subjects</span></div>
+            @if (latestYear != null)
+            {
+                <div><strong>@latestYear</strong><span>Latest papers</span></div>
+            }
         </div>
     </div>
-    <!-- Banner Section End -->
-    <!-- About Section Start -->
-    <div id="rs-about" class="rs-about style1 pb-100 md-pb-70">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4 order-last">
-                    <div class="notice-bord style1">
-                        <h4 class="title">Recent PPSC Papers</h4>
-                        <ul>
-                            @for (var i = 0; i < Model.RecentPpscYears.Count; i++)
-                            {
-                                var year = Model.RecentPpscYears[i];
-                                <li class="wow fadeInUp" data-wow-delay="@(300 + i * 100)ms" data-wow-duration="2000ms">
-                                    <div class="date"><span>@year.Year</span></div>
-                                    <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=@year.YearID">Search all PPSC Past Papers in @year.Year</a></div>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-8 pr-50 md-pr-15">
-                    <div class="about-part">
-                        <div class="sec-title mb-40">
-                            <div class="sub-title primary wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">About Us</div>
-                            <h2 class="title wow fadeInUp" data-wow-delay="400ms" data-wow-duration="2000ms">Nexam  provides best preparation.</h2>
-                            <div class="desc wow fadeInUp" data-wow-delay="500ms" data-wow-duration="2000ms">This platform is suitable for students with limited study time who wish to rely more on self for exam preparation. It provides preperation meterial, discussion groups and demonstrations covering more than 8 subjects. The topics  are based on MCQ Examination format. Our plans are tailored to meet your unique needs. Our System will tell you what is important and what you should focus on, you will practice with our system from your place or from overseas.</div>
-                        </div>
-                        <div class="sign-part wow fadeInUp" data-wow-delay="600ms" data-wow-duration="2000ms">
-                            @*<div class="img-part">
-                                <img src="~/images/faisal.jpg" alt="CEO Image" style="height: 110px;width: 110px;border-radius: 60px;">
-                            </div>*@
-                            @*<div class="author-part">
-                                <span class="sign mb-10" style="font-size: 20px;color: black;">Faisal Azhar</span>
-                                <span class="post">CEO & Founder of Nexam</span>
-                            </div>*@
-                        </div>
-                    </div>
-                </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2>Latest PPSC past papers</h2>
+                <p>Newest papers first, with answers.</p>
             </div>
+            <a class="btn btn-secondary btn-sm" href="/PPSC-Past-Papers">View all papers <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        </div>
+
+        <div class="grid-cards">
+            @foreach (var paper in Model.PPSCList.Take(6))
+            {
+                @await Html.PartialAsync("_PaperCard", new PaperCardModel(paper, Url.Content("~/PPSC-Past-Paper-Question/" + paper.PaperID), paper.PaperYear ?? "Recent", "Post: " + (paper.PaperPost ?? "Generic")))
+            }
+        </div>
+
+        @if (Model.RecentPpscYears.Count > 0)
+        {
+            <div class="cluster mt-3">
+                <span class="muted">Browse by year:</span>
+                @foreach (var y in Model.RecentPpscYears)
+                {
+                    <a class="chip" href="/PPSC/SearchPPSCPaperYearwise?yearid=@y.YearID">@y.Year</a>
+                }
+                <a class="chip" href="/PPSC-Past-Papers">All years</a>
+            </div>
+        }
+    </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <h2>Practice by subject</h2>
+                <p>Thousands of MCQs, grouped by subject.</p>
+            </div>
+            <a class="btn btn-secondary btn-sm" href="/nexam/all-subjects">All subjects <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        </div>
+        <div class="grid-cards">
+            @foreach (var subject in Model.SubjectList.Take(9))
+            {
+                @await Html.PartialAsync("_SubjectCard", subject)
+            }
         </div>
     </div>
-    <!-- About Section End -->
-    <!-- Categories Section Start -->
-    <div id="rs-categories" class="rs-categories gray-bg style1 pb-70 md-pt-64 md-pb-40">
-        <div class="container">
-            <div class="row y-middle mb-50 md-mb-30">
-                <div class="col-md-6 sm-mb-30">
-                    <div class="sec-title">
-                        <div class="sub-title primary">Subject Categories</div>
-                        <h2 class="title mb-0">Our Top Categories </h2>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="btn-part text-right sm-text-left">
-                        <a href="/nexam/all-subjects" class="readon">View All Subjects</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-@foreach (var Item in Model.SubjectList)
-{
-    @await Html.PartialAsync("_SubjectCard", Item)
-}
-            </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container">
+        <div class="section-head"><div><h2>More exams</h2></div></div>
+        <div class="feature-grid">
+            <a class="feature" href="/NTS-Past-Papers" style="color:inherit">
+                <div class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></div>
+                <h3>NTS past papers</h3><p class="muted mb-0">@Model.NTSList.Count papers to practise with.</p>
+            </a>
+            <a class="feature" href="/FPSC-Past-Papers" style="color:inherit">
+                <div class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></div>
+                <h3>FPSC past papers</h3><p class="muted mb-0">@Model.FPSCList.Count papers to practise with.</p>
+            </a>
+            <a class="feature" href="/CSS-Past-Papers" style="color:inherit">
+                <div class="tile"><svg class="icon" aria-hidden="true"><use href="#i-file-text"/></svg></div>
+                <h3>CSS past papers</h3><p class="muted mb-0">@Model.CSSList.Count papers to study.</p>
+            </a>
         </div>
     </div>
-    <!-- Categories Section End -->
-    <!-- Popular Courses Section Start -->
-    <div id="rs-popular-courses" class="rs-popular-courses bg6 style1 pt-94 pb-70 md-pt-64 md-pb-40">
-        <div class="container">
-            <div class="row y-middle mb-50 md-mb-30">
-                <div class="col-md-6 sm-mb-30">
-                    <div class="sec-title">
-                        @*<div class="sub-title primary">Top </div>*@
-                        <h2 class="title mb-0">Latest PPSC Past Papers</h2>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="btn-part text-right sm-text-left">
-                        <a href="~/PPSC-Past-Papers" class="readon">View All Papers</a>
-                    </div>
-                </div>
+</section>
+
+<section class="section" style="padding-top:0">
+    <div class="container">
+        <div class="cta-band">
+            <div>
+                <h2>Test yourself with a quiz</h2>
+                <p>Pick a subject, choose how many questions, and see your score straight away. Free with an account.</p>
             </div>
-            <div class="row">
-@foreach (var Item in Model.PPSCList.Take(6))
-{
-    @await Html.PartialAsync("_PaperCard", new PaperCardModel(Item, Url.Content("~/PPSC-Past-Paper-Question/" + Item.PaperID), Item.PaperYear ?? "Recent", "Post: " + (Item.PaperPost ?? "Generic")))
-}
-            </div>
+            <a class="btn btn-secondary btn-lg" href="/Quiz/QuizHome">Start a quiz <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
         </div>
     </div>
-    <!-- Popular Courses Section End -->
-
-    <!-- Testimonial Section Start -->
-    <div class="rs-testimonial home-style1 pt-100 pb-100 md-pt-70 md-pb-70">
-        <div class="container">
-            <div class="sec-title mb-50 md-mb-30 text-center">
-                <div class="sub-title primary">Testimonial</div>
-                <h2 class="title mb-0">What People Saying</h2>
-            </div>
-            <div class="rs-carousel owl-carousel"
-                 data-loop="true"
-                 data-items="2"
-                 data-margin="30"
-                 data-autoplay="true"
-                 data-hoverpause="true"
-                 data-autoplay-timeout="5000"
-                 data-smart-speed="800"
-                 data-dots="true"
-                 data-nav="false"
-                 data-nav-speed="false"
-                 data-md-device="2"
-                 data-md-device-nav="false"
-                 data-md-device-dots="true"
-                 data-center-mode="false"
-                 data-ipad-device2="1"
-                 data-ipad-device-nav2="false"
-                 data-ipad-device-dots2="true"
-                 data-ipad-device="2"
-                 data-ipad-device-nav="false"
-                 data-ipad-device-dots="true"
-                 data-mobile-device="1"
-                 data-mobile-device-nav="false"
-                 data-mobile-device-dots="false">
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Very helpful in terms of knowledge and test preparation. It contains a lot of knowledge for learner's.</div>
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Hafsa Amjad</a>
-                        <span class="designation">Student</span>
-                    </div>
-                </div>
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">I peronally use this app. its very good one. anyone who wants to get prepared for One Paper MCQ, will find this app much usefull . thanks</div>
-
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Abid Manzoor</a>
-                        <span class="designation">Student</span>
-                    </div>
-                </div>
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc">
-                            <img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">It's a good application for preparing ppsc exams Give good approach to learn. Very useful app. Recomended!!!
-                        </div>
-    
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Sana Zubair</a>
-                        <span class="designation">English Teacher</span>
-                    </div>
-                </div>
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Damn good and informative. It is too much useful and also the explanation includes for further guide to know more about.</div>
-
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Kulsoom Baloch</a>
-                        <span class="designation">Student</span>
-                    </div>
-                </div>
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Excellent app,but it should work offline .The subject of journalism should also be include.</div>
-
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Umar Farooq</a>
-                        <span class="designation">Teacher</span>
-                    </div>
-                </div>
-                <div class="testi-item">
-                    <div class="author-desc">
-                        <div class="desc"><img class="quote" src="/assets/images/testimonial/style5/quote2.png" alt="">Very good experience Very helpful for knowledge and test preparation Content is divided categories and in parts.</div>
-                    </div>
-                    <div class="author-part">
-                        <a class="name" href="#">Somana Ashiq</a>
-                        <span class="designation">Math Teacher</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial Section End -->
-    <!-- Section bg Wrap 2 start -->
-
-    <!-- Section bg Wrap 2 End -->
-</div>
-<!-- Main content End -->
+</section>

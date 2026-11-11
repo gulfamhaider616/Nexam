@@ -1,65 +1,49 @@
-﻿
-@{
-    ViewBag.Title = "User_Registration";
+﻿@{
+    ViewBag.Title = "Nexam | Create account";
+    ViewBag.Description = "Create a free Nexam account to take practice quizzes and track your scores.";
+    ViewBag.KeyWords = "Nexam sign up, create account, user registration";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="register-section pt-100 pb-100 loaded">
-    <div class="container">
-        <div class="register-box">
-
-            <div class="sec-title text-center mb-30">
-                <h2 class="title mb-10">Create New Account</h2>
+<div class="container auth-wrap">
+    <div class="auth-card form-card" style="width:min(100%, 640px)">
+        <h1>Create new account</h1>
+        <p class="muted">It is free and takes a minute.</p>
+        <form method="post" action="/User/SaveUser">
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label for="fname">First name</label>
+                    <input class="input" type="text" id="fname" name="fname" autocomplete="given-name" required>
+                </div>
+                <div class="field">
+                    <label for="lname">Last name</label>
+                    <input class="input" type="text" id="lname" name="lname" autocomplete="family-name" required>
+                </div>
             </div>
-
-            <!-- Login Form -->
-            <div class="styled-form">
-                @*<div id="form-messages">Thanks, you have registered successfully.</div>*@
-                <form method="post" action="/User/SaveUser">
-                    <div class="row clearfix">
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12 mb-25">
-                            <input type="text" id="fname" name="fname" value="" placeholder="First Name" required="">
-                        </div>
-
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="lname" name="lname" value="" placeholder="Last Name" required="">
-                        </div>
-
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="email" id="email" name="email" value="" placeholder="Email address " required="">
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <input type="password" id="email" name="password" value="" placeholder="Enter password " required="">
-                        </div>
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="Username" name="pnumber" value="" placeholder="Phone Number" required="">
-                        </div>
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="Username" name="country" value="" placeholder="Country" required="">
-                        </div>
-                        <!-- Form Group -->
-                        <div class="form-group col-lg-12">
-                            <input type="text" id="Username" name="city" value="" placeholder="City" required="">
-                        </div>
-
-                        <div class="form-group col-lg-12 col-md-12 col-sm-12 text-center">
-                            <button type="submit" class="readon register-btn"><span class="txt">Sign Up</span></button>
-                        </div>
-
-                        <div class="form-group col-lg-12 col-md-12 col-sm-12">
-                            <div class="users">Already have an account? <a href="/User/UserLogin">Sign In</a></div>
-                        </div>
-
-                    </div>
-
-                </form>
+            <div class="field">
+                <label for="email">Email address</label>
+                <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
             </div>
-
-        </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input class="input" type="password" id="password" name="password" autocomplete="new-password" required>
+            </div>
+            <div class="field">
+                <label for="pnumber">Phone number</label>
+                <input class="input" type="tel" id="pnumber" name="pnumber" autocomplete="tel" required>
+            </div>
+            <div class="form-grid cols-2">
+                <div class="field">
+                    <label for="country">Country</label>
+                    <input class="input" type="text" id="country" name="country" autocomplete="country-name" required>
+                </div>
+                <div class="field">
+                    <label for="city">City</label>
+                    <input class="input" type="text" id="city" name="city" autocomplete="address-level2" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
+        </form>
+        <p class="muted text-center mt-3 mb-0">Already have an account? <a href="/User/UserLogin">Sign in</a></p>
     </div>
-</section>
+</div>

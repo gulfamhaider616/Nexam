@@ -22,6 +22,10 @@ Infrastructure: DI registration, routes, auth helpers, PDF + email
 | `Infrastructure/` | `AddNexam()` DI wiring, `MapNexamRoutes()`, cookie-auth helpers, IronPdf and SMTP adapters |
 | `Views/`, `wwwroot/` | Razor views and static files |
 
+### UI / theme
+
+Mobile-first, light + dark theme, no Bootstrap or jQuery: one design system (`wwwroot/css/nexam.css`) and one script (`wwwroot/js/nexam.js`), plus small per-area stylesheets (`pages-public/user/admin.css`). Components, partials and conventions are documented in [docs/design-system.md](docs/design-system.md).
+
 ## Run
 
 ```

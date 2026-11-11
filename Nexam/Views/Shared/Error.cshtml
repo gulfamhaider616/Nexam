@@ -1,13 +1,22 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
-</head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
-    </hgroup>
-</body>
-</html>
+﻿@{
+    ViewBag.Title = "Nexam | Something went wrong";
+    ViewBag.Description = "Something went wrong while loading this page.";
+    ViewBag.KeyWords = "Nexam";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
+
+<div class="container container-narrow">
+    <div class="error-state">
+        <div class="tile"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg></div>
+        <h1>Something went wrong</h1>
+        <p>An error occurred while processing your request. Please try again in a moment, or head back to the home page.</p>
+        <div class="cluster mt-3" style="justify-content:center">
+            <a class="btn btn-primary" href="/"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg> Back to home</a>
+            <a class="btn btn-secondary" href="/nexam/all-subjects">Browse subjects</a>
+        </div>
+    </div>
+</div>

@@ -1,67 +1,61 @@
-﻿@model Question
+@model Question
 @{
-	ViewBag.Title = "Nexam | Questions";
-	ViewBag.Description = "Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-	ViewBag.KeyWords = "Add Question,Terms and conditions,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
-	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Nexam | Questions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="main_btm">
-	<!-- start main_btm -->
-	<div class="container">
-		<div class="main row">
-			<div class="col-md-8">
-				<div class="contact-form">
-					<h2>Edit Question</h2>
-					<form action="/PPSC/SaveEditPPSCQuestion" method="post" style="font-size:18px;line-height:2em;">
-						<input type="hidden" name="questionid" value="@Model.QuestionID">
-						<div>
-							<span>Paper Name</span>
-							<span>
-								<select class="form-control" name="subjectid" id="userName">
-									<option value="@Model.PaperID">@Model.PaperName</option>
-								</select>
-							</span>
-						</div>
-                        <div>
-                            <span>Select Subject</span>
-                            <span>
-                                <select class="form-control" name="subjectid">
-                                    @*@foreach (var Item in Model.SubjectList)
-                                    {*@
-                                        <option value="@Model.SubjectID">@Model.SubjectName</option>
-                                    @*}*@
-                                </select>
-                            </span>
-                        </div>
-						<div>
-							<span>Question Statement</span>
-							<span><input type="text" value="@Model.QuestionStatement" name="questionstatement" class="form-control" id="inputEmail3"></span>
-						</div>
-						<div>
-							<span>Total Choices</span>
-							<span>
-								<input type="text" value="@Model.NumberOfChoices" name="numberofchoices" class="form-control" id="inputEmail3">
-							</span>
-						</div>
-						<div>
-							<span>Choices</span>
-							<span><input type="text" value="@Model.Choices" name="choices" class="form-control" id="inputEmail3"></span>
-						</div>
-						<div>
-							<span>Correct Answer</span>
-							<span><input type="text" value="@Model.CorrectAnswer" name="correctanswer" class="form-control" id="inputEmail3"></span>
-						</div>
-						<div>
-							<label class="fa-btn btn-1 btn-1e"><input type="submit" value="Submit"></label>
-						</div>
-					</form>
-				</div>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
+<div class="page-head">
+    <h1>Edit question</h1>
+    <p>Update the question text, choices and correct answer.</p>
+    <div class="cluster">
+        @if (Model.PaperID != 0)
+        {
+            <a class="btn btn-secondary btn-sm" href="/PPSC/GetAllQuestionsByPaperIDAdmin?paperid=@Model.PaperID">Back to paper</a>
+        }
+        else
+        {
+            <a class="btn btn-secondary btn-sm" href="/PPSC/GetAllPPSCPapersByAdmin">Back to papers</a>
+        }
+    </div>
 </div>
 
-
-
+<form class="form-card" action="/PPSC/SaveEditPPSCQuestion" method="post" style="max-width:760px">
+    <input type="hidden" name="questionid" value="@Model.QuestionID">
+    <div class="form-grid">
+        <div class="field">
+            <label for="e-paper">Paper</label>
+            <input class="input" type="text" id="e-paper" value="@Model.PaperName" dir="auto" readonly>
+        </div>
+        <div class="field">
+            <label for="e-subject">Subject</label>
+            <select class="select" id="e-subject" name="subjectid">
+                <option value="@Model.SubjectID">@Model.SubjectName</option>
+            </select>
+        </div>
+        <div class="field">
+            <label for="e-statement">Question statement</label>
+            <textarea class="textarea" id="e-statement" name="questionstatement" dir="auto" rows="3">@Model.QuestionStatement</textarea>
+        </div>
+    </div>
+    <div class="form-grid cols-2">
+        <div class="field">
+            <label for="e-count">Total choices</label>
+            <input class="input" type="number" min="0" id="e-count" name="numberofchoices" value="@Model.NumberOfChoices">
+        </div>
+        <div class="field">
+            <label for="e-answer">Correct answer</label>
+            <input class="input" type="text" id="e-answer" name="correctanswer" dir="auto" value="@Model.CorrectAnswer">
+        </div>
+    </div>
+    <div class="form-grid">
+        <div class="field">
+            <label for="e-choices">Choices</label>
+            <input class="input" type="text" id="e-choices" name="choices" dir="auto" value="@Model.Choices">
+            <span class="help">Separate each choice with a comma.</span>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Save changes</button>
+        <a class="btn btn-ghost" href="/PPSC/GetAllPPSCPapersByAdmin">Cancel</a>
+    </div>
+</form>

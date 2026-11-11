@@ -1,25 +1,31 @@
 ﻿@model IEnumerable<Subject>
 @{
     ViewBag.Title = "Nexam | All Subjects";
-    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "All Sbjects,Question,Subjects,nexam contact,Contact,Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    ViewBag.Description = "Practice MCQs by subject: General Knowledge, English, Pakistan Studies, Islamiat, Mathematics, Current Affairs and more.";
+    ViewBag.KeyWords = "MCQs by subject, General Knowledge, English, Pak Studies, Islamiat, Mathematics, Current Affairs, Urdu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="rs-categories" class="rs-categories gray-bg style1 pt-94 pb-70 md-pt-64 md-pb-40" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row y-middle mb-50 md-mb-30">
-            <div class="col-md-6 sm-mb-30">
-                <div class="sec-title">
-                    <h2 class="title mb-0">All Subjects </h2>
-                </div>
-            </div>
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">Subjects</span></nav>
+        <h1>All subjects</h1>
+        <p>Choose a subject to practise its questions. The newest past-paper questions come first.</p>
+    </div>
 
+    <div class="section" style="padding-top:20px" data-filter-scope>
+        <div class="filters">
+            <div class="search-field">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <input class="input" type="search" placeholder="Filter subjects" aria-label="Filter subjects" data-filter-input>
+            </div>
         </div>
-        <div class="row">
-            @foreach (var Item in Model)
+        <div class="grid-cards">
+            @foreach (var subject in Model)
             {
-                @await Html.PartialAsync("_SubjectCard", Item)
+                @await Html.PartialAsync("_SubjectCard", subject)
             }
         </div>
+        <div class="empty hidden" data-filter-empty><p class="mb-0">No subject matches your filter.</p></div>
     </div>
 </div>

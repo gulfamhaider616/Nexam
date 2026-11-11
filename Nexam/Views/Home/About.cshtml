@@ -1,111 +1,30 @@
 ﻿@{
     ViewBag.Title = "Nexam | About";
-    ViewBag.Description = "Nexam is the largest exams preperation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
-    ViewBag.KeyWords = "Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preperation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    ViewBag.Description = "Nexam is the largest exams preparation platform. Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance....";
+    ViewBag.KeyWords = "Nexam,About nexam,MCQ,MCQS,CSS,NTS,PPSC,MCQ Preparation,General Knowledge,Pak study,Islamic Study,PAK AFFAIRS,MATHEMATIC,INTERNATIONAL AFFAIRS,COMPUTER SCIENCE,ENGLISH,GEOGRAPHY";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="rs-about" class="rs-about style1 pt-100 pb-100 md-pt-70 md-pb-70" style="background-color: #f9f7f8;">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 order-last padding-0 md-pl-15 md-pr-15 md-mb-30">
-                <div class="img-part">
-                    <img class="" src="~/images/pic1.jpg" alt="About Image">
-                </div>
-            </div>
-            <div class="col-lg-6 pr-70 md-pr-15">
-                <div class="sec-title">
-                    <div class="sub-title orange">About Nexam</div>
-                    <h2 class="title mb-17">Welcome to our Online Learning Platform</h2>
-                    <div class="bold-text mb-22">Nexam was developed with a mission to provide "Simple, Innovative and updated Test Preparation for All Examination. It holds all the subjects that are included in CSS,PPSC and NTS. We are providing our services in free of cost just to share our knowledge and we hope it'll be very useful for many people. We are a team of professionals are working on the updated content in every minute. We don't rely on any other website or platform for authentic and quality content.</div>
-                    <div class="desc">During our student days, we always had a difficult time in getting access to a good quality MCQs database that was updated, challenging, and easy to use / navigate. The other problem is that individual students have no way to measure how he or she is performing as compared to the peers (no academy can do that). There is no existing solution in the market to track the progress and systematically help the students to channel their energies to the weakest areas. Finally, our experience is that taking mock tests and repeating wrongly answered questions is the most effective tool in the test preparation.</div>
-                </div>
+@section Head {
+    <link rel="stylesheet" href="/css/pages-public.css">
+}
+
+<div class="container">
+    <div class="page-head">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span aria-current="page">About</span></nav>
+        <h1>About Nexam</h1>
+        <p>Welcome to our Online Learning Platform</p>
+    </div>
+
+    <div class="section about-grid" style="padding-top:20px">
+        <div class="prose">
+            <p><strong>Nexam was developed with a mission to provide "Simple, Innovative and updated Test Preparation for All Examination. It holds all the subjects that are included in CSS,PPSC and NTS. We are providing our services in free of cost just to share our knowledge and we hope it'll be very useful for many people. We are a team of professionals are working on the updated content in every minute. We don't rely on any other website or platform for authentic and quality content.</strong></p>
+            <p>During our student days, we always had a difficult time in getting access to a good quality MCQs database that was updated, challenging, and easy to use / navigate. The other problem is that individual students have no way to measure how he or she is performing as compared to the peers (no academy can do that). There is no existing solution in the market to track the progress and systematically help the students to channel their energies to the weakest areas. Finally, our experience is that taking mock tests and repeating wrongly answered questions is the most effective tool in the test preparation.</p>
+            <div class="cluster mt-3">
+                <a class="btn btn-primary" href="/nexam/all-subjects">Browse subjects <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+                <a class="btn btn-secondary" href="/nexam-contact">Contact us</a>
             </div>
         </div>
+        <img src="~/images/pic1.jpg" alt="Students preparing for exams with Nexam" loading="lazy">
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @*<div class="main_bg">
-        <!-- start main -->
-        <div class="container">
-            <div class="about row">
-                <h2 style="text-align: center;">about us</h2>
-                <p class="para">Nexam was developed with a mission to provide "Simple, Innovative and updated Test Preparation for All Examination. It holds all the subjects that are included in CSS,PPSC and NTS. We are providing our services in free of cost just to share our knowledge and we hope it'll be very useful for many people. We are a team of professionals are working on the updated content in every minute. We don't rely on any other website or platform for authentic and quality content.  </p>
-                <p class="para">During our student days, we always had a difficult time in getting access to a good quality MCQs database that was updated, challenging, and easy to use / navigate. The other problem is that individual students have no way to measure how he or she is performing as compared to the peers (no academy can do that). There is no existing solution in the market to track the progress and systematically help the students to channel their energies to the weakest areas. Finally, our experience is that taking mock tests and repeating wrongly answered questions is the most effective tool in the test preparation. </p>
-                <a href="#" class="fa-btn btn-1 btn-1e">read more</a>
-            </div>
-        </div>
-    </div><!-- end main -->*@
-
-@*<div class="main_btm">
-    <!----start-img-cursual---->
-    <div id="owl-demo" class="owl-carousel text-center" style="">
-        <div class="item">
-            <div class="cau_left">
-                <img class="lazyOwl" data-src="/images/faisal.jpg" alt="Faisal Azhar" style="border-radius: 15%;">
-            </div>
-            <div class="cau_left">
-                @*<h4><a href="https://www.facebook.com/fad790" target="_blank">Faisal Azhar</a></h4>
-				<h4><a href="#" target="_blank">Faisal Azhar</a></h4>
-				<p>
-					<strong>CEO & Co-founder</strong> <br />
-					We only believe on the security on the information provided by us. We are providing our services in the world for your better future.
-				</p>
-            </div>
-        </div>
-        <div class="item">
-            <div class="cau_left">
-                <img class="lazyOwl" data-src="/images/ahmeds2.PNG" alt="Ahmed Shair" style="border-radius: 15%;">
-            </div>
-            <div class="cau_left">
-                <h4><a href="https://www.facebook.com/ahmed.shair.908" target="_blank">Ahmed Shair</a></h4>
-				<p>
-					<strong>Chief Technology Officer</strong> <br />
-					We believe on the authenticity and quality of work. Our focus is to provide you best services for your best career in the digital world.
-				</p>
-            </div>
-        </div>
-		<div class="item">
-			<div class="cau_left">
-				<img class="lazyOwl" data-src="http://afaconsultants.com/images/sabir.jpg" alt="Sabir Khursheed" style="border-radius: 15%;margin-left: auto;margin-right: auto;display: block;height: 222px;width: 222px;">
-			</div>
-			<div class="cau_left">
-				<h4><a href="#" target="_blank">Sabir Khursheed</a></h4>
-				<p>
-					<strong>Data Entry Operator</strong> <br />
-					We are working to update the data in our website on the daily basis. We ultimate aim is to update our customers with the latest stuff.
-				</p>
-			</div>
-		</div>
-    </div>
-    <!----//End-img-cursual---->
-</div>
-
-
-    <div class="main_btm">
-        <!-- start main_btm -->
-        <div class="container">
-            <div class="main row">
-                <div class="col-md-6 content_left">
-                    <img src="~/images/pic1.jpg" alt="" class="img-responsive">
-                </div>
-                <div class="col-md-6 content_right">
-                    <h4>Online Nexam measures your improvement against the exam requirement and provides you with constant feedback and guidance.</h4>
-                    <p class="para">This course is suitable for students with limited study time who wish to rely more on self for exam preparation. It provides preperation meterial, discussion groups and demonstrations covering more than 8 subjects. The topics  are based on MCQ Examination format. Our plans are tailored to meet your unique needs. Our System will tell you what is important and what you should focus on, you will practice with our system from your place or from overseas.</p>
-                    <a href="~/nexam-about" class="fa-btn btn-1 btn-1e">read more</a>
-                </div>
-            </div>
-        </div>
-    </div>*@
