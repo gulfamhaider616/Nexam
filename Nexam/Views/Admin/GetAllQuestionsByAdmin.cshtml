@@ -22,10 +22,11 @@
 @if (Model.SubjectList != null && Model.SubjectList.Count > 0)
 {
     <nav class="chips subject-chips mt-3" aria-label="Subjects">
-        @foreach (var item in Model.SubjectList)
+        @foreach (var item in Model.SubjectList.Where(x => SubjectGroups.Of(x.SubjectName) == SubjectGroups.General || x.SubjectName == Model.Subject))
         {
             <a class="chip" href="/Admin/GetAllQuestionsByAdmin?SubjectID=@item.SubjectID" aria-pressed="@(item.SubjectName == Model.Subject ? "true" : null)">@item.SubjectName</a>
         }
+        <a class="chip" href="/Admin/GetAllSubjects">All subjects</a>
     </nav>
 }
 

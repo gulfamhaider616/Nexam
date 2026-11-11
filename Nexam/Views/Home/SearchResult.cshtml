@@ -23,10 +23,8 @@
             <div class="cluster">
                 <select class="select" name="subject" aria-label="Subject" style="max-width:260px">
                     <option value="">All subjects</option>
-                    @foreach (var s in Model.SubjectList)
-                    {
-                        <option value="@s.SubjectID" selected="@(Model.SelectedSubjectId == s.SubjectID)">@s.SubjectName</option>
-                    }
+                    @{ ViewData["selected"] = Model.SelectedSubjectId; }
+                    @await Html.PartialAsync("_SubjectOptions", Model.SubjectList)
                 </select>
                 <noscript><button class="btn btn-primary" type="submit">Search</button></noscript>
                 <label class="switch"><input type="checkbox" data-answers-toggle><span>Show answers</span></label>

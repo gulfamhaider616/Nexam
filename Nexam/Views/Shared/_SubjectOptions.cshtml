@@ -1,0 +1,16 @@
+@model IEnumerable<Subject>
+@{
+    // <option>s grouped by country ("General" first): subjects named "COUNTRY - EXAM" go under their country.
+    int? selected = ViewData["selected"] as int?;
+    var groups = Model.GroupBy(s => SubjectGroups.Of(s.SubjectName))
+        .OrderBy(g => g.Key == SubjectGroups.General ? 0 : 1).ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase);
+}
+@foreach (var g in groups)
+{
+    <optgroup label="@SubjectGroups.Label(g.Key)">
+        @foreach (var s in g)
+        {
+            <option value="@s.SubjectID" selected="@(selected == s.SubjectID)">@s.SubjectName</option>
+        }
+    </optgroup>
+}

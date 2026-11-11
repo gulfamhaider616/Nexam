@@ -26,10 +26,7 @@
                 <div class="field">
                     <label for="subjectid">Subject</label>
                     <select class="select" id="subjectid" name="subjectid" required>
-                        @foreach (var item in Model)
-                        {
-                            <option value="@item.SubjectID">@item.SubjectName</option>
-                        }
+                        @await Html.PartialAsync("_SubjectOptions", Model)
                     </select>
                 </div>
                 <div class="field">

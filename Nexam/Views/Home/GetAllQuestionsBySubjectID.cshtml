@@ -52,10 +52,11 @@
             <div class="panel">
                 <h3>All subjects</h3>
                 <div class="stack" style="--gap:6px">
-                    @foreach (var s in Model.SubjectList)
+                    @foreach (var s in Model.SubjectList.Where(x => SubjectGroups.Of(x.SubjectName) == SubjectGroups.General || x.SubjectName == Model.Subject))
                     {
                         <a href="/Questions/@s.SubjectID" style="display:block;padding:6px 0;@(s.SubjectName == Model.Subject ? "font-weight:700" : "")">@s.SubjectName</a>
                     }
+                    <a href="/nexam/all-subjects" style="display:block;padding:6px 0;font-weight:650">Browse by country <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
                 </div>
             </div>
         </aside>

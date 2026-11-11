@@ -445,3 +445,4 @@ ul, ol { margin: 0; padding: 0; }
 
 /* Many subjects (country imports): skip rendering cards that are off-screen. */
 .subject-card { content-visibility: auto; contain-intrinsic-size: auto 96px; }
+.admin-tile { content-visibility: auto; contain-intrinsic-size: auto 90px; }
