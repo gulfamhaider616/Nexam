@@ -1,34 +1,49 @@
 /* Forum moderation (admin): publish / delete a forum question.
    Buttons carry data-action="publish|delete" and data-id="<AskQuestionID>".
-   Endpoints return JSON true/false. Uses NexamDialog from nexam.js. */
+   Endpoints return JSON true/false. Success updates the table row in place; failures use NexamDialog. */
 (function () {
     'use strict';
 
     var ACTIONS = {
         publish: {
             url: '/Forum/PublishQuestionByAdmin',
-            ok: 'Your Question has been Published.',
             fail: "We can't publish your question, Please try again.",
             error: "We can't publish your question due to internal error."
         },
         'delete': {
             url: '/Forum/DeleteQuestions',
-            ok: 'Your Question has been Deleted.',
             fail: "We can't Deleted your question, Please try again.",
             error: "We can't Deleted your question due to internal error."
         }
     };
-    var NEXT = '/Forum/UnPublish';
-
-    function popup(ok, message) {
+    // Success is silent: the row is updated or removed in place. Only failures show a dialog.
+    function fail(message) {
         var p = document.createElement('p');
         p.textContent = message;
-        NexamDialog.show({
-            title: ok ? 'Thank you!' : 'Sorry!',
-            html: p.outerHTML,
-            persistent: true,
-            actions: [{ label: 'Continue', href: NEXT, primary: true }]
-        });
+        NexamDialog.show({ title: 'Sorry!', html: p.outerHTML, actions: [{ label: 'Close', primary: true }] });
+    }
+
+    function renumber(body) {
+        if (!body) return;
+        var n = 1;
+        body.querySelectorAll('tr').forEach(function (r) { var c = r.querySelector('td.num'); if (c) c.textContent = n++; });
+    }
+
+    // Delete, or publish from the review queue, removes the row; publishing elsewhere flips the status badge.
+    function applyResult(btn, action) {
+        var row = btn.closest('tr');
+        var scope = btn.closest('[data-filter-scope]');
+        if (!row) return;
+        if (action === 'delete' || location.pathname.toLowerCase().indexOf('/forum/unpublish') === 0) {
+            var body = row.parentNode;
+            row.remove();
+            renumber(body);
+        } else {
+            var badge = row.querySelector('.badge');
+            if (badge) { badge.className = 'badge badge-success'; badge.textContent = 'Published'; }
+            btn.remove();
+        }
+        if (scope) scope.dispatchEvent(new Event('nx:refresh'));
     }
 
     document.addEventListener('click', function (e) {
@@ -48,19 +63,15 @@
             .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
             .then(function (result) {
                 if (result === true) {
-                    if (btn.getAttribute('data-action') === 'delete') {
-                        var row = btn.closest('tr');
-                        if (row) row.hidden = true;
-                    }
-                    popup(true, cfg.ok);
+                    applyResult(btn, btn.getAttribute('data-action'));
                 } else {
                     btn.disabled = false;
-                    popup(false, cfg.fail);
+                    fail(cfg.fail);
                 }
             })
             .catch(function () {
                 btn.disabled = false;
-                popup(false, cfg.error);
+                fail(cfg.error);
             });
     });
 })();

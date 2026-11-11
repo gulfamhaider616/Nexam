@@ -7,7 +7,7 @@
 	int count = 1;
 }
 @section Head {
-	<link rel="stylesheet" href="/css/pages-admin.css">
+	<link rel="stylesheet" href="/css/pages-admin.css" asp-append-version="true">
 }
 
 <div class="page-head">
@@ -50,7 +50,7 @@ else
 							<td class="muted">@Item.PaperDetail</td>
 							<td>
 								<div class="actions">
-									<a class="btn btn-secondary btn-sm" href="/CSS-Past-Paper-Question/@Item.PaperID"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg>Open</a>
+									<a class="btn btn-secondary btn-sm btn-icon" href="/CSS-Past-Paper-Question/@Item.PaperID" title="Open" aria-label="Open"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg><span class="sr-only">Open</span></a>
 								</div>
 							</td>
 						</tr>

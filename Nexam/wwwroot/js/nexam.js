@@ -82,6 +82,13 @@
             if (empty) empty.classList.toggle('hidden', shown !== 0);
         }
 
+        // Rows were added/removed by other scripts: re-read them and recount.
+        scope.addEventListener('nx:refresh', function () {
+            items = Array.prototype.slice.call(scope.querySelectorAll('[data-filter-item]'));
+            texts = items.map(function (i) { return (i.getAttribute('data-filter-text') || i.textContent).toLowerCase(); });
+            run();
+        });
+
         if (input) input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 120); });
         chips.forEach(function (chip) {
             chip.addEventListener('click', function () {
@@ -94,11 +101,30 @@
     }
     document.querySelectorAll('[data-filter-scope]').forEach(initFilter);
 
-    /* ---------- Confirm before a destructive link/button:  <a data-confirm="Delete this question?" ...> ---------- */
+    /* ---------- Confirm before a destructive link/button ----------
+       <a data-confirm="Delete this question?" [data-confirm-label="Delete"] ...>
+       Shows Nexam's own dialog (not the browser's). On "confirm" the original click is replayed, so links
+       navigate, submit buttons submit, and other click handlers (e.g. forum moderation) run as usual.
+       Registered in the capture phase so it runs before any other click handler. */
     document.addEventListener('click', function (e) {
         var el = e.target.closest('[data-confirm]');
-        if (el && !window.confirm(el.getAttribute('data-confirm'))) e.preventDefault();
-    });
+        if (!el) return;
+        if (el.__nxConfirmed) { el.__nxConfirmed = false; return; }   // the replayed click: let it through
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var message = el.getAttribute('data-confirm');
+        var label = el.getAttribute('data-confirm-label') || (/^delete/i.test(message) ? 'Delete' : 'Confirm');
+        var body = document.createElement('p');
+        body.textContent = message;
+        window.NexamDialog.show({
+            title: 'Please confirm',
+            html: body.outerHTML,
+            actions: [
+                { label: 'Cancel' },
+                { label: label, primary: true, danger: /^delete/i.test(message), onClick: function () { el.__nxConfirmed = true; el.click(); } }
+            ]
+        });
+    }, true);
 
     /* ---------- Show / hide answers on question lists ---------- */
     document.querySelectorAll('[data-answers-toggle]').forEach(function (toggle) {
@@ -267,7 +293,7 @@
             actions.className = 'form-actions';
             (o.actions || [{ label: 'Close' }]).forEach(function (a) {
                 var el = document.createElement(a.href ? 'a' : 'button');
-                el.className = 'btn ' + (a.primary ? 'btn-primary' : 'btn-secondary');
+                el.className = 'btn ' + (a.danger ? 'btn-danger' : a.primary ? 'btn-primary' : 'btn-secondary');
                 el.textContent = a.label;
                 if (a.href) el.href = a.href;
                 el.addEventListener('click', function () { if (a.onClick) a.onClick(); if (!a.href) closeDialog(); });

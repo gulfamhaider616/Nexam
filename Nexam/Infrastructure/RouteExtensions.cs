@@ -8,6 +8,9 @@ public static class RouteExtensions
         void Map(string pattern, string controller, string action) =>
             app.MapControllerRoute(name: pattern, pattern: pattern, defaults: new { controller, action });
 
+        // Single sign-in for admins and users
+        Map("Login", "Account", "Login");
+
         // CSS
         Map("CSS-Past-Papers", "CSS", "GetAllCSSPapers");
         Map("CSS-Past-Paper-Question/{paperid}", "CSS", "GetCompleteCSSPaperByID");

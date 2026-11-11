@@ -107,3 +107,13 @@ public interface IAnnouncementService
     /// <summary>Emails the registration announcement to every registered user (BCC).</summary>
     Task SendRegistrationAnnouncementAsync();
 }
+
+/// <summary>Who signed in and in which role.</summary>
+public sealed record LoginResult(string Role, string Name, int? UserId);
+
+public interface IAccountService
+{
+    /// <summary>Checks the credentials against admins first, then site users.</summary>
+    /// <returns>The signed-in account, or null when the email/password is wrong.</returns>
+    Task<LoginResult> LoginAsync(string email, string password);
+}

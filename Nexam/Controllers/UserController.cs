@@ -17,26 +17,17 @@ public class UserController(IUserService users) : Controller
             FName = fname, LName = lname, Email = email, Password = password,
             PNumber = pnumber, Country = country, City = city
         });
-        return RedirectToAction(saved ? "UserLogin" : "User_Registration");
+        return saved ? RedirectToAction("Login", "Account") : RedirectToAction("User_Registration");
     }
 
-    public IActionResult UserLogin() => View();
-
-    public async Task<IActionResult> VerifyUser(string email, string password)
-    {
-        var user = await users.VerifyAsync(email, password);
-        if (user is null)
-            return View("UserLogin");
-
-        await HttpContext.SignInAsync(user.FName, AppRoles.User, user.Id);
-        return RedirectToAction("Index", "Home");
-    }
+    // The old separate user login now lives at /Login (kept so bookmarks still work).
+    public IActionResult UserLogin() => RedirectToActionPermanent("Login", "Account");
 
     public async Task<IActionResult> UserDashboard()
     {
         var userId = User.IsInRole(AppRoles.User) ? User.GetUserId() : null;
         if (userId is null)
-            return View("UserLogin");
+            return RedirectToAction("Login", "Account");
 
         return View(await users.GetQuizzesAsync(userId.Value));
     }

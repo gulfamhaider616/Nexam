@@ -39,6 +39,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IForumService, ForumService>();
         services.AddScoped<IQuizService, QuizService>();
         services.AddScoped<INtsService, NtsService>();

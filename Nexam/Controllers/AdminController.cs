@@ -8,20 +8,11 @@ using Nexam.Models.Entities;
 
 namespace Nexam.Controllers;
 
-public class AdminController(IAdminService admins, ISubjectService subjects, IQuestionService questions,
+public class AdminController(ISubjectService subjects, IQuestionService questions,
     IContactService contacts) : Controller
 {
-    public IActionResult Login() => View();
-
-    public async Task<IActionResult> VerifyAdmin(string adminname, string adminpassword)
-    {
-        var name = await admins.VerifyAsync(adminname, adminpassword);
-        if (name is null)
-            return View("Login");
-
-        await HttpContext.SignInAsync(name, AppRoles.Admin);
-        return RedirectToAction("GetAllSubjects");
-    }
+    // The old separate admin login now lives at /Login (kept so bookmarks still work).
+    public IActionResult Login() => RedirectToActionPermanent("Login", "Account");
 
     public async Task<IActionResult> Logout()
     {

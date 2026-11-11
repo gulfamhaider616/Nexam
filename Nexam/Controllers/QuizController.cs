@@ -13,7 +13,7 @@ public class QuizController(IQuizService quizzes, ISubjectService subjects) : Co
     public async Task<IActionResult> NewQuiz()
     {
         if (!User.IsInRole(AppRoles.User))
-            return RedirectToAction("UserLogin", "User");
+            return RedirectToAction("Login", "Account");
 
         return View(await subjects.GetAllAsync());
     }
@@ -25,7 +25,7 @@ public class QuizController(IQuizService quizzes, ISubjectService subjects) : Co
 
         var userId = User.IsInRole(AppRoles.User) ? User.GetUserId() : null;
         if (userId is null)
-            return RedirectToAction("UserLogin", "User");
+            return RedirectToAction("Login", "Account");
 
         // The user comes from the sign-in cookie, not from a form field anyone could edit.
         var quiz = new Quiz { Title = title, SubjectID = subjectid, TotalQuestions = totalquestions, UserID = userId.Value };

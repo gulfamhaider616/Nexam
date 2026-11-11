@@ -74,8 +74,8 @@
                         </td>
                         <td>
                             <div class="actions">
-                                <a class="btn btn-secondary btn-sm" href="/NTS/GetNTSQuestionById?questionID=@item.QuestionID"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg>Edit</a>
-                                <a class="btn btn-danger btn-sm" href="/NTS/DeleteNTSQuestionById?questionID=@item.QuestionID" data-confirm="Delete this question? This cannot be undone."><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>Delete</a>
+                                <a class="btn btn-secondary btn-sm btn-icon" href="/NTS/GetNTSQuestionById?questionID=@item.QuestionID" title="Edit" aria-label="Edit"><svg class="icon" aria-hidden="true"><use href="#i-edit"/></svg><span class="sr-only">Edit</span></a>
+                                <a class="btn btn-danger btn-sm btn-icon" href="/NTS/DeleteNTSQuestionById?questionID=@item.QuestionID" data-confirm="Delete this question? This cannot be undone." title="Delete" aria-label="Delete"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg><span class="sr-only">Delete</span></a>
                             </div>
                         </td>
                     </tr>

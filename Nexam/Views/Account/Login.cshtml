@@ -1,18 +1,26 @@
-﻿@{
+@{
     ViewBag.Title = "Nexam | Log in";
-    ViewBag.Description = "Log in to your Nexam account to take quizzes and track your progress.";
-    ViewBag.KeyWords = "Nexam login, user login";
+    ViewBag.Description = "Log in to your Nexam account.";
+    ViewBag.KeyWords = "Nexam login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string error = ViewBag.Error as string;
 }
 
 <div class="container auth-wrap">
     <div class="auth-card form-card">
         <h1>Log in</h1>
-        <p class="muted">Welcome back. Log in to take quizzes and see your progress.</p>
-        <form action="/User/VerifyUser" method="post">
+        <p class="muted">Welcome back. Log in to take quizzes, track your progress or manage the site.</p>
+
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-danger" role="alert">@error</div>
+        }
+
+        <form action="/Login" method="post">
+            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl">
             <div class="field">
                 <label for="email">Email</label>
-                <input class="input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                <input class="input" type="email" id="email" name="email" value="@ViewBag.Email" placeholder="you@example.com" autocomplete="username" required autofocus>
             </div>
             <div class="field">
                 <label for="password">Password</label>

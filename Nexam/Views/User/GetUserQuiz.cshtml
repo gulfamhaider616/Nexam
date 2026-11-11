@@ -7,7 +7,7 @@
     var quizzes = Model?.ToList() ?? new List<Quiz>();
 }
 @section Head {
-    <link rel="stylesheet" href="/css/pages-user.css">
+    <link rel="stylesheet" href="/css/pages-user.css" asp-append-version="true">
 }
 
 <div class="container">
@@ -51,7 +51,7 @@
                                 <td><span class="badge @(item.Score >= 50 ? "badge-success" : "badge-danger") score-pill">@item.Score%</span></td>
                                 <td>@item.TotalAttempts</td>
                                 <td>@((item.InsertDate ?? "").Split(' ')[0])</td>
-                                <td><a class="btn btn-secondary btn-sm" href="/Quiz/GeTQuizById?quizID=@item.QuizID">View</a></td>
+                                <td><a class="btn btn-secondary btn-sm btn-icon" href="/Quiz/GeTQuizById?quizID=@item.QuizID" title="View" aria-label="View"><svg class="icon" aria-hidden="true"><use href="#i-eye"/></svg><span class="sr-only">View</span></a></td>
                             </tr>
                         }
                     </tbody>

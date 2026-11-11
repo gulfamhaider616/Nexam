@@ -6,7 +6,7 @@
     var signedIn = User.IsInRole("User");
 }
 @section Head {
-    <link rel="stylesheet" href="/css/pages-user.css">
+    <link rel="stylesheet" href="/css/pages-user.css" asp-append-version="true">
 }
 
 <div class="container container-narrow">
@@ -36,7 +36,7 @@
             <a class="btn btn-primary btn-lg" href="/Quiz/NewQuiz"><svg class="icon" aria-hidden="true"><use href="#i-quiz"/></svg>Start a quiz</a>
             @if (!signedIn)
             {
-                <p class="muted mt-2 mb-0">You need an account to take a quiz. <a href="/User/UserLogin">Log in</a> or <a href="/User/User_Registration">create one</a>.</p>
+                <p class="muted mt-2 mb-0">You need an account to take a quiz. <a href="/Login">Log in</a> or <a href="/User/User_Registration">create one</a>.</p>
             }
         </div>
     </div>
