@@ -4,6 +4,11 @@
     ViewBag.Description = "Practice MCQs by subject: General Knowledge, English, Pakistan Studies, Islamiat, Mathematics, Current Affairs and more.";
     ViewBag.KeyWords = "MCQs by subject, General Knowledge, English, Pak Studies, Islamiat, Mathematics, Current Affairs, Urdu";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // "General" first, then the countries A-Z (subjects named "COUNTRY - BODY - PROFESSION").
+    var groups = Model.GroupBy(s => SubjectGroups.Of(s.SubjectName))
+        .OrderBy(g => g.Key == SubjectGroups.General ? 0 : 1).ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase)
+        .ToList();
 }
 
 <div class="container">
@@ -19,6 +24,17 @@
                 <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
                 <input class="input" type="search" placeholder="Filter subjects" aria-label="Filter subjects" data-filter-input>
             </div>
+            @if (groups.Count > 1)
+            {
+                <div class="chips" role="group" aria-label="Filter by country">
+                    <button type="button" class="chip" data-filter-chip="" aria-pressed="true">All <span class="muted">@Model.Count()</span></button>
+                    @foreach (var g in groups)
+                    {
+                        <button type="button" class="chip" data-filter-chip="@g.Key" aria-pressed="false">@SubjectGroups.Label(g.Key) <span class="muted">@g.Count()</span></button>
+                    }
+                </div>
+            }
+            <div class="filter-meta"><span data-filter-count></span></div>
         </div>
         <div class="grid-cards">
             @foreach (var subject in Model)

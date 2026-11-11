@@ -11,7 +11,7 @@
     }
     var tone = (Model.SubjectID % 6) + 1;
 }
-<a class="subject-card tone-@tone" href="/Questions/@Model.SubjectID" data-filter-item data-filter-text="@name">
+<a class="subject-card tone-@tone" href="/Questions/@Model.SubjectID" data-filter-item data-filter-group="@SubjectGroups.Of(name)" data-filter-text="@name">
     <span class="tile" aria-hidden="true"><svg class="icon"><use href="#i-book"/></svg></span>
     <span>
         <h3>@name</h3>

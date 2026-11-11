@@ -78,6 +78,10 @@ dotnet run -- parse                     # cache -> data/staging/*.json
 dotnet run -- report                    # dry-run summary: counts, subject mapping, warnings
 dotnet run -- crosscheck                # compare answers with questions already on the site
 dotnet run -- import                    # dry run; add --commit --create-subjects to write
+dotnet run -- fetch-dha                 # DHA practice sets (11 professions) from open-exam-prep.com -> data/dha/raw
+dotnet run -- import-dha                # dry run; add --commit to create the "DHA - ..." subjects and questions
 ```
+
+The DHA sets are exam-style practice questions (not official DHA items); each profession becomes its own subject. Their explanations are kept in `data/dha/*.questions.json` (the `Questions` table has no explanation column).
 
 Re-running is safe: papers already in `ImportedPaper` (same URL or same content) are skipped. Answer keys come from a third party and are unverified; spot-check before relying on them.
