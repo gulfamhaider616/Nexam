@@ -12,10 +12,12 @@ public static class ServiceCollectionExtensions
     {
         services.Configure<EmailSettings>(configuration.GetSection("Email"));
         services.Configure<PdfSettings>(configuration.GetSection("Pdf"));
+        services.Configure<TwilioSettings>(configuration.GetSection("Twilio"));
 
         // Infrastructure
         services.AddSingleton<IPdfGenerator, IronPdfGenerator>();
         services.AddSingleton<IEmailSender, SmtpEmailSender>();
+        services.AddSingleton<ISmsSender, TwilioSmsSender>();
 
         // Data access
         services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();

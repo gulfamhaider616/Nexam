@@ -32,12 +32,32 @@ Needs the `Nexam` database. The default connection string targets `(localdb)\MSS
 
 ## Configuration (keep secrets out of git)
 
+Settings are split by environment (later sources override earlier ones: `appsettings.json` -> `appsettings.{Environment}.json` -> user-secrets (Development) -> environment variables):
+
+| File | Contents |
+|---|---|
+| `Nexam/appsettings.json` | shared defaults only (`Database:ActiveConnection`, logging); no credentials |
+| `Nexam/appsettings.Development.json` | all local keys: connection strings, `Email`, `Twilio`, `Pdf` (contains real secrets, keep the repo private) |
+| `Nexam/appsettings.Production.json` | the same keys with empty values; fill them on the server with environment variables (`Section__Key`) |
+
+Details per setting:
+
+| Setting | Where |
+|---|---|
+| `Database:ActiveConnection` | name of the `ConnectionStrings` entry to use (default `DefaultConnection`, the local DB) |
+| `ConnectionStrings:Production_94_130_177_96`, `GoDaddy_secureserver`, `Legacy_148_72_232_168`, `Legacy_43_255_152_25` | full strings with passwords: user-secrets |
+| `Email:*` (incl. `Password`) | `appsettings.Development.json` (real password; keep the repo private) |
+| `Twilio:*` (incl. `AuthToken`) | `appsettings.Development.json` (real token; keep the repo private) |
+| `Pdf:IronPdfLicenseKey` | `appsettings.Development.json` (empty until you have a key; needed for PPSC paper PDF download) |
+
 ```
-dotnet user-secrets --project Nexam set "Pdf:IronPdfLicenseKey" "<key>"   # PPSC paper PDF download
-dotnet user-secrets --project Nexam set "Email:UserName" "<smtp user>"
-dotnet user-secrets --project Nexam set "Email:Password" "<smtp password>"
-dotnet user-secrets --project Nexam set "Email:AdminAddress" "<admin email>"
+dotnet user-secrets --project Nexam list
+dotnet user-secrets --project Nexam set "Pdf:IronPdfLicenseKey" "<key>"
 ```
+
+On a server use environment variables with `__` instead of `:` (e.g. `Twilio__AuthToken`).
+
+Note: the remote databases still use the old `ahmedshair`/`shaira` schemas; move their objects to `dbo` before pointing `Database:ActiveConnection` at them.
 
 ## Authentication
 

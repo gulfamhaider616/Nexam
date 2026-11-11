@@ -5,3 +5,4 @@ packages/
 Nexam/bin/
 Nexam/obj/
 appsettings.Local.json
+Nexam/appsettings.Development.json

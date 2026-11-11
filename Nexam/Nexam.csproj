@@ -21,6 +21,7 @@
     <PackageReference Include="IronPdf" Version="2026.11.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1" />
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="11.0.0" />
+    <PackageReference Include="Twilio" Version="8.2.0" />
   </ItemGroup>
 
 </Project>
