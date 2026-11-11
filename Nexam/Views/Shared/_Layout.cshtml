@@ -72,7 +72,7 @@
             </nav>
 
             <div class="header-actions">
-                <form class="header-search" action="/Home/SearchResult" method="get" role="search">
+                <form class="header-search" action="/Home/SearchResult" method="get" role="search" data-suggest="/Home/SearchSuggest">
                     <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
                     <input class="input" type="search" name="search" placeholder="Search questions  ( / )" aria-label="Search questions" data-search-input>
                 </form>
@@ -107,7 +107,7 @@
     </header>
 
     <div class="drawer" id="drawer" data-open="false">
-        <form action="/Home/SearchResult" method="get" role="search">
+        <form action="/Home/SearchResult" method="get" role="search" data-suggest="/Home/SearchSuggest">
             <div class="field mb-0"><input class="input" type="search" name="search" placeholder="Search questions" aria-label="Search questions"></div>
         </form>
         <a class="drawer-link" href="/"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>Home</a>

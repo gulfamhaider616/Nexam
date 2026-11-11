@@ -12,7 +12,7 @@
         <h1>Prepare smarter for PPSC, FPSC, NTS &amp; CSS</h1>
         <p class="lead">Solved past papers and practice MCQs for every subject. Free, up to date, and built for revising on your phone.</p>
 
-        <form class="hero-search" action="/Home/SearchResult" method="get" role="search">
+        <form class="hero-search" action="/Home/SearchResult" method="get" role="search" data-suggest="/Home/SearchSuggest">
             <input class="input" type="search" name="search" placeholder="Search any question" aria-label="Search questions" data-search-input>
             <select class="select" name="subject" aria-label="Subject">
                 <option value="">All subjects</option>
@@ -21,7 +21,6 @@
                     <option value="@s.SubjectID">@s.SubjectName</option>
                 }
             </select>
-            <button class="btn btn-primary" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Search</button>
         </form>
 
         <div class="hero-stats">

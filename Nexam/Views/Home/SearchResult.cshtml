@@ -15,7 +15,7 @@
     </div>
 
     <div class="section" style="padding-top:12px">
-        <form class="filters" action="/Home/SearchResult" method="get" role="search">
+        <form class="filters" action="/Home/SearchResult" method="get" role="search" data-live-search>
             <div class="search-field">
                 <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
                 <input class="input" type="search" name="search" value="@Model.Search" placeholder="Search any question, e.g. largest ocean" aria-label="Search questions" data-search-input autofocus>
@@ -28,11 +28,12 @@
                         <option value="@s.SubjectID" selected="@(Model.SelectedSubjectId == s.SubjectID)">@s.SubjectName</option>
                     }
                 </select>
-                <button class="btn btn-primary" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>Search</button>
+                <noscript><button class="btn btn-primary" type="submit">Search</button></noscript>
                 <label class="switch"><input type="checkbox" data-answers-toggle><span>Show answers</span></label>
             </div>
         </form>
 
+        <div data-live-results aria-live="polite">
         @if (!hasSearch)
         {
             <div class="empty">
@@ -62,5 +63,6 @@
                 }
             </div>
         }
+        </div>
     </div>
 </div>

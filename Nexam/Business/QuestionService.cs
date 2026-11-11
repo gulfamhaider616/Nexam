@@ -38,6 +38,9 @@ public sealed class QuestionService(IQuestionRepository questions, ISubjectRepos
         };
     }
 
+    public async Task<(List<Question> Items, int Total)> SuggestAsync(string search, int? subjectId, int limit = 6) =>
+        string.IsNullOrWhiteSpace(search) ? (new List<Question>(), 0) : await questions.SearchAsync(search.Trim(), subjectId, limit);
+
     public Task<bool> SaveAsync(Question question) => questions.SaveAsync(question);
 
     public Task<bool> UpdateAsync(Question question) => questions.UpdateAsync(question);

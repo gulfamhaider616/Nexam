@@ -102,13 +102,149 @@
 
     /* ---------- Show / hide answers on question lists ---------- */
     document.querySelectorAll('[data-answers-toggle]').forEach(function (toggle) {
-        var lists = document.querySelectorAll('.q-list');
-        function apply() { lists.forEach(function (l) { l.setAttribute('data-answers', toggle.checked ? 'shown' : 'hidden'); }); }
+        function apply() { document.querySelectorAll('.q-list').forEach(function (l) { l.setAttribute('data-answers', toggle.checked ? 'shown' : 'hidden'); }); }
         toggle.checked = store.get('nx-answers') !== 'hidden';
         toggle.addEventListener('change', function () { store.set('nx-answers', toggle.checked ? 'shown' : 'hidden'); apply(); });
+        toggle.addEventListener('nx:refresh', apply);   // fired after live-search swaps the results
         apply();
     });
 
+    /* ---------- Live search ----------
+       <form data-live-search> ... <div data-live-results> ... </div>
+       Re-runs the form's GET request as the user types (or changes a select) and swaps only the results. */
+    document.querySelectorAll('form[data-live-search]').forEach(function (form) {
+        var box = document.querySelector('[data-live-results]');
+        if (!box || !window.fetch) return;
+        var timer = null, ctl = null, last = null;
+
+        function url() {
+            var qs = new URLSearchParams(new FormData(form)).toString();
+            return form.getAttribute('action') + (qs ? '?' + qs : '');
+        }
+        function run() {
+            var u = url();
+            if (u === last) return;
+            last = u;
+            if (ctl) ctl.abort();
+            ctl = window.AbortController ? new AbortController() : null;
+            box.setAttribute('aria-busy', 'true');
+            fetch(u, { headers: { 'X-Requested-With': 'fetch' }, signal: ctl ? ctl.signal : undefined })
+                .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+                .then(function (html) {
+                    var next = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-live-results]');
+                    if (!next) { window.location.href = u; return; }
+                    box.innerHTML = next.innerHTML;
+                    box.removeAttribute('aria-busy');
+                    box.querySelectorAll('[data-filter-scope]').forEach(initFilter);
+                    try { history.replaceState(null, '', u); } catch (e) { /* ignore */ }
+                    document.querySelectorAll('[data-answers-toggle]').forEach(function (t) { t.dispatchEvent(new Event('nx:refresh')); });
+                })
+                .catch(function (err) { if (err && err.name === 'AbortError') return; box.removeAttribute('aria-busy'); last = null; });
+        }
+
+        form.addEventListener('input', function (e) {
+            if (e.target.matches('[data-answers-toggle]')) return;
+            clearTimeout(timer);
+            timer = setTimeout(run, 300);
+        });
+        form.addEventListener('change', function (e) { if (e.target.tagName === 'SELECT') { clearTimeout(timer); run(); } });
+        form.addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(timer); run(); });
+        last = url();
+    });
+
+
+    /* ---------- Search suggestions (type-ahead) ----------
+       <form data-suggest="/Home/SearchSuggest" action="/Home/SearchResult"> <input name="search"> [<select name="subject">] </form>
+       Shows the top matches under the box as you type; Enter (or "See all") opens the full results page. */
+    document.querySelectorAll('form[data-suggest]').forEach(function (form) {
+        var input = form.querySelector('[name=search]');
+        if (!input || !window.fetch) return;
+        var endpoint = form.getAttribute('data-suggest');
+        var panel = document.createElement('div');
+        panel.className = 'suggest';
+        panel.setAttribute('role', 'listbox');
+        panel.hidden = true;
+        if (getComputedStyle(form).position === 'static') form.style.position = 'relative';
+        form.appendChild(panel);
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('aria-autocomplete', 'list');
+
+        var timer = null, ctl = null, active = -1, seq = 0;
+        function close() { panel.hidden = true; active = -1; }
+        function rows() { return panel.querySelectorAll('a'); }
+        function mark(i) {
+            var r = rows();
+            if (!r.length) return;
+            active = (i + r.length) % r.length;
+            r.forEach(function (a, n) { a.setAttribute('aria-selected', n === active ? 'true' : 'false'); });
+            r[active].scrollIntoView({ block: 'nearest' });
+        }
+        function allUrl(q) {
+            var p = new URLSearchParams(new FormData(form));
+            p.set('search', q);
+            if (p.get('subject') === '') p.delete('subject');
+            return form.getAttribute('action') + '?' + p.toString();
+        }
+        function render(data, q) {
+            panel.textContent = '';
+            if (!data.items || !data.items.length) {
+                var none = document.createElement('div');
+                none.className = 'suggest-empty';
+                none.textContent = 'No questions found for “' + q + '”';
+                panel.appendChild(none);
+            } else {
+                data.items.forEach(function (it) {
+                    var a = document.createElement('a');
+                    a.href = it.url;
+                    a.setAttribute('role', 'option');
+                    var t = document.createElement('span');
+                    t.className = 'suggest-text';
+                    t.setAttribute('dir', 'auto');
+                    t.textContent = it.text;
+                    a.appendChild(t);
+                    if (it.subject) {
+                        var s = document.createElement('span');
+                        s.className = 'suggest-sub';
+                        s.textContent = it.subject;
+                        a.appendChild(s);
+                    }
+                    panel.appendChild(a);
+                });
+                var all = document.createElement('a');
+                all.className = 'suggest-all';
+                all.href = allUrl(q);
+                all.textContent = 'See all ' + data.total + (data.total === 1 ? ' result' : ' results') + ' →';
+                panel.appendChild(all);
+            }
+            active = -1;
+            panel.hidden = false;
+        }
+        function run() {
+            var q = input.value.trim();
+            if (q.length < 2) { close(); return; }
+            var p = new URLSearchParams(new FormData(form));
+            p.set('search', q);
+            if (ctl) ctl.abort();
+            ctl = window.AbortController ? new AbortController() : null;
+            var mine = ++seq;
+            fetch(endpoint + '?' + p.toString(), { signal: ctl ? ctl.signal : undefined, headers: { 'Accept': 'application/json' } })
+                .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function (d) { if (mine === seq && document.activeElement === input) render(d, q); })
+                .catch(function () { /* aborted or offline: keep whatever is shown */ });
+        }
+        input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 250); });
+        input.addEventListener('focus', function () { if (panel.children.length && input.value.trim().length >= 2) panel.hidden = false; });
+        form.addEventListener('change', function (e) { if (e.target.tagName === 'SELECT') run(); });
+        input.addEventListener('keydown', function (e) {
+            if (panel.hidden) return;
+            if (e.key === 'ArrowDown') { e.preventDefault(); mark(active + 1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); mark(active - 1); }
+            else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); rows()[active].click(); }
+            else if (e.key === 'Escape') { close(); }
+        });
+        document.addEventListener('click', function (e) { if (!form.contains(e.target)) close(); });
+        form.addEventListener('focusout', function () { setTimeout(function () { if (!form.contains(document.activeElement)) close(); }, 0); });
+    });
     /* ---------- Dialog ----------
        NexamDialog.show({ title, html, actions: [{ label, href, primary, onClick }] }) */
     var current = null;

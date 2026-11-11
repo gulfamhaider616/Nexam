@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Nexam.Business.Interfaces;
+using Nexam.Infrastructure;
 using Nexam.Models.Entities;
 using Nexam.Models.ViewModels;
 
@@ -65,6 +66,22 @@ public class HomeController(
     }
 
     public async Task<IActionResult> SearchResult(string search, int? subject) => View(await questions.SearchAsync(search, subject));
+
+    /// <summary>JSON for the search-box suggestions (top matches + total).</summary>
+    public async Task<IActionResult> SearchSuggest(string search, int? subject)
+    {
+        var (items, total) = await questions.SuggestAsync(search, subject);
+        return Json(new
+        {
+            total,
+            items = items.Select(q => new
+            {
+                text = SearchSuggestions.Shorten(q.QuestionStatement),
+                subject = q.SubjectName,
+                url = q.PaperID == 0 ? "/Question-Detail/" + q.QuestionID : "/PPSC-Past-Paper-Question-Discussion/" + q.QuestionID
+            })
+        });
+    }
 
     public async Task<IActionResult> QuestionDiscussion(int questionID)
     {

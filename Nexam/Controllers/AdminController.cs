@@ -100,6 +100,22 @@ public class AdminController(IAdminService admins, ISubjectService subjects, IQu
     public async Task<IActionResult> AdminSearchResult(string search) => View(await questions.SearchAsync(search));
 
     [Authorize(Roles = AppRoles.Admin)]
+    public async Task<IActionResult> SearchSuggest(string search)
+    {
+        var (items, total) = await questions.SuggestAsync(search, null);
+        return Json(new
+        {
+            total,
+            items = items.Select(q => new
+            {
+                text = SearchSuggestions.Shorten(q.QuestionStatement),
+                subject = q.SubjectName,
+                url = "/Admin/GetQuestionById?questionID=" + q.QuestionID
+            })
+        });
+    }
+
+    [Authorize(Roles = AppRoles.Admin)]
     public async Task<IActionResult> DeleteQuestion(int questionID)
     {
         await questions.DeleteAsync(questionID);

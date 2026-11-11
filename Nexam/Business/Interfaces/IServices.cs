@@ -21,6 +21,8 @@ public interface IQuestionService
     Task<Question> GetByIdAsync(int questionId);
     Task<QuestionListViewModel> GetBySubjectAsync(int subjectId);
     Task<QuestionListViewModel> SearchAsync(string search, int? subjectId = null);
+    /// <summary>A few matches for type-ahead suggestions, plus the total number of matches.</summary>
+    Task<(List<Question> Items, int Total)> SuggestAsync(string search, int? subjectId, int limit = 6);
     Task<bool> SaveAsync(Question question);
     Task<bool> UpdateAsync(Question question);
     Task<bool> DeleteAsync(int questionId);

@@ -15,22 +15,12 @@
 
 <div class="page-head">
     <h1>Search questions</h1>
-    <p>
-        @if (hasSearch)
-        {
-            <text>@summary for &ldquo;@Model.Search&rdquo;.</text>
-        }
-        else
-        {
-            <text>Search every subject by question text.</text>
-        }
-    </p>
-    <form class="cluster mt-2" action="/Admin/AdminSearchResult" method="get" role="search">
+    <p>Search every subject by question text. Results update as you type.</p>
+    <form class="cluster mt-2" action="/Admin/AdminSearchResult" method="get" role="search" data-live-search>
         <div class="search-field" style="position:relative;flex:1 1 280px;max-width:480px">
             <svg class="icon" aria-hidden="true" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)"><use href="#i-search"/></svg>
             <input class="input" style="padding-left:40px" type="search" name="search" value="@Model.Search" placeholder="Search questions" aria-label="Search questions">
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </div>
 
@@ -44,6 +34,11 @@
     </nav>
 }
 
+<div data-live-results aria-live="polite">
+@if (hasSearch)
+{
+    <p class="muted mt-3">@summary for &ldquo;@Model.Search&rdquo;.</p>
+}
 @if (Model.questions == null || Model.questions.Count == 0)
 {
     <div class="empty">
@@ -112,3 +107,4 @@ else
         </div>
     </div>
 }
+</div>
