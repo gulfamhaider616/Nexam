@@ -29,9 +29,20 @@ public class HomeController(
             PPSCList = ppscList.Result,
             NTSList = ntsList.Result,
             FPSCList = fpscList.Result,
-            CSSList = cssList.Result
+            CSSList = cssList.Result,
+            RecentPpscYears = LatestPpscYears(ppscList.Result, count: 5)
         });
     }
+
+    /// <summary>The newest years that actually have papers (a paper's PaperYearID links it to the year search).</summary>
+    private static List<PaperYear> LatestPpscYears(IEnumerable<Paper> papers, int count) =>
+        papers
+            .Where(p => p.PaperYearID > 0 && int.TryParse(p.PaperYear, out _))
+            .GroupBy(p => new { p.PaperYearID, p.PaperYear })
+            .OrderByDescending(g => int.Parse(g.Key.PaperYear))
+            .Take(count)
+            .Select(g => new PaperYear { YearID = g.Key.PaperYearID, Year = g.Key.PaperYear })
+            .ToList();
 
     public IActionResult About() => View();
 

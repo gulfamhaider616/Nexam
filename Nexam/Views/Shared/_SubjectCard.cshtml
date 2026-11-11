@@ -1,0 +1,23 @@
+@model Subject
+@{
+    // A subject whose description is missing or just repeats its name gets the standard sentence,
+    // so every card reads the same way.
+    var name = (Model.SubjectName ?? "").Trim();
+    var detail = (Model.SubjectDetail ?? "").Trim();
+    if (detail.Length < 30)
+    {
+        var display = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name.ToLowerInvariant());
+        detail = $"This subject contains MCQs related to {display} for CSS, PPSC,NTS and many more.";
+    }
+}
+<div class="col-lg-4 col-md-6 mb-30 nx-card-col wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+    <a class="categories-item" href="/Questions/@Model.SubjectID" style="box-shadow: 0px 0px 16px lightgrey;">
+        <div class="icon-part">
+            <img src="/assets/images/categories/icons/1.png" alt="">
+        </div>
+        <div class="content-part">
+            <h4 class="title">@name</h4>
+            <span class="courses">@detail</span>
+        </div>
+    </a>
+</div>

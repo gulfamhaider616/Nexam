@@ -62,3 +62,18 @@ Note: the remote databases still use the old `ahmedshair`/`shaira` schemas; move
 ## Authentication
 
 Cookie authentication with two roles: `Admin` (all `*ByAdmin`, create/edit/delete pages) and `User` (quizzes and dashboard).
+
+## Past-paper importer
+
+`tools/Nexam.Importer` is a console tool that pulled the 2021-2026 PPSC past papers from gk360.pk into `PPSCPaper` / `PPSCQuestions` (every imported paper is recorded with its source URL in `dbo.ImportedPaper`).
+
+```
+cd tools/Nexam.Importer
+dotnet run -- crawl --min-year 2021     # polite crawl (robots.txt, 1.5-3s delay), cached in data/cache
+dotnet run -- parse                     # cache -> data/staging/*.json
+dotnet run -- report                    # dry-run summary: counts, subject mapping, warnings
+dotnet run -- crosscheck                # compare answers with questions already on the site
+dotnet run -- import                    # dry run; add --commit --create-subjects to write
+```
+
+Re-running is safe: papers already in `ImportedPaper` (same URL or same content) are skipped. Answer keys come from a third party and are unverified; spot-check before relying on them.

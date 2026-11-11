@@ -9,6 +9,9 @@ public class HomeViewModel
     public List<Paper> FPSCList { get; set; }
     public List<Paper> NTSList { get; set; }
     public List<Paper> CSSList { get; set; }
+
+    /// <summary>Years that have PPSC papers, newest first, for the "Recent PPSC Papers" box.</summary>
+    public List<PaperYear> RecentPpscYears { get; set; } = new();
 }
 
 public class QuestionListViewModel

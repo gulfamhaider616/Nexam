@@ -28,26 +28,14 @@
                     <div class="notice-bord style1">
                         <h4 class="title">Recent PPSC Papers</h4>
                         <ul>
-                            <li class="wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
-                                <div class="date"><span>2020</span></div>
-                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=3">Search all PPSC Past Papers in 2020</a></div>
-                            </li>
-                            <li class="wow fadeInUp" data-wow-delay="400ms" data-wow-duration="2000ms">
-                                <div class="date"><span>2019</span></div>
-                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=4">Search all PPSC Past Papers in 2019</a></div>
-                            </li>
-                            <li class="wow fadeInUp" data-wow-delay="500ms" data-wow-duration="2000ms">
-                                <div class="date"><span>2018</span></div>
-                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=5">Search all PPSC Past Papers in 2018</a></div>
-                            </li>
-                            <li class="wow fadeInUp" data-wow-delay="600ms" data-wow-duration="2000ms">
-                                <div class="date"><span>2017</span></div>
-                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=6">Search all PPSC Past Papers in 2017</a></div>
-                            </li>
-                            <li class="wow fadeInUp" data-wow-delay="700ms" data-wow-duration="2000ms">
-                                <div class="date"><span>2016</span></div>
-                                <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=7">Search all PPSC Past Papers in 2016</a></div>
-                            </li>
+                            @for (var i = 0; i < Model.RecentPpscYears.Count; i++)
+                            {
+                                var year = Model.RecentPpscYears[i];
+                                <li class="wow fadeInUp" data-wow-delay="@(300 + i * 100)ms" data-wow-duration="2000ms">
+                                    <div class="date"><span>@year.Year</span></div>
+                                    <div class="desc"><a href="/PPSC/SearchPPSCPaperYearwise?yearid=@year.YearID">Search all PPSC Past Papers in @year.Year</a></div>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -92,17 +80,7 @@
             <div class="row">
 @foreach (var Item in Model.SubjectList)
 {
-                <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
-                    <a class="categories-item" href="/Questions/@Item.SubjectID" style="box-shadow: 0px 0px 16px lightgrey;">
-                        <div class="icon-part">
-                            <img src="/assets/images/categories/icons/1.png" alt="">
-                        </div>
-                        <div class="content-part">
-                            <h4 class="title">@Item.SubjectName</h4>
-                            <span class="courses">@Item.SubjectDetail</span>
-                        </div>
-                    </a>
-                </div>
+    @await Html.PartialAsync("_SubjectCard", Item)
 }
             </div>
         </div>
@@ -127,42 +105,7 @@
             <div class="row">
 @foreach (var Item in Model.PPSCList.Take(6))
 {
-    <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
-        <div class="courses-item" style="box-shadow: 0px 0px 16px lightgrey;">
-            <div class="content-part">
-                <ul class="meta-part">
-                    @if (Item.PaperYear != null)
-                    {
-                        <li><span class="price">@Item.PaperYear</span></li>
-                    }
-                    else
-                    {
-                        <li><span class="price">Recent</span></li>
-                    }
-                    <li><a class="categorie" href="~/PPSC-Past-Paper-Question/@Item.PaperID" style="color: #21a7d0;font-size: 21px;">@Item.PaperName</a></li>
-                </ul>
-                <h3 class="title"><a href="~/PPSC-Past-Paper-Question/@Item.PaperID">@Item.PaperDetail</a></h3>
-                <div class="bottom-part">
-                    <div class="info-meta">
-                        <ul>
-                            @if (Item.PaperPost != null)
-                            {
-                                <li class="user">Post: @Item.PaperPost</li>
-                            }
-                            else
-                            {
-                                <li class="user">Post: Generic</li>
-                            }
-
-                        </ul>
-                    </div>
-                    <div class="btn-part">
-                        <a href="~/PPSC-Past-Paper-Question/@Item.PaperID"><i class="flaticon-right-arrow"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("_PaperCard", new PaperCardModel(Item, Url.Content("~/PPSC-Past-Paper-Question/" + Item.PaperID), Item.PaperYear ?? "Recent", "Post: " + (Item.PaperPost ?? "Generic")))
 }
             </div>
         </div>

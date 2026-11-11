@@ -13,11 +13,18 @@ public sealed class PpscRepository : DapperRepository, IPpscRepository
 
     // ---------- papers ----------
 
+    // Latest first: newest year on top, papers without a year last, newest-added first within a year.
     public async Task<List<Paper>> GetPapersAsync() =>
-        (await QueryProcAsync<PpscPaperRow>("GetAllPaper")).Select(ToPaper).ToList();
+        NewestFirst((await QueryProcAsync<PpscPaperRow>("GetAllPaper")).Select(ToPaper));
 
     public async Task<List<Paper>> SearchPapersByYearAsync(int yearId) =>
-        (await QueryProcAsync<PpscPaperRow>("SearchPPSCPaperYearwise", new { YearID = yearId })).Select(ToPaper).ToList();
+        NewestFirst((await QueryProcAsync<PpscPaperRow>("SearchPPSCPaperYearwise", new { YearID = yearId })).Select(ToPaper));
+
+    private static List<Paper> NewestFirst(IEnumerable<Paper> papers) =>
+        papers
+            .OrderByDescending(p => int.TryParse(p.PaperYear, out var year) ? year : int.MinValue)
+            .ThenByDescending(p => p.PaperID)
+            .ToList();
 
     // Raw SQL: the GetPPSCPaperDetail procedure does not exist in the database.
     public async Task<Paper> GetPaperDetailAsync(int paperId)

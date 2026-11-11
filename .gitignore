@@ -6,3 +6,7 @@ Nexam/bin/
 Nexam/obj/
 appsettings.Local.json
 Nexam/appsettings.Development.json
+tools/Nexam.Importer/data/
+tools/Nexam.Importer/bin/
+tools/Nexam.Importer/obj/
+tools/

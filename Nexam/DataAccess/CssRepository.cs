@@ -8,7 +8,18 @@ public sealed class CssRepository : DapperRepository, ICssRepository
 {
     public CssRepository(IDbConnectionFactory factory) : base(factory) { }
 
-    public Task<List<Paper>> GetPapersAsync() => QueryProcAsync<Paper>("GetAllCSSPaper");
+    // CSS papers have no year column; the year is part of the paper name ("... Past Paper 2017"). Latest year first.
+    public async Task<List<Paper>> GetPapersAsync() =>
+        (await QueryProcAsync<Paper>("GetAllCSSPaper"))
+            .OrderByDescending(p => YearInName(p.PaperName))
+            .ThenByDescending(p => p.PaperID)
+            .ToList();
+
+    private static int YearInName(string name)
+    {
+        var matches = System.Text.RegularExpressions.Regex.Matches(name ?? "", @"\b(19|20)\d{2}\b");
+        return matches.Count > 0 ? int.Parse(matches[^1].Value) : int.MinValue;
+    }
 
     public async Task<Paper> GetPaperByIdAsync(int paperId)
     {

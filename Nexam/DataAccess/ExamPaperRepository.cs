@@ -20,7 +20,9 @@ public abstract class ExamPaperRepository : DapperRepository, IExamPaperReposito
     protected ExamPaperRepository(IDbConnectionFactory factory, ExamProcedures procedures) : base(factory) =>
         _procedures = procedures;
 
-    public Task<List<Paper>> GetPapersAsync() => QueryProcAsync<Paper>(_procedures.GetPapers);
+    // These papers carry no year, so "latest first" means most recently added first.
+    public async Task<List<Paper>> GetPapersAsync() =>
+        (await QueryProcAsync<Paper>(_procedures.GetPapers)).OrderByDescending(p => p.PaperID).ToList();
 
     public Task<bool> SavePaperAsync(Paper paper) =>
         ProcReturnsRowAsync(_procedures.SavePaper, new { paper.PaperName, paper.PaperDetail });

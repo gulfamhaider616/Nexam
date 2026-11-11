@@ -1,0 +1,28 @@
+@model PaperCardModel
+@{
+    var paper = Model.Paper;
+}
+<div class="col-lg-4 col-md-6 mb-30 nx-card-col wow fadeInUp" data-wow-delay="300ms" data-wow-duration="2000ms">
+    <div class="courses-item" style="box-shadow: 0px 0px 16px lightgrey;">
+        <div class="content-part">
+            <ul class="meta-part">
+                <li><span class="price">@Model.Badge</span></li>
+                <li><a class="categorie" href="@Model.Url" style="color: #21a7d0;font-size: 21px;">@paper.PaperName</a></li>
+            </ul>
+            @if (!string.IsNullOrWhiteSpace(paper.PaperDetail))
+            {
+                <h3 class="title"><a href="@Model.Url" title="@paper.PaperDetail">@paper.PaperDetail</a></h3>
+            }
+            <div class="bottom-part">
+                <div class="info-meta">
+                    <ul>
+                        <li class="user">@Model.Footer</li>
+                    </ul>
+                </div>
+                <div class="btn-part">
+                    <a href="@Model.Url" aria-label="Open @paper.PaperName"><i class="flaticon-right-arrow"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
